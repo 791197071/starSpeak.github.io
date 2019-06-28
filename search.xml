@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[CVPR2019最佳论文解读]]></title>
+    <url>%2F2019%2F06%2F28%2FCVPR2019%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB%2F</url>
+    <content type="text"><![CDATA[前言 CVPR，全称IEEE Conference on Computer Vision and Pattern Recognition，与ECCV(Europeon Conference on Computer Vision)，ICCV( IEEE International Conference on Computer Vision)并称为计算机视觉领域三大会议，均为计算机视觉领域的顶级会议。由于近几年计算机视觉的异常火热，CVPR也就成为很多计算机视觉领域研究者趋之若鹜的盛宴，它的受关注程度更是今非昔比。CVPR2019于2019年6月16日在美国召开，此次会议共收到来自全球14104位研究者提交的5160篇文章，同比2018年增长56%，一举打破记录，受欢迎程度可见一斑。 CVPR2019最终共接收1294篇文章，尽管CVPR被计算机视觉领域视为顶尖，我个人认为，其中不乏质量平平的水文，真正令人印象深刻，几年之后依然被人所熟知且实用，并在算法思想方面取得跨越的却寥寥无几。闲话说完，回到本文的重点CVPR2019最佳论文，该荣誉最终由卡耐基梅隆大学、多伦多大学、伦敦大学学院的多位研究者斩获，论文名称为A Theory of Fermat Paths for Non-Line-of-Sight Shape Reconstruction，接下来，我详细解读一下这篇文章。]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+      <tags>
+        <tag>CV</tag>
+        <tag>AI</tag>
+        <tag>图像处理</tag>
+      </tags>
+  </entry>
+</search>
