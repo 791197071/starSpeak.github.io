@@ -87,17 +87,17 @@
 <meta property="og:site_name" content="LoveVini">
 <meta property="og:description" content="前言 CVPR，全称IEEE Conference on Computer Vision and Pattern Recognition，与ECCV(Europeon Conference on Computer Vision)，ICCV( IEEE International Conference on Computer Vision)并称为计算机视觉领域三大会议，均为计算机视觉领域的顶级会议。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://pic2.zhimg.com/v2-f3af86bb7500910e92c85a185cfb9a99_b.png">
-<meta property="og:image" content="https://pic4.zhimg.com/v2-8bd4bb84d7895b9b44367fda683bf493_b.png">
-<meta property="og:image" content="https://pic2.zhimg.com/v2-9d0f777f0e8e7233461a2e82f42ff5d5_b.png">
-<meta property="og:image" content="https://pic4.zhimg.com/v2-8bd4bb84d7895b9b44367fda683bf493_b.png">
-<meta property="og:image" content="https://pic1.zhimg.com/v2-ce0899235bf22c8eae384550415c2fe0_b.png">
-<meta property="og:image" content="https://pic2.zhimg.com/v2-c3da0b0da36bf0107339151295147d85_b.png">
-<meta property="og:updated_time" content="2019-06-28T14:27:06.459Z">
+<meta property="og:image" content="https://i.loli.net/2019/06/29/5d177346c5c3386434.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/29/5d17734711c1853486.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/29/5d177346e393c92434.png">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/0060lm7Tly1g4igpktfp0j30gm05s0vu.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/06/29/5d17734704bf863453.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/29/5d1773471f04f97966.png">
+<meta property="og:updated_time" content="2019-06-29T15:53:25.628Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CVPR2019最佳论文解读">
 <meta name="twitter:description" content="前言 CVPR，全称IEEE Conference on Computer Vision and Pattern Recognition，与ECCV(Europeon Conference on Computer Vision)，ICCV( IEEE International Conference on Computer Vision)并称为计算机视觉领域三大会议，均为计算机视觉领域的顶级会议。">
-<meta name="twitter:image" content="https://pic2.zhimg.com/v2-f3af86bb7500910e92c85a185cfb9a99_b.png">
+<meta name="twitter:image" content="https://i.loli.net/2019/06/29/5d177346c5c3386434.png">
 
 
 
@@ -396,13 +396,13 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><img src="https://pic2.zhimg.com/v2-f3af86bb7500910e92c85a185cfb9a99_b.png" alt="1"></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><img src="https://i.loli.net/2019/06/29/5d177346c5c3386434.png" alt="1"></p>
 <p>CVPR，全称IEEE Conference on Computer Vision and Pattern Recognition，与ECCV(Europeon Conference on Computer Vision)，ICCV( IEEE International Conference on Computer Vision)并称为计算机视觉领域三大会议，均为计算机视觉领域的顶级会议。由于近几年计算机视觉的异常火热，CVPR也就成为很多计算机视觉领域研究者趋之若鹜的盛宴，它的受关注程度更是今非昔比。CVPR2019于2019年6月16日在美国召开，此次会议共收到来自全球14104位研究者提交的5160篇文章，同比2018年增长56%，一举打破记录，受欢迎程度可见一斑。</p>
 <a id="more"></a>
 <p>CVPR2019最终共接收1294篇文章，尽管CVPR被计算机视觉领域视为顶尖，我个人认为，其中不乏质量平平的水文，真正令人印象深刻，几年之后依然被人所熟知且实用，并在算法思想方面取得跨越的却寥寥无几。闲话说完，回到本文的重点<strong>CVPR2019最佳论文</strong>，该荣誉最终由卡耐基梅隆大学、多伦多大学、伦敦大学学院的多位研究者斩获，论文名称为<a href="http://openaccess.thecvf.com/content_CVPR_2019/papers/Xin_A_Theory_of_Fermat_Paths_for_Non-Line-Of-Sight_Shape_Reconstruction_CVPR_2019_paper.pdf" target="_blank" rel="noopener">A Theory of Fermat Paths for Non-Line-of-Sight Shape Reconstruction</a>，接下来，我详细解读一下这篇文章。</p>
 <h2 id="数学符号含义"><a href="#数学符号含义" class="headerlink" title="数学符号含义"></a>数学符号含义</h2><p>$s$ 光源上的点<br>$v$  可见场景内的点<br>$x$  不可见场景内的点<br>$d$  检测器上的点<br>$\tau_{\mathcal{F}}$  费马路径长度<br>$I(\tau ; \boldsymbol{v})$  瞬态</p>
 <h2 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h2><p><strong>瞬态(transients)</strong>:一种测量值，用于重建隐藏形状信息的大多数方法采用快速调制光源已经传感器来记录光子强度和旅行时间的测量值。<br><strong>费马路径(Fermat paths)</strong>:首先返回的光子路径的超集合。<br><strong>费马路径长度(Fermat pathlengths)</strong>:顾名思义，就是通过光速等计算出来的离散路径长度。</p>
-<h2 id="算法详解"><a href="#算法详解" class="headerlink" title="算法详解"></a>算法详解</h2><p><img src="https://pic4.zhimg.com/v2-8bd4bb84d7895b9b44367fda683bf493_b.png" alt="3"></p>
+<h2 id="算法详解"><a href="#算法详解" class="headerlink" title="算法详解"></a>算法详解</h2><p><img src="https://i.loli.net/2019/06/29/5d17734711c1853486.png" alt="3"></p>
 <p>目前大多数计算机视觉领域的研究都是围绕着视觉可见范围内的研究，但是理解视野范围之外的场景在很多领域却有着非常重要的应用，因此，这使得这项研究更加具有价值。<br>被动方式通过分析隐藏场景所投射的阴影来粗略估计物体的运动和结构，或者利用光的相干性来定位隐藏对象。这些方法没有足够的信息来精确计算位置隐藏场景的三维形状。主动方式提取隐藏场景的附加信息时可能的。大多数重建隐藏形状信息的方法都是用调制光源和时间分辨传感器、超快光电二极管等，这些传感器不仅记录入射光子的强度，还在时间分辨率范围内记录它们到达的时间，这种测量称为瞬态。</p>
 <p>大多数主动技术都是通过测量一个已知可见场景的不同位置的瞬态，然后根据已经获取的辐射成像逆向来进行三维重建，例如椭圆反投影、正则化线性系统、光锥变换等。这些方法主要有两个缺点：</p>
 <ul>
@@ -415,18 +415,18 @@
 <li>求解费马流方程</li>
 <li>表面拟合</li>
 </ul>
-<h2 id="测量瞬态"><a href="#测量瞬态" class="headerlink" title="测量瞬态"></a>测量瞬态</h2><p><img src="https://pic2.zhimg.com/v2-9d0f777f0e8e7233461a2e82f42ff5d5_b.png" alt="2"></p>
+<h2 id="测量瞬态"><a href="#测量瞬态" class="headerlink" title="测量瞬态"></a>测量瞬态</h2><p><img src="https://i.loli.net/2019/06/29/5d177346e393c92434.png" alt="2"></p>
 <p>假设已经校准了从光源到可见点，和从可见点到检测器的距离 </p>
 <script type="math/tex; mode=display">\mathcal{\tau\mathcal{V}}(\boldsymbol{v}) \triangleq\|s-v\|+\|d-v\|</script><p>，那么可以通过光速等计算在非可见场景的路径长度，</p>
 <script type="math/tex; mode=display">I(\tau ; \boldsymbol{v})=\int_{\mathcal{X}} f(\boldsymbol{x} ; \boldsymbol{v}) \delta(\tau-\tau(\boldsymbol{x} ; \boldsymbol{v})) \mathrm{d} A(p, q)</script><p>其中 $\tau(\boldsymbol{x} ; \boldsymbol{v}) \triangleq 2 \cdot|\boldsymbol{x}-\boldsymbol{v}|,(p, q) \in[0,1]^{2} $是非可见物体表面的参数化表示。</p>
-<h2 id="费马流方程"><a href="#费马流方程" class="headerlink" title="费马流方程"></a>费马流方程</h2><p><img src="https://pic4.zhimg.com/v2-8bd4bb84d7895b9b44367fda683bf493_b.png" alt="4"></p>
+<h2 id="费马流方程"><a href="#费马流方程" class="headerlink" title="费马流方程"></a>费马流方程</h2><p><img src="http://tva1.sinaimg.cn/large/0060lm7Tly1g4igpktfp0j30gm05s0vu.jpg" alt="4"></p>
 <p>给定测量的瞬态$I(\tau ; \boldsymbol{v})$ ，可以把它的离散性定义为对费马路径长度的贡献，每个路径长度约束了球面上的点的法线和曲率。这是本文的核心所在，给定一组费马路径长度，就可以得到隐藏物体表面点集的位置和法线。<br>首先定义费马路径函数，</p>
 <script type="math/tex; mode=display">\tau_{\mathcal{F}}(\boldsymbol{v})=\{\tau : I(\tau ; \boldsymbol{v}) \text { is discontinuous }\}</script><p>在每个瞬态可以有多个不连续的路径长度，因此费马路径函数是一个多值函数</p>
 <script type="math/tex; mode=display">\boldsymbol{x}_{\mathcal{F}}=\boldsymbol{v}-\left(\tau_{\mathcal{F}}(\boldsymbol{v}) / 4\right) \nabla_{\boldsymbol{v}} \tau_{\mathcal{F}}(\boldsymbol{v})</script><p>其中 $\boldsymbol{x}_{\mathcal{F}} $是隐藏物体球面上的点，因此，物体可以唯一的被可见点\boldsymbol{v}、路径长度、梯度 $\nabla_{\boldsymbol{v}} \tau_{\mathcal{F}}(\boldsymbol{v})$ 重建，得到隐藏物体表面的点，然后通过一些简单的集合操作即可。<br>但是就算路径长度的导数是一件非常难的事情，它和选取的可视面的形状、位置有密切的关系，为了简化，文中采用选取平面作为可视区域，得到的导数为，</p>
 <script type="math/tex; mode=display">\begin{array}{l}{\nabla_{\boldsymbol{v}^{\tau} \mathcal{F}}(\boldsymbol{v})=} \\ {\left.\left(\frac{\partial \tau_{\mathcal{F}}}{\partial x}, \frac{\partial \tau_{\mathcal{F}}}{\partial y}, \sqrt{4-\left(\frac{\partial \tau_{\mathcal{F}}}{\partial x}\right)^{2}-\left(\frac{\partial \tau_{\mathcal{F}}}{\partial y}\right)^{2}}\right)\right|_{\boldsymbol{v}}}\end{array}</script><h2 id="表面拟合"><a href="#表面拟合" class="headerlink" title="表面拟合"></a>表面拟合</h2><p>上述的步骤生成了一系列的<strong>有向点云</strong>，它的密度相当于在可视区域 \mathcal{V} 上的测量密度，然后，可以使用算法，利用正常信息，以更高的精度将曲面表示(如三角形网格)匹配到点云，给定这样一个初始的表面重建，在补充中，我们描述了一个基于高光路径扰动理论的优化过程，该过程对拟合表面进行了细化，以考虑由于梯度 $\nabla_{\boldsymbol{v}} \tau_{\mathcal{F}}(\boldsymbol{v})$ 估计不准确而可能产生的误差。</p>
-<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p><img src="https://pic1.zhimg.com/v2-ce0899235bf22c8eae384550415c2fe0_b.png" alt="5"></p>
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p><img src="https://i.loli.net/2019/06/29/5d17734704bf863453.png" alt="5"></p>
 <p>如图中所示，分别从两个视图中重建了一个有方向的点云，点按它们的法线着色。最后，我们将一个表面与点云相匹配，显示在右边的两个视图下。</p>
-<p><img src="https://pic2.zhimg.com/v2-c3da0b0da36bf0107339151295147d85_b.png" alt="6"></p>
+<p><img src="https://i.loli.net/2019/06/29/5d1773471f04f97966.png" alt="6"></p>
 <p>扫描的对象跨越各种形状(凸，凹)和反射(半透明，光泽，镜面)。对于每一个物体，我们展示了环境光下的照片，以及它表面重建的两个视图。</p>
 <hr>
 <h2 id="更多我的作品"><a href="#更多我的作品" class="headerlink" title="更多我的作品"></a>更多我的作品</h2><p><a href="https://zhuanlan.zhihu.com/p/57521026" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第一讲：图像预处理之图像去噪</a></p>
@@ -490,6 +490,11 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80NDk4MS8yMTUwMQ=="></div>
+    </div>
 
   
 
@@ -639,7 +644,7 @@
 
         
 <div class="busuanzi-count">
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   
     <span class="site-uv">
@@ -792,6 +797,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
