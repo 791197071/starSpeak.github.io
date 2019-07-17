@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CV,AI,图像处理,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言 如果自称为计算机视觉工程师，没有听说过前文提到的尺度不变特征变换(SIFT)，可以理解，但是如果没有听说过方向梯度直方图(Histogram of oriented gradient，HOG)，就有一些令人诧异了。这项技术是有发过国家计算机技术和控制研究所(INRIA)的两位研究院Navneet Dalal和Bill Triggs在2005年CVPR上首先发表提出(那时的CVPR含金量还是很">
+<meta name="keywords" content="CV,AI,图像处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【动手学计算机视觉】第八讲：传统目标检测之SIFT特征">
+<meta property="og:url" content="http://yoursite.com/2019/07/10/cv-hog/index.html">
+<meta property="og:site_name" content="LoveVini">
+<meta property="og:description" content="前言 如果自称为计算机视觉工程师，没有听说过前文提到的尺度不变特征变换(SIFT)，可以理解，但是如果没有听说过方向梯度直方图(Histogram of oriented gradient，HOG)，就有一些令人诧异了。这项技术是有发过国家计算机技术和控制研究所(INRIA)的两位研究院Navneet Dalal和Bill Triggs在2005年CVPR上首先发表提出(那时的CVPR含金量还是很">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ptw5sbueu.bkt.clouddn.com/1562761728530.png">
+<meta property="og:image" content="http://ptw5sbueu.bkt.clouddn.com/1562762059625.png">
+<meta property="og:image" content="http://ptw5sbueu.bkt.clouddn.com/1562764073002.png">
+<meta property="og:image" content="c:/Users/Li/Desktop/HOG.png">
+<meta property="og:image" content="http://ptw5sbueu.bkt.clouddn.com/1562764023347.png">
+<meta property="og:image" content="http://ptw5sbueu.bkt.clouddn.com/1562999462705.png">
+<meta property="og:image" content="http://ptw5sbueu.bkt.clouddn.com/1562999574811.png">
+<meta property="og:updated_time" content="2019-07-17T15:36:25.612Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【动手学计算机视觉】第八讲：传统目标检测之SIFT特征">
+<meta name="twitter:description" content="前言 如果自称为计算机视觉工程师，没有听说过前文提到的尺度不变特征变换(SIFT)，可以理解，但是如果没有听说过方向梯度直方图(Histogram of oriented gradient，HOG)，就有一些令人诧异了。这项技术是有发过国家计算机技术和控制研究所(INRIA)的两位研究院Navneet Dalal和Bill Triggs在2005年CVPR上首先发表提出(那时的CVPR含金量还是很">
+<meta name="twitter:image" content="http://ptw5sbueu.bkt.clouddn.com/1562761728530.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/10/cv-hog/">
+
+
+
+
+
+  <title>【动手学计算机视觉】第八讲：传统目标检测之SIFT特征 | LoveVini</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LoveVini</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Jackpop @ Vini</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/10/cv-hog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jackpop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LoveVini">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第八讲：传统目标检测之SIFT特征</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-10T20:18:35+08:00">
+                2019-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机视觉/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机视觉</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/10/cv-hog/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/10/cv-hog/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><img src="http://ptw5sbueu.bkt.clouddn.com/1562761728530.png" alt="1562761728530"></p>
+<p>如果自称为计算机视觉工程师，没有听说过前文提到的尺度不变特征变换(SIFT)，可以理解，但是如果没有听说过方向梯度直方图(Histogram of oriented gradient，HOG)，就有一些令人诧异了。这项技术是有发过国家计算机技术和控制研究所(INRIA)的两位研究院Navneet Dalal和Bill Triggs在2005年CVPR上首先发表提出(那时的CVPR含金量还是很高的)。<a id="more"></a>原文Histograms of oriented gradients for human detection截止2019年7月10日引用率已经达到26856。</p>
+<p>HOG通过计算局部图像提取的方向信息统计值来统计图像的梯度特征，它跟EOH、SIFT及shape contexts有诸多相似之处，但是它有明显的不同之处：HOG特征描述子是在一个网格秘籍、大小统一的细胞单元上进行计算，而且为了提高性能，它还采用了局部对比度归一化思想。它的出现，使得目标检测技术在静态图像的人物检测、车辆检测等方向得到大量应用。</p>
+<p>在传统目标检测中，HOG可以称得上是经典中的经典，它的HOG+SVM+归一化思想对后面的研究产生深远的影响，包括后面要讲到的神作DPM，可以说，HOG的出现，奠定了2005之后的传统目标检测的基调和方向，下面就来了解一下这个经典之作。</p>
+<h2 id="方向梯度直方图"><a href="#方向梯度直方图" class="headerlink" title="方向梯度直方图"></a>方向梯度直方图</h2><p><img src="http://ptw5sbueu.bkt.clouddn.com/1562762059625.png" alt="1562762059625"></p>
+<p>HOG特征的算法可以用一下几个部分概括，</p>
+<ul>
+<li>梯度计算</li>
+<li>单元划分</li>
+<li>区块选择</li>
+<li>区间归一化</li>
+<li>SVM分类器</li>
+</ul>
+<p>下面分别来详细阐述一下。</p>
+<p><img src="http://ptw5sbueu.bkt.clouddn.com/1562764073002.png" alt="1562764073002"></p>
+<h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><p>由于后面要进行归一化处理，因此在HOG中不需要像其他算法那样需要进行预处理，因此，第一步就成了梯度计算。为什么选择梯度特征？因为在目标边缘处灰度变化较大，因此，在边缘处灰度的梯度就较为明显，所以，梯度能够更好的表征目标的特征。</p>
+<p>我们都知道在数学中计算梯度需要进行微分求导，但是数字图像是离散的，因此无法直接求导，可以利用一阶差分代替微分求离散图像的梯度大小和梯度方向，计算得到水平方向和垂直方向的梯度分别是，</p>
+<script type="math/tex; mode=display">G_{h}(x, y)=f(x+1, y)-f(x-1, y),\forall x, y</script><script type="math/tex; mode=display">G_{v}(x, y)=f(x, y+1)-f(x, y-1) ,\forall x, y</script><p>其中$f(x,y)$表示图像在$(x,y)$的像素值1。</p>
+<p>可以得到梯度值(梯度强度)和梯度方向分别为,</p>
+<script type="math/tex; mode=display">M(x, y)=\sqrt{G_{h}(x, y)^{2}+G_{v}(x, y)^{2}}</script><script type="math/tex; mode=display">\theta(x, y)=\arctan \left(G_{h}(x, y) / G_{v}(x, y)\right.</script><h3 id="单元划分"><a href="#单元划分" class="headerlink" title="单元划分"></a>单元划分</h3><p><img src="C:\Users\Li\Desktop\HOG.png" alt="HOG"></p>
+<p>计算得到梯度的幅值和梯度方向之后，紧接着就是要建立分块直方图，得到图像的梯度大小和梯度方向后根据梯度方向对图像进行投影统计，首先将图像划分成若干个块(Block)，每个块又由若干个细胞单元(cell)组成，细胞单元由更小的单位像素(Pixel)组成，然后在每个细胞单元中对内部的所有像素的梯度方向进行统计。Dalal和Triggs通过测试验证得出，把方向分为9个通道效果最好，因此将180度划分成9个区间，每个区间为20度，如果像素落在某个区间，就将该像素的直方图累加在该区间对应的直方图上面，例如，如果像素的梯度方向在0~20度之间，则在0~20对应的直方图上累加该像素对应的梯度幅值。这样最终每个细胞单元就会得到一个9维的特征向量，特征向量每一维对应的值是累加的梯度幅值。</p>
+<p><img src="http://ptw5sbueu.bkt.clouddn.com/1562764023347.png" alt="1562764023347"></p>
+<h3 id="区块选择"><a href="#区块选择" class="headerlink" title="区块选择"></a>区块选择</h3><p>为了应对光照和形变，梯度需要在局部进行归一化。这个局部的区块该怎么选择？常用的有两种，分别是矩形区块(R-HOG)和圆形区块(C-HOG)，前面提供的例子就是矩形区块，一个矩形区块由三个参数表示：每个区块由多少放歌、每个方格有多少像素、每个像素有多少通道。前面已经提到，经过作者验证，每个像素选择9个通道效果最佳。同样，作者对每个方格采用的像素数也进行验证，经过验证每个方格采用3*3或者6*6个像素效果较好。</p>
+<h3 id="区间归一化"><a href="#区间归一化" class="headerlink" title="区间归一化"></a>区间归一化</h3><p>每个方格内对像素梯度方向进行统计可以得出一个特征向量，一个区块内有多个方格，也就有多个特征向量，例如前面的示例区块Block内就有4个9维向量。这一步要做的就是对这4个向量进行归一化，Dalal和Triggs采用了四种不同的方式对区块进行归一化，分别是L2-norm、L2-hys、L1-norm、L1-sqrt，用$v$表示未被归一化的向量，以L2-norm为例，归一化后的特征向量为，</p>
+<script type="math/tex; mode=display">v=\frac{v}{\sqrt{\|v\|_{2}^{2}+\varepsilon^{2}}}</script><p>作者通过对比发现，L2-norm、L2-hys、L1-sqrt三种方式所取得的效果是一样的，L1-norm表现相对差一些。</p>
+<h3 id="SVM分类器"><a href="#SVM分类器" class="headerlink" title="SVM分类器"></a>SVM分类器</h3><p>最后一步，也是比较关键的一步，就是训练分类器，用SVM对前面提取的图像特征向量进行训练，寻找一个最优超平面作为决策函数，得到目标的训练模型。</p>
+<h2 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h2><p>完整代码请查看：</p>
+<p><a href="https://github.com/Jackpopc/aiLearnNotes/blob/master/computer_vision/HOG.py" target="_blank" rel="noopener">https://github.com/Jackpopc/aiLearnNotes/blob/master/computer_vision/HOG.py</a></p>
+<p>HOG是一个优秀的特征提取算法，因此本文就仅介绍并实现特征提取算法部分，后面的训练分类器和目标检测偏重于机器学习内容，在这里就不多赘述。</p>
+<p>HOG算法非常经典，因此，很多成熟的第三方库都已经集成了这个算法，例如比较知名的计算机视觉库OpenCV，对于HOG特征提取比较简单的方式就是直接调用OpenCV库，具体代码如下，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">hog = cv2.HOGDescriptor()</span><br><span class="line">img = cv2.imread(<span class="string">"../data/2007_000129.jpg"</span>, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">des = hog.compute(img)</span><br></pre></td></tr></table></figure>
+<p>为了更好的理解HOG算法，本文就跟随文章的思路来重新实现一遍算法。</p>
+<p><strong>第一步：计算梯度方向和梯度幅值</strong></p>
+<p>这里用Sobel算子来计算水平和垂直方向的差分，然后用对梯度大小<strong>加权求和</strong>的方式来计算统计时使用的梯度幅值，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_image_gradient</span><span class="params">(img)</span>:</span></span><br><span class="line">    x_values = cv2.Sobel(img, cv2.CV_64F, <span class="number">1</span>, <span class="number">0</span>, ksize=<span class="number">5</span>)</span><br><span class="line">    y_values = cv2.Sobel(img, cv2.CV_64F, <span class="number">0</span>, <span class="number">1</span>, ksize=<span class="number">5</span>)</span><br><span class="line">    magnitude = cv2.addWeighted(x_values, <span class="number">0.5</span>, y_values, <span class="number">0.5</span>, <span class="number">0</span>)</span><br><span class="line">    angle = cv2.phase(x_values, y_values, angleInDegrees=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> magnitude, angle</span><br></pre></td></tr></table></figure>
+<p><strong>第二步：统计细胞单元的梯度方向</strong></p>
+<p>指定细胞单元尺寸和角度单元，然后对用直方图统计一个细胞单元内的梯度方向，如果梯度角度落在一个区间内，则把该像素的幅值加权到和角度较近的一个角度区间内，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_cell_gradient</span><span class="params">(cell_magnitude, cell_angle, bin_size, unit)</span>:</span></span><br><span class="line">    centers = [<span class="number">0</span>] * bin_size</span><br><span class="line">    <span class="comment"># 遍历细胞单元，统计梯度方向</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(cell_magnitude.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(cell_magnitude.shape[<span class="number">1</span>]):</span><br><span class="line">            strength = cell_magnitude[i][j]</span><br><span class="line">            gradient_angle = cell_angle[i][j]</span><br><span class="line">            min_angle, max_angle, mod = choose_bins(gradient_angle, unit, bin_size)</span><br><span class="line">            <span class="comment"># 根据角度的相近程度分别对邻近的两个区间进行加权</span></span><br><span class="line">            centers[min_angle] += (strength * (<span class="number">1</span> - (mod / unit)))</span><br><span class="line">            centers[max_angle] += (strength * (mod / unit))</span><br><span class="line">    <span class="keyword">return</span> centers</span><br></pre></td></tr></table></figure>
+<p><strong>第三步：块内归一化</strong></p>
+<p>根据HOG原文的思想可以知道，图像内分块，块内分细胞单元，然后对细胞单元进行统计。一个块由多个细胞单元组成，统计了每个细胞单元的梯度特征之后需要对这几个向量进行归一化，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalized</span><span class="params">(cell_gradient_vector)</span>:</span></span><br><span class="line">    hog_vector = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(cell_gradient_vector.shape[<span class="number">0</span>] - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(cell_gradient_vector.shape[<span class="number">1</span>] - <span class="number">1</span>):</span><br><span class="line">            block_vector = []</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i][j])</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i][j + <span class="number">1</span>])</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i + <span class="number">1</span>][j])</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i + <span class="number">1</span>][j + <span class="number">1</span>])</span><br><span class="line">            mag = <span class="keyword">lambda</span> vector: math.sqrt(sum(i ** <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> vector))</span><br><span class="line">            magnitude = mag(block_vector)</span><br><span class="line">            <span class="keyword">if</span> magnitude != <span class="number">0</span>:</span><br><span class="line">                <span class="comment"># 归一化</span></span><br><span class="line">                normalize = <span class="keyword">lambda</span> block_vector, magnitude: [element / magnitude <span class="keyword">for</span> element <span class="keyword">in</span> block_vector]</span><br><span class="line">                block_vector = normalize(block_vector, magnitude)</span><br><span class="line">            hog_vector.append(block_vector)</span><br><span class="line">    <span class="keyword">return</span> hog_vector</span><br></pre></td></tr></table></figure>
+<p><strong>第四步：可视化</strong></p>
+<p>为了直观的看出特征提取的效果，对下图进行特征提取并且可视化，</p>
+<p><img src="http://ptw5sbueu.bkt.clouddn.com/1562999462705.png" alt="1562999462705"></p>
+<p>可视化的方法是在每个像素上用线段画出梯度的方向和大小，用线段的长度来表示梯度大小，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visual</span><span class="params">(cell_gradient, height, width, cell_size, unit)</span>:</span></span><br><span class="line">    feature_image = np.zeros([height, width])</span><br><span class="line">    cell_width = cell_size / <span class="number">2</span></span><br><span class="line">    max_mag = np.array(cell_gradient).max()</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(cell_gradient.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(cell_gradient.shape[<span class="number">1</span>]):</span><br><span class="line">            cell_grad = cell_gradient[x][y]</span><br><span class="line">            cell_grad /= max_mag</span><br><span class="line">            angle = <span class="number">0</span></span><br><span class="line">            angle_gap = unit</span><br><span class="line">            <span class="keyword">for</span> magnitude <span class="keyword">in</span> cell_grad:</span><br><span class="line">                angle_radian = math.radians(angle)</span><br><span class="line">                x1 = int(x * cell_size + magnitude * cell_width * math.cos(angle_radian))</span><br><span class="line">                y1 = int(y * cell_size + magnitude * cell_width * math.sin(angle_radian))</span><br><span class="line">                x2 = int(x * cell_size - magnitude * cell_width * math.cos(angle_radian))</span><br><span class="line">                y2 = int(y * cell_size - magnitude * cell_width * math.sin(angle_radian))</span><br><span class="line">                cv2.line(feature_image, (y1, x1), (y2, x2), int(<span class="number">255</span> * math.sqrt(magnitude)))</span><br><span class="line">                angle += angle_gap</span><br><span class="line">    <span class="keyword">return</span> feature_image</span><br></pre></td></tr></table></figure>
+<p>提取的特征图为，图中白色的线段即为提取的特征，</p>
+<p><img src="http://ptw5sbueu.bkt.clouddn.com/1562999574811.png" alt="1562999574811"></p>
+<p>完整代码如下，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">img = cv2.imread(<span class="string">"../data/2007_000129.jpg"</span>, cv2.IMREAD_GRAYSCALE)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_image_gradient</span><span class="params">(img)</span>:</span></span><br><span class="line">    x_values = cv2.Sobel(img, cv2.CV_64F, <span class="number">1</span>, <span class="number">0</span>, ksize=<span class="number">5</span>)</span><br><span class="line">    y_values = cv2.Sobel(img, cv2.CV_64F, <span class="number">0</span>, <span class="number">1</span>, ksize=<span class="number">5</span>)</span><br><span class="line">    magnitude = abs(cv2.addWeighted(x_values, <span class="number">0.5</span>, y_values, <span class="number">0.5</span>, <span class="number">0</span>))</span><br><span class="line">    angle = cv2.phase(x_values, y_values, angleInDegrees=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> magnitude, angle</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">choose_bins</span><span class="params">(gradient_angle, unit, bin_size)</span>:</span></span><br><span class="line">    idx = int(gradient_angle / unit)</span><br><span class="line">    mod = gradient_angle % unit</span><br><span class="line">    <span class="keyword">return</span> idx, (idx + <span class="number">1</span>) % bin_size, mod</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_cell_gradient</span><span class="params">(cell_magnitude, cell_angle, bin_size, unit)</span>:</span></span><br><span class="line">    centers = [<span class="number">0</span>] * bin_size</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(cell_magnitude.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(cell_magnitude.shape[<span class="number">1</span>]):</span><br><span class="line">            strength = cell_magnitude[i][j]</span><br><span class="line">            gradient_angle = cell_angle[i][j]</span><br><span class="line">            min_angle, max_angle, mod = choose_bins(gradient_angle, unit, bin_size)</span><br><span class="line">            print(gradient_angle, unit, min_angle, max_angle)</span><br><span class="line">            centers[min_angle] += (strength * (<span class="number">1</span> - (mod / unit)))</span><br><span class="line">            centers[max_angle] += (strength * (mod / unit))</span><br><span class="line">    <span class="keyword">return</span> centers</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalized</span><span class="params">(cell_gradient_vector)</span>:</span></span><br><span class="line">    hog_vector = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(cell_gradient_vector.shape[<span class="number">0</span>] - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(cell_gradient_vector.shape[<span class="number">1</span>] - <span class="number">1</span>):</span><br><span class="line">            block_vector = []</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i][j])</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i][j + <span class="number">1</span>])</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i + <span class="number">1</span>][j])</span><br><span class="line">            block_vector.extend(cell_gradient_vector[i + <span class="number">1</span>][j + <span class="number">1</span>])</span><br><span class="line">            mag = <span class="keyword">lambda</span> vector: math.sqrt(sum(i ** <span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> vector))</span><br><span class="line">            magnitude = mag(block_vector)</span><br><span class="line">            <span class="keyword">if</span> magnitude != <span class="number">0</span>:</span><br><span class="line">                normalize = <span class="keyword">lambda</span> block_vector, magnitude: [element / magnitude <span class="keyword">for</span> element <span class="keyword">in</span> block_vector]</span><br><span class="line">                block_vector = normalize(block_vector, magnitude)</span><br><span class="line">            hog_vector.append(block_vector)</span><br><span class="line">    <span class="keyword">return</span> hog_vector</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visual</span><span class="params">(cell_gradient, height, width, cell_size, unit)</span>:</span></span><br><span class="line">    feature_image = np.zeros([height, width])</span><br><span class="line">    cell_width = cell_size / <span class="number">2</span></span><br><span class="line">    max_mag = np.array(cell_gradient).max()</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(cell_gradient.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(cell_gradient.shape[<span class="number">1</span>]):</span><br><span class="line">            cell_grad = cell_gradient[x][y]</span><br><span class="line">            cell_grad /= max_mag</span><br><span class="line">            angle = <span class="number">0</span></span><br><span class="line">            angle_gap = unit</span><br><span class="line">            <span class="keyword">for</span> magnitude <span class="keyword">in</span> cell_grad:</span><br><span class="line">                angle_radian = math.radians(angle)</span><br><span class="line">                x1 = int(x * cell_size + magnitude * cell_width * math.cos(angle_radian))</span><br><span class="line">                y1 = int(y * cell_size + magnitude * cell_width * math.sin(angle_radian))</span><br><span class="line">                x2 = int(x * cell_size - magnitude * cell_width * math.cos(angle_radian))</span><br><span class="line">                y2 = int(y * cell_size - magnitude * cell_width * math.sin(angle_radian))</span><br><span class="line">                cv2.line(feature_image, (y1, x1), (y2, x2), int(<span class="number">255</span> * math.sqrt(magnitude)))</span><br><span class="line">                angle += angle_gap</span><br><span class="line">    <span class="keyword">return</span> feature_image</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(img)</span>:</span></span><br><span class="line">    cell_size = <span class="number">16</span></span><br><span class="line">    bin_size = <span class="number">9</span></span><br><span class="line">    unit = <span class="number">360</span> // bin_size</span><br><span class="line">    height, width = img.shape</span><br><span class="line"></span><br><span class="line">    magnitude, angle = compute_image_gradient(img)</span><br><span class="line"></span><br><span class="line">    cell_gradient_vector = np.zeros((height // cell_size, width // cell_size, bin_size))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(cell_gradient_vector.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(cell_gradient_vector.shape[<span class="number">1</span>]):</span><br><span class="line">            cell_magnitude = magnitude[i * cell_size:(i + <span class="number">1</span>) * cell_size,</span><br><span class="line">                             j * cell_size:(j + <span class="number">1</span>) * cell_size]</span><br><span class="line">            cell_angle = angle[i * cell_size:(i + <span class="number">1</span>) * cell_size,</span><br><span class="line">                         j * cell_size:(j + <span class="number">1</span>) * cell_size]</span><br><span class="line">            cell_gradient_vector[i][j] = compute_cell_gradient(cell_magnitude, cell_angle, bin_size, unit)</span><br><span class="line">    hog_vector = normalized(cell_gradient_vector)</span><br><span class="line">    hog_image = visual(cell_gradient_vector, height, width, cell_size, unit)</span><br><span class="line">    plt.imshow(hog_image, cmap=plt.cm.gray)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    img = cv2.imread(<span class="string">'../data/2007_002293.jpg'</span>, cv2.IMREAD_GRAYSCALE)</span><br><span class="line">    cv2.imshow(<span class="string">"origin"</span>, img)</span><br><span class="line">    cv2.waitKey()</span><br><span class="line">    main(img)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CV/" rel="tag"># CV</a>
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/02/tools-wox/" rel="next" title="效率工具 | Windows下一款强大的启动搜索工具">
+                <i class="fa fa-chevron-left"></i> 效率工具 | Windows下一款强大的启动搜索工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/13/two-windows-tools/" rel="prev" title="two_windows_tools">
+                two_windows_tools <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Jackpop</p>
+              <p class="site-description motion-element" itemprop="description">原创技术分享网站</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方向梯度直方图"><span class="nav-number">2.</span> <span class="nav-text">方向梯度直方图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#梯度计算"><span class="nav-number">2.1.</span> <span class="nav-text">梯度计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元划分"><span class="nav-number">2.2.</span> <span class="nav-text">单元划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区块选择"><span class="nav-number">2.3.</span> <span class="nav-text">区块选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区间归一化"><span class="nav-number">2.4.</span> <span class="nav-text">区间归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM分类器"><span class="nav-number">2.5.</span> <span class="nav-text">SVM分类器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程实践"><span class="nav-number">3.</span> <span class="nav-text">编程实践</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackpop</span>
+
+  
+</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'U1oIMCJI4zYogWXqIKva7Fsa-gzGzoHsz',
+        appKey: 'qJvgYGbG712q47zzMmQ5z9XF',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
