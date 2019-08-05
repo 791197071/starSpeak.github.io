@@ -74,6 +74,8 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="平凡而诗意" type="application/atom+xml">
+
 
 
 
@@ -82,21 +84,21 @@
 <meta name="description" content="前言 如果自称为计算机视觉工程师，没有听说过前文提到的尺度不变特征变换(SIFT)，可以理解，但是如果没有听说过方向梯度直方图(Histogram of oriented gradient，HOG)，就有一些令人诧异了。这项技术是有发过国家计算机技术和控制研究所(INRIA)的两位研究院Navneet Dalal和Bill Triggs在2005年CVPR上首先发表提出(那时的CVPR含金量还是很">
 <meta name="keywords" content="CV,AI,图像处理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【动手学计算机视觉】第八讲：传统目标检测之SIFT特征">
+<meta property="og:title" content="【动手学计算机视觉】第八讲：传统目标检测之HOG特征">
 <meta property="og:url" content="http://yoursite.com/2019/07/10/cv-hog/index.html">
-<meta property="og:site_name" content="LoveVini">
+<meta property="og:site_name" content="平凡而诗意">
 <meta property="og:description" content="前言 如果自称为计算机视觉工程师，没有听说过前文提到的尺度不变特征变换(SIFT)，可以理解，但是如果没有听说过方向梯度直方图(Histogram of oriented gradient，HOG)，就有一些令人诧异了。这项技术是有发过国家计算机技术和控制研究所(INRIA)的两位研究院Navneet Dalal和Bill Triggs在2005年CVPR上首先发表提出(那时的CVPR含金量还是很">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/03/erkAC8.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/03/erkmuj.png">
-<meta property="og:image" content="http://ptw5sbueu.bkt.clouddn.com/1562764073002.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/08/05/eR8K9x.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/03/erkiUP.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/03/erkF4f.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/03/erkZvQ.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/08/03/erkVgg.png">
-<meta property="og:updated_time" content="2019-08-03T08:55:30.023Z">
+<meta property="og:updated_time" content="2019-08-05T13:03:05.713Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【动手学计算机视觉】第八讲：传统目标检测之SIFT特征">
+<meta name="twitter:title" content="【动手学计算机视觉】第八讲：传统目标检测之HOG特征">
 <meta name="twitter:description" content="前言 如果自称为计算机视觉工程师，没有听说过前文提到的尺度不变特征变换(SIFT)，可以理解，但是如果没有听说过方向梯度直方图(Histogram of oriented gradient，HOG)，就有一些令人诧异了。这项技术是有发过国家计算机技术和控制研究所(INRIA)的两位研究院Navneet Dalal和Bill Triggs在2005年CVPR上首先发表提出(那时的CVPR含金量还是很">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/08/03/erkAC8.png">
 
@@ -134,7 +136,7 @@
 
 
 
-  <title>【动手学计算机视觉】第八讲：传统目标检测之SIFT特征 | LoveVini</title>
+  <title>【动手学计算机视觉】第八讲：传统目标检测之HOG特征 | 平凡而诗意</title>
   
 
 
@@ -164,12 +166,12 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">LoveVini</span>
+        <span class="site-title">平凡而诗意</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">Jackpop @ Vini</p>
+        <p class="site-subtitle">Jackpop</p>
       
   </div>
 
@@ -312,7 +314,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="LoveVini">
+      <meta itemprop="name" content="平凡而诗意">
     </span>
 
     
@@ -320,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第八讲：传统目标检测之SIFT特征</h1>
+          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第八讲：传统目标检测之HOG特征</h1>
         
 
         <div class="post-meta">
@@ -421,7 +423,7 @@
 <li>SVM分类器</li>
 </ul>
 <p>下面分别来详细阐述一下。</p>
-<p><img src="http://ptw5sbueu.bkt.clouddn.com/1562764073002.png" alt="1562764073002"></p>
+<p><img src="https://s2.ax1x.com/2019/08/05/eR8K9x.png" alt="eR8K9x.png"></p>
 <h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><p>由于后面要进行归一化处理，因此在HOG中不需要像其他算法那样需要进行预处理，因此，第一步就成了梯度计算。为什么选择梯度特征？因为在目标边缘处灰度变化较大，因此，在边缘处灰度的梯度就较为明显，所以，梯度能够更好的表征目标的特征。</p>
 <p>我们都知道在数学中计算梯度需要进行微分求导，但是数字图像是离散的，因此无法直接求导，可以利用一阶差分代替微分求离散图像的梯度大小和梯度方向，计算得到水平方向和垂直方向的梯度分别是，</p>
 <script type="math/tex; mode=display">G_{h}(x, y)=f(x+1, y)-f(x-1, y),\forall x, y</script><script type="math/tex; mode=display">G_{v}(x, y)=f(x, y+1)-f(x, y-1) ,\forall x, y</script><p>其中$f(x,y)$表示图像在$(x,y)$的像素值1。</p>
@@ -614,7 +616,42 @@
           </nav>
 
           
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Jackpopc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="498073774@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/sharetechlee" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-book"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://zhuanlan.zhihu.com/sharetechlee" target="_blank" title="专栏">
+                      
+                        <i class="fa fa-fw fa-edit"></i>专栏</a>
+                  </span>
+                
+            </div>
           
 
           
