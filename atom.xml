@@ -35,9 +35,9 @@
       <category term="Python" scheme="https://jackpopc.github.io/categories/Python/"/>
     
     
-      <category term="Python" scheme="https://jackpopc.github.io/tags/Python/"/>
-    
       <category term="教程" scheme="https://jackpopc.github.io/tags/%E6%95%99%E7%A8%8B/"/>
+    
+      <category term="Python" scheme="https://jackpopc.github.io/tags/Python/"/>
     
   </entry>
   
@@ -225,9 +225,9 @@
       <category term="学习资源" scheme="https://jackpopc.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/"/>
     
     
-      <category term="教程" scheme="https://jackpopc.github.io/tags/%E6%95%99%E7%A8%8B/"/>
-    
       <category term="优化算法" scheme="https://jackpopc.github.io/tags/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="教程" scheme="https://jackpopc.github.io/tags/%E6%95%99%E7%A8%8B/"/>
     
   </entry>
   
