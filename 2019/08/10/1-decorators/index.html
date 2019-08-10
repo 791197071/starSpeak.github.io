@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/jsmile.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/jsmile_32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/jsmile_16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/jsmile.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="编程,Python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="平凡而诗意" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="完整代码请查看github项目: advance-python 前言前段时间我发了一篇讲解Python调试工具PySnooper的文章，在那篇文章开始一部分我简单的介绍了一下装饰器，文章发出之后有几位同学说”终于了解装饰器的用法了”，可见有不少同学对装饰器感兴趣。但是那篇文章主要的目的是在介绍PySnooper，所以没有太深入的展开讲解装饰器，于是在这里就详细的介绍一些装饰器的使用。">
+<meta name="keywords" content="编程,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【进阶Python】第二讲：装饰器">
+<meta property="og:url" content="https://jackpopc.github.io/2019/08/10/1-decorators/index.html">
+<meta property="og:site_name" content="平凡而诗意">
+<meta property="og:description" content="完整代码请查看github项目: advance-python 前言前段时间我发了一篇讲解Python调试工具PySnooper的文章，在那篇文章开始一部分我简单的介绍了一下装饰器，文章发出之后有几位同学说”终于了解装饰器的用法了”，可见有不少同学对装饰器感兴趣。但是那篇文章主要的目的是在介绍PySnooper，所以没有太深入的展开讲解装饰器，于是在这里就详细的介绍一些装饰器的使用。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-10T06:14:21.174Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【进阶Python】第二讲：装饰器">
+<meta name="twitter:description" content="完整代码请查看github项目: advance-python 前言前段时间我发了一篇讲解Python调试工具PySnooper的文章，在那篇文章开始一部分我简单的介绍了一下装饰器，文章发出之后有几位同学说”终于了解装饰器的用法了”，可见有不少同学对装饰器感兴趣。但是那篇文章主要的目的是在介绍PySnooper，所以没有太深入的展开讲解装饰器，于是在这里就详细的介绍一些装饰器的使用。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackpopc.github.io/2019/08/10/1-decorators/">
+
+
+
+
+
+  <title>【进阶Python】第二讲：装饰器 | 平凡而诗意</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平凡而诗意</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Jackpop</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/08/10/1-decorators/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jackpop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/zhihu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平凡而诗意">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【进阶Python】第二讲：装饰器</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-10T11:21:45+08:00">
+                2019-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/10/1-decorators/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/10/1-decorators/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>完整代码</strong>请查看github项目: <a href="https://github.com/Jackpopc/advance-python/blob/master/code/1-decorators.ipynb" target="_blank" rel="noopener">advance-python</a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前段时间我发了一篇讲解Python调试工具PySnooper的文章，在那篇文章开始一部分我简单的介绍了一下装饰器，文章发出之后有几位同学说”终于了解装饰器的用法了”，可见有不少同学对装饰器感兴趣。但是那篇文章主要的目的是在介绍PySnooper，所以没有太深入的展开讲解装饰器，于是在这里就详细的介绍一些装饰器的使用。</p>
+<a id="more"></a>装饰器是Python中非常重要的一个概念，如果你会Python的基本语法，你可以写出能够跑通的代码，但是如果你想写出高效、简洁的代码，我认为离不开这些高级用法，当然也包括本文要讲解的装饰器，就如同前面提到的代码调试神器PySnooper一样，它就是主要通过装饰器调用的方式对Python代码进行调试。
+
+**什么是Python装饰器？**
+
+顾名思义，从字面意思就可以理解，它是用来"装饰"Python的工具，使得代码更具有Python**简洁**的风格。换句话说，它是一种**函数的函数**，因为装饰器传入的参数就是一个函数，然后通过实现各种功能来对这个函数的功能进行**增强**。
+
+**为什么用装饰器？**
+
+前面提到了，装饰器是通过某种方式来增强函数的功能。当然，我们可以通过很多方式来增强函数的功能，只是装饰器有一个无法替代的优势--简洁。
+
+你只需要在每个函数上方加一个**@**就可以对这个函数进行增强。
+
+**在哪里用装饰器？**
+
+装饰器最大的优势是用于**解决重复性的操作**，其主要使用的场景有如下几个：
+
+- 计算函数运行时间
+- 给函数打日志
+- 类型检查
+
+当然，如果遇到其他重复操作的场景也可以类比使用装饰器。
+
+# 简单示例
+
+前面都是文字描述，不管说的怎么天花烂坠，可能都无法体会到它的价值，下面就以一个简单的例子来看一下它的作用。
+
+如果你要对多个函数进行**统计运行时间**，不使用装饰器会是这样的，
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time, sleep</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_one</span><span class="params">()</span>:</span></span><br><span class="line">    start = time()</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    end = time()</span><br><span class="line">    cost_time = end - start</span><br><span class="line">    print(<span class="string">"func one run time &#123;&#125;"</span>.format(cost_time))</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_two</span><span class="params">()</span>:</span></span><br><span class="line">    start = time()</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    end = time()</span><br><span class="line">    cost_time = end - start</span><br><span class="line">    print(<span class="string">"func two run time &#123;&#125;"</span>.format(cost_time))</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_three</span><span class="params">()</span>:</span></span><br><span class="line">    start = time()</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    end = time()</span><br><span class="line">    cost_time = end - start</span><br><span class="line">    print(<span class="string">"func three run time &#123;&#125;"</span>.format(cost_time))</span><br></pre></td></tr></table></figure>
+<p>在每个函数里都需要获取开始时间<strong>start</strong>、结束时间<strong>end</strong>、计算耗费时间<strong>cost_time</strong>、加上一个输出语句。</p>
+<p>使用装饰器的方法是这样的，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_time</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        start = time()</span><br><span class="line">        func()                  <span class="comment"># 函数在这里运行</span></span><br><span class="line">        end = time()</span><br><span class="line">        cost_time = end - start</span><br><span class="line">        print(<span class="string">"func three run time &#123;&#125;"</span>.format(cost_time))</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@run_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_one</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@run_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_two</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@run_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_three</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>通过编写一个统计时间的装饰器<strong>run_time</strong>，函数的作为装饰器的参数，然后返回一个统计时间的函数wrapper，这就是装饰器的写法，用专业属于来说这叫<strong>闭包</strong>，简单来说就是函数内嵌套函数。然后再每个函数上面加上<strong>@run_time</strong>来调用这个装饰器对不同的函数进行统计时间。</p>
+<p>可见，统计时间这4行代码是重复的，一个函数需要4行，如果100个函数就需要400行，而使用装饰器，只需要几行代码实现一个装饰器，然后每个函数前面加一句命令即可，如果是100个函数，能少300行左右的代码量。</p>
+<h2 id="带参数的装饰器"><a href="#带参数的装饰器" class="headerlink" title="带参数的装饰器"></a>带参数的装饰器</h2><p>通过前面简单的例子应该已经明白装饰器的价值和它的简单用法：<strong>通过闭包来实现装饰器，函数作为外层函数的传入参数，然后在内层函数中运行、附加功能，随后把内层函数作为结果返回。</strong></p>
+<p>除了上述简单的用法还有一些更高级的用法，比如用装饰器进行<strong>类型检查</strong>、添加<strong>带参数</strong>的的装饰器等。它们的用法大同小异，关于高级用法，这里以<strong>带参数的装饰器</strong>为例进行介绍。</p>
+<p>不要把问题想的太复杂，带参数的装饰器其实就是在上述基本的装饰器的基础上在外面套一层接收参数的函数，下面通过一个例子说明一下。</p>
+<p>以上述例子为基础，前面的<strong>简单示例</strong>输出的信息是，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func three run time 1.0003271102905273</span><br><span class="line">func three run time 1.0006263256072998</span><br><span class="line">func three run time 1.000312328338623</span><br></pre></td></tr></table></figure>
+<p>现在我认为这样的信息太<strong>单薄</strong>，需要它携带更多的信息，例如函数名称、日志等级等，这时候可以把函数名称和日志等级作为装饰器的参数，下面来时实现以下。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger</span><span class="params">(msg=None)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run_time</span><span class="params">(func)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            start = time()</span><br><span class="line">            func()                  <span class="comment"># 函数在这里运行</span></span><br><span class="line">            end = time()</span><br><span class="line">            cost_time = end - start</span><br><span class="line">            print(<span class="string">"[&#123;&#125;] func three run time &#123;&#125;"</span>.format(msg, cost_time))</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> run_time</span><br><span class="line"></span><br><span class="line"><span class="meta">@logger(msg="One")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_one</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@logger(msg="Two")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_two</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line"><span class="meta">@logger(msg="Three")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_three</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">fun_one()</span><br><span class="line">fun_two()</span><br><span class="line">fun_three()</span><br></pre></td></tr></table></figure>
+<p>可以看出，我在<strong>示例</strong>基本用法里编写的装饰器外层又嵌套了一层函数用来接收参数<strong>msg</strong>，这样的话在每个函数(func_one、func_two、func_three)前面调用时可以给装饰器传入参数，这样的输出结果是，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[One] func three run time <span class="number">1.0013229846954346</span></span><br><span class="line">[Two] func three run time <span class="number">1.000720500946045</span></span><br><span class="line">[Three] func three run time <span class="number">1.0001459121704102</span></span><br></pre></td></tr></table></figure>
+<h1 id="自定义属性的装饰器"><a href="#自定义属性的装饰器" class="headerlink" title="自定义属性的装饰器"></a>自定义属性的装饰器</h1><p>上述介绍的几种用法中其实有一个问题，就是装饰器<strong>不够灵活</strong>，我们预先定义了装饰器<strong>run_time</strong>，它就会按照我们定义的流程去工作，只具备这固定的一种功能，当然，我们前面介绍的通过<strong>带参数的装饰器</strong>让它具备了一定的灵活性，但是依然不够灵活。其实，我们还可以对装饰器添加一些属性，就如同给一个类定义实现不同功能的方法那样。</p>
+<p>以输出<strong>日志</strong>为例，初学Python的同学都习惯用<strong>print</strong>打印输出信息，其实这不是一个好习惯，当开发商业工程时，你很用意把一些信息暴露给用户。在开发过程中，我更加鼓励使用日志进行输出，通过定义<strong>WARNING</strong>、<strong>DEBUG</strong>、<strong>INFO</strong>等不同等级来控制信息的输出，比如<strong>INFO</strong>是可以给用户看到的，让用户直到当前程序跑到哪一个阶段了。<strong>DEBUG</strong>是用于开发人员调试和定位问题时使用。<strong>WARING</strong>是用于告警和提示。</p>
+<p>那么问题来了，如果我们预先定义一个打印日志的装饰器，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger_info</span><span class="params">(func)</span>:</span></span><br><span class="line">    logmsg = func.__name__</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span></span><br><span class="line">        func() </span><br><span class="line">        log.log(logging.INFO, <span class="string">"&#123;&#125; if over."</span>.format(logmsg))</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p><strong>logging.INFO</strong>是打印日志的等级，如果我们仅仅写一个基本的日志装饰器<strong>logger_info</strong>，那么它的灵活度太差了，因为如果我们要输出<strong>DEBUG</strong>、<strong>WARING</strong>等级的日志，还需要重新写一个装饰器。</p>
+<p>解决这个问题，有两个解决方法：</p>
+<ul>
+<li>利用前面所讲的带参数装饰器，把<strong>日志等级</strong>传入装饰器</li>
+<li>利用自定义属性来修改<strong>日志等级</strong></li>
+</ul>
+<p>由于第一种已经以统计函数运行时间的方式进行讲解，这里主要讲解第二种方法。</p>
+<p>先看一下代码，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper_property</span><span class="params">(obj, func=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> func <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> partial(attach_wrapper, obj)</span><br><span class="line">    setattr(obj, func.__name__, func)</span><br><span class="line">    <span class="keyword">return</span> func</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger_info</span><span class="params">(level, name=None, message=None)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorate</span><span class="params">(func)</span>:</span></span><br><span class="line">        </span><br><span class="line">        logmsg = message <span class="keyword">if</span> message <span class="keyword">else</span> func.__name__</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            log.log(level, logmsg)</span><br><span class="line">            <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line"></span><br><span class="line"><span class="meta">        @wrapper_property(wrapper)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">set_level</span><span class="params">(newlevel)</span>:</span></span><br><span class="line">            <span class="keyword">nonlocal</span> level</span><br><span class="line">            level = newlevel</span><br><span class="line"></span><br><span class="line"><span class="meta">        @wrapper_property(wrapper)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">set_message</span><span class="params">(newmsg)</span>:</span></span><br><span class="line">            <span class="keyword">nonlocal</span> logmsg</span><br><span class="line">            logmsg = newmsg</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> decorate</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@logger_info(logging.WARNING)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br></pre></td></tr></table></figure>
+<p>这里面最重要的是<strong>wrapper_property</strong>这个函数，它的功能是把一个函数<strong>func</strong>编程一个对象<strong>obj</strong>的属性，然后通过调用<strong>wrapper_property</strong>，给装饰器添加了两个属性<strong>set_message</strong>和<strong>set_level</strong>，分别用于改变输出日志的内容和改变输出日志的等级。</p>
+<p>看一下输出结果，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">main(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="comment"># WARNING:Test:main</span></span><br><span class="line"><span class="comment"># 6</span></span><br></pre></td></tr></table></figure>
+<p>来改改变一下输出日志等级，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">main.set_level(logging.ERROR)</span><br><span class="line">main(<span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="comment"># ERROR:Test:main</span></span><br><span class="line"><span class="comment"># 10</span></span><br></pre></td></tr></table></figure>
+<p>输出日志等级改成了<strong>ERROR</strong>。</p>
+<h1 id="保留元信息的装饰器"><a href="#保留元信息的装饰器" class="headerlink" title="保留元信息的装饰器"></a>保留元信息的装饰器</h1><p>很多教程中都会介绍装饰器，但是大多数都是千篇一律的围绕基本用法在展开，少部分会讲一下带参数的装饰器，但是有一个细节很少有教程提及，那就是<strong>保留元信息的装饰器</strong>。</p>
+<p><strong>什么是函数的元信息？</strong></p>
+<p>就是函数携带的一些基本信息，例如函数名、函数文档等，我们可以通过<strong>func.__name__</strong>获取函数名、可以通过<strong>func.__doc__</strong>获取函数的文档信息，用户也可以通过<strong>注解</strong>等方式为函数添加元信息。</p>
+<p>例如下面代码，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_time</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        start = time()</span><br><span class="line">        func()                  <span class="comment"># 函数在这里运行</span></span><br><span class="line">        end = time()</span><br><span class="line">        cost_time = end - start</span><br><span class="line">        print(<span class="string">"func three run time &#123;&#125;"</span>.format(cost_time))</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@run_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_one</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    func one doc.</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">fun_one()</span><br><span class="line"></span><br><span class="line">print(fun_one.__name__)</span><br><span class="line">print(fun_one.__doc__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="comment"># wrapper</span></span><br><span class="line"><span class="comment"># None</span></span><br></pre></td></tr></table></figure>
+<p>可以看出，通过使用装饰器，函数<strong>fun_one</strong>的元信息都丢失了，那怎么样才能保留装饰器的元信息呢？</p>
+<p>可以通过使用Python自带模块<strong>functools</strong>中的<strong>wraps</strong>来保留函数的元信息，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_time</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(func)                                # &lt;- 这里加 wraps(func) 即可</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        start = time()</span><br><span class="line">        func()                  <span class="comment"># 函数在这里运行</span></span><br><span class="line">        end = time()</span><br><span class="line">        cost_time = end - start</span><br><span class="line">        print(<span class="string">"func three run time &#123;&#125;"</span>.format(cost_time))</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line"><span class="meta">@run_time</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_one</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    func one doc.</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    </span><br><span class="line">fun_one()</span><br><span class="line"></span><br><span class="line">print(fun_one.__name__)</span><br><span class="line">print(fun_one.__doc__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="comment"># fun_one   </span></span><br><span class="line"><span class="comment"># func one doc.</span></span><br></pre></td></tr></table></figure>
+<p>只需要在代码中加入<strong>箭头</strong>所指的一行即可保留函数的元信息。</p>
+<h1 id="文档获取"><a href="#文档获取" class="headerlink" title="文档获取"></a>文档获取</h1><p>本讲的Markdown格式文档我进行共享了，需要的可以关注公众号回复回复关键字”<font color="red">python</font>“获取。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/04/python-one/" rel="next" title="【进阶Python】第一讲：开篇">
+                <i class="fa fa-chevron-left"></i> 【进阶Python】第一讲：开篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/zhihu.jpg" alt="Jackpop">
+            
+              <p class="site-author-name" itemprop="name">Jackpop</p>
+              <p class="site-description motion-element" itemprop="description">原创技术分享网站</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Jackpopc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:498073774@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/sharetechlee" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-book"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://zhuanlan.zhihu.com/sharetechlee" target="_blank" title="专栏">
+                      
+                        <i class="fa fa-fw fa-edit"></i>专栏</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#带参数的装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">带参数的装饰器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义属性的装饰器"><span class="nav-number">2.</span> <span class="nav-text">自定义属性的装饰器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#保留元信息的装饰器"><span class="nav-number">3.</span> <span class="nav-text">保留元信息的装饰器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文档获取"><span class="nav-number">4.</span> <span class="nav-text">文档获取</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackpop</span>
+
+  
+</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'U1oIMCJI4zYogWXqIKva7Fsa-gzGzoHsz',
+        appKey: 'qJvgYGbG712q47zzMmQ5z9XF',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
