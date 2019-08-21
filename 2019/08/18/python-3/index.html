@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="平凡而诗意">
 <meta property="og:description" content="完整代码请查看github项目: advance-python 前言Python是一种面向对象的语言，而特殊方法又是Python类中一个重点，因此学习Python类的特殊方法能够有助于设计出更加简洁、规范的代码架构。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-18T06:43:53.269Z">
+<meta property="og:updated_time" content="2019-08-21T13:56:49.382Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【进阶Python】第三讲：类的特殊方法(上篇)">
 <meta name="twitter:description" content="完整代码请查看github项目: advance-python 前言Python是一种面向对象的语言，而特殊方法又是Python类中一个重点，因此学习Python类的特殊方法能够有助于设计出更加简洁、规范的代码架构。">
@@ -404,14 +404,14 @@
         <p><strong>完整代码</strong>请查看github项目: <a href="https://github.com/Jackpopc/advance-python/blob/master/2-magic-method_1.ipynb" target="_blank" rel="noopener">advance-python</a></p>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Python是一种面向对象的语言，而特殊方法又是Python类中一个重点，因此学习Python类的特殊方法能够有助于设计出更加简洁、规范的代码架构。</p>
 <a id="more"></a>Python类的特殊方法又称为<b>魔术方法</b>，它是以<b>双下划线包裹</b>一个词的形式出现，例如__init__。特殊方法不仅可以可以实现构造和初始化，而且可以实现比较、算数运算，此外，它还可以让类像一个字典、迭代器一样使用，可以设计出一些高级的代码，例如<b>单例模式</b>。
-
-**面向对象**这个词大家应该都不陌生，在C++、Java等面向对象的语言中也经常出现，要想理解面向对象，首先要理解4个概念之间的关系：类、对象、实例、方法。
-
-**类**：类是一种由不同属性、不同数据组成的一个集合。用直白的话来描述，它是由多种对象组成的一个组合，例如人是一个类，那么它包含男人、女人、儿童等对象。例如三角形是一个类，那么它包含等腰三角形、直角三角形、等边三角形等对象。
-
-**对象**：前面介绍类中已经提到了对象这个词汇，一句话总结：对象具有**具体**状态和行为。例如直角三角形，它具有特定的状态和属性。
-
-**实例**：对象就是类的一个实例。也许这有点绕，的确对象与实例之间的概念非常模糊。你可以理解为对象是一个概念性的存在，而实例是采取行为、动作的载体，以一段代码举例，
+<br>
+<b>面向对象</b>这个词大家应该都不陌生，在C++、Java等面向对象的语言中也经常出现，要想理解面向对象，首先要理解4个概念之间的关系：类、对象、实例、方法。
+<br>
+<b>类</b>：类是一种由不同属性、不同数据组成的一个集合。用直白的话来描述，它是由多种对象组成的一个组合，例如人是一个类，那么它包含男人、女人、儿童等对象。例如三角形是一个类，那么它包含等腰三角形、直角三角形、等边三角形等对象。
+<br>
+<b>对象</b>：前面介绍类中已经提到了对象这个词汇，一句话总结：对象具有<b>具体</b>状态和行为。例如直角三角形，它具有特定的状态和属性。
+<br>
+<b>实例</b>：对象就是类的一个实例。也许这有点绕，的确对象与实例之间的概念非常模糊。你可以理解为对象是一个概念性的存在，而实例是采取行为、动作的载体，以一段代码举例，
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">animal = Animal()</span><br></pre></td></tr></table></figure>
 <p>其中<strong>Animal</strong>是一个类，而<strong>animal</strong>是一个实例，它可以访问类内的方法，实施“动作”和“行为”。</p>
@@ -533,6 +533,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/08/21/activation/" rel="prev" title="【动手学计算机视觉】第十二讲：激活函数">
+                【动手学计算机视觉】第十二讲：激活函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -651,7 +655,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jackpopc.github.io/2019/08/21/activation/</loc>
+    <lastmod>2019-08-21</lastmod>
+  </url>  <url>
     <loc>https://jackpopc.github.io/2019/08/18/python-3/</loc>
-    <lastmod>2019-08-18</lastmod>
+    <lastmod>2019-08-21</lastmod>
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/08/10/1-decorators/</loc>
     <lastmod>2019-08-17</lastmod>
