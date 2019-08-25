@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jackpopc.github.io/"/>
-  <updated>2019-08-21T14:08:43.554Z</updated>
+  <updated>2019-08-25T12:04:10.762Z</updated>
   <id>https://jackpopc.github.io/</id>
   
   <author>
@@ -15,6 +15,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【动手学计算机视觉】第十三讲：批量归一化</title>
+    <link href="https://jackpopc.github.io/2019/08/24/cnn-bn/"/>
+    <id>https://jackpopc.github.io/2019/08/24/cnn-bn/</id>
+    <published>2019-08-24T12:37:58.000Z</published>
+    <updated>2019-08-25T12:04:10.762Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>当我们用一些数据做一个预测系统时，我们首先需要对数据进行预处理，例如标准化、正则化、滑动窗口等，比如常用的Z-score、最大最小标准化，它能将数据转化为同一个量级，这样的话能够保证数据的稳定性、可比性。</p><a id="more"></a>这些标准化方法在浅层神经网络中已经足够使用，效果已经很不错。但是在深度学习中，网络越来越深，使用这些标准化方法就难以解决相应的问题。<b>为什么需要批量归一化？</b>在训练过程中，每层输入的分布不断的变化，这使得下一层需要不断的去适应新的数据分布，在深度神经网络中，这让训练变得非常复杂而且缓慢。对于这样，往往需要设置更小的学习率、更严格的参数初始化。通过使用批量归一化(Batch Normalization, BN)，在模型的训练过程中利用小批量的均值和方差调整神经网络中间的输出，从而使得各层之间的输出都符合均值、方差相同高斯分布，这样的话会使得数据更加稳定，无论隐藏层的参数如何变化，可以确定的是前一层网络输出数据的均值、方差是已知的、固定的，这样就解决了数据分布不断改变带来的训练缓慢、小学习率等问题。<b>在哪里使用批量归一化？</b>批量归一化是卷积神经网络中一个可选单元，如果使用BN能够保证训练速度更快，同时还可以具备一些正则化功能。在卷积神经网络中卷积层和全连接层都可以使用批量归一化。对于卷积层，它的位置是在卷积计算之后、激活函数之前。对于全连接层，它是在仿射变换之后，激活函数之前，如下所示：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conv_1 = tf.nn.conv2d()</span><br><span class="line">norm_1 = tf.nn.batch_normalization(conv_1)</span><br><span class="line">relu_1 = tf.nn.relu(norm_1)</span><br><span class="line">pool_1 = tf.nn.max_pool(relu_1)</span><br></pre></td></tr></table></figure><p>以卷积层为例，网络架构的流程为：</p><ul><li>卷积运算</li><li>批量归一化</li><li>激活函数</li><li>池化</li></ul><h1 id="批量归一化"><a href="#批量归一化" class="headerlink" title="批量归一化"></a>批量归一化</h1><p><img src="https://s2.ax1x.com/2019/08/25/m2YzZR.png" alt="m2YzZR.png"></p><p>在讲批量归一化之前，首先讲一下数据标准化处理算法Z-score。</p><p>Z-score标准化也成为标准差标准化，它是将数据处理成均值为0，方差为1的标准正态分布，它的转化公式为，</p><script type="math/tex; mode=display">x^{*}=\frac{x-\overline{x}}{\sigma}</script><p>其中$x$是处理前的数据，$x^{*}$是处理后的数据，$\overline{x}$是原始数据的均值，$\sigma$是原始的标准差。这样的话就可以把数据进行标准化。</p><p>其实批量归一化在思想上和Z-score是有很多共通之处的。</p><p>在深度学习训练过程中会选取一个小批量，然后计算小批量数据的均值和方差，</p><script type="math/tex; mode=display">\boldsymbol{\mu}_{\mathcal{B}} \leftarrow \frac{1}{m} \sum_{i=1}^{m} \boldsymbol{x}^{(i)}</script><script type="math/tex; mode=display">\sigma_{\mathcal{B}}^{2} \leftarrow \frac{1}{m} \sum_{i=1}^{m}\left(\boldsymbol{x}^{(i)}-\boldsymbol{\mu}_{\mathcal{B}}\right)^{2}</script><p>然后对数据进行归一化处理，</p><script type="math/tex; mode=display">\hat{\boldsymbol{x}}^{(i)} \leftarrow \frac{\boldsymbol{x}^{(i)}-\boldsymbol{\mu}_{\mathcal{B}}}{\sqrt{\boldsymbol{\sigma}_{\mathcal{B}}^{2}+\epsilon}}</script><script type="math/tex; mode=display">\boldsymbol{y}^{(i)} \leftarrow \boldsymbol{\gamma} \odot \hat{\boldsymbol{x}}^{(i)}+\boldsymbol{\beta}</script><p>经过这样处理，就可以使得数据符合均值为$\boldsymbol{\mu}$、方差为$\sigma_{\mathcal{B}}^{2}$的高斯分布。</p><p>下面看一下原文中批量归一化的算法步骤：</p><p><img src="https://s2.ax1x.com/2019/08/25/m2tpIx.png" alt="m2tpIx.png"></p><ul><li>获取每次训练过程中的样本</li><li>就算小批量样本的均值、方差</li><li>归一化</li><li>拉伸和偏移</li></ul><p>这里要着重介绍一下最后一步尺度变换(scale and shift)，前面3步已经对数据进行了归一化，为什么还需要拉伸和偏移呢？</p><p>因为经过前三步的计算使得数据被严格的限制为均值为0、方差为1的正态分布之下，这样虽然一定程度上解决了训练困难的问题，但是这样的严格限制网络的表达能力，通过加入$\gamma$和$\beta$这两个参数可以使得数据分布的自由度更高，网络表达能力更强。另外，这两个参数和其他参数相同，通过不断的学习得出。</p><h1 id="tensorflow中BN的使用"><a href="#tensorflow中BN的使用" class="headerlink" title="tensorflow中BN的使用"></a>tensorflow中BN的使用</h1><p>在tensorflow中可以直接调用批量归一化对数据进行处理，它的函数为，</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf.nn.batch_normalization(x, mean, variance, offset, scale, variance_epsilon, name=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure><p>来解释一下函数中参数的含义：</p><ul><li>x：输入的数据，可以是卷积层的输出，也可以是全连接层的输出</li><li>mean：输出数据的均值</li><li>variance：输出数据的方差</li><li>offset：偏移，就是前面提到的beta</li><li>scale：缩放，前面提到的gamma</li><li>variance_epsilon：一个极小的值，避免分母为0</li></ul><hr><p>更多内容，请关注公众号【平凡而诗意】~</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;当我们用一些数据做一个预测系统时，我们首先需要对数据进行预处理，例如标准化、正则化、滑动窗口等，比如常用的Z-score、最大最小标准化，它能将数据转化为同一个量级，这样的话能够保证数据的稳定性、可比性。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="计算机视觉" scheme="https://jackpopc.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"/>
+    
+    
+      <category term="CV" scheme="https://jackpopc.github.io/tags/CV/"/>
+    
+      <category term="AI" scheme="https://jackpopc.github.io/tags/AI/"/>
+    
+      <category term="图像处理" scheme="https://jackpopc.github.io/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实用资源 | 推荐6个高赞有趣的Github项目</title>
+    <link href="https://jackpopc.github.io/2019/08/23/github-project/"/>
+    <id>https://jackpopc.github.io/2019/08/23/github-project/</id>
+    <published>2019-08-23T13:36:09.000Z</published>
+    <updated>2019-08-25T12:05:45.760Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Github，应该很多同学都听过这个鼎鼎大名的开源项目托管平台。</p><p>刚开始接触github，我和大多数同学一样，仅仅把它当作一个开源项目搜索工具。比如当看到一篇文章，会去搜索一下看看作者有没有开源源代码，仅此而已，因此一直以来对github的依赖都不太强。</p><p><a id="more"></a>最近几个月以来，我每天会特意抽出一段时间去github看一下，看看近期有没有什么热门有趣的项目，慢慢的，在github上发现了很多不错的项目，久而久之就对其产生了依赖。现在每天都会去看一下，在这个过程总的确从这些优质的开源项目上学到了很多，收获了很多，下面我就推荐5个我个人觉得不错的开源项目。</p><h1 id="free-programming-books-zh-CN"><a href="#free-programming-books-zh-CN" class="headerlink" title="free-programming-books-zh_CN"></a>free-programming-books-zh_CN</h1><p>项目地址：<a href="https://github.com/justjavac/free-programming-books-zh_CN" target="_blank" rel="noopener">https://github.com/justjavac/free-programming-books-zh_CN</a></p><p><strong>star：54k+</strong></p><p><img src="https://s2.ax1x.com/2019/08/25/m2YGUx.jpg" alt="m2YGUx.jpg"></p><p>在从事IT、互联网相关的开发过程中，我们会用到各种各样的知识，linux、数据库、编程语言、虚拟化等。这样就需要我们不断的去学习，很多时间和金钱比较充足的可以选择一些课程或者买一些书籍，但是大多数人是不会把所用到知识相关的书籍都购买一遍。这样就面临一个问题：<strong>我们该去哪获取相应的学习资源？</strong></p><p>free-programming-books-zh_CN收集了计算机领域很多知名的书籍，它包括但不限于以下种类：</p><ul><li>各种编程语言</li><li>版本控制</li><li>数据库</li><li>大数据</li><li>操作系统</li><li>编译原理</li><li>web</li><li>…</li></ul><p>有了这个项目就再也不用担心学习资源的问题了，它手机了计算机各个分支相关的经典书籍和优质学习资源，避免了在茫茫的网络中去搜索的麻烦。</p><h1 id="sherlock"><a href="#sherlock" class="headerlink" title="sherlock"></a>sherlock</h1><p>项目地址：<a href="https://github.com/sherlock-project/sherlock" target="_blank" rel="noopener">https://github.com/sherlock-project/sherlock</a></p><p><strong>star：6.8k+</strong></p><p>在到处充斥着互联网、社交的时代，<strong>用户名</strong>是每个人都不陌生的词汇，当我们注册一个社交网站，例如知乎、微博等，需要起一个名称。很多人都喜欢独一无二、与众不同，但是在这么多用户名字，一不小心就和别人重复了，sherlock这个项目就可以解决这个问题，它能够在不同的社交网站上搜索是否存在指定的用户名，这样的话你就可以看到自己起的用户名有没有重复？有哪些重复。</p><p><img src="https://s2.ax1x.com/2019/08/25/m2YtPK.gif" alt="m2YtPK.gif"></p><h1 id="weekly"><a href="#weekly" class="headerlink" title="weekly"></a>weekly</h1><p>项目地址：<a href="http://link.zhihu.com/?target=https%3A//github.com/ruanyf/weekly" target="_blank" rel="noopener">http://link.zhihu.com/?target=https%3A//github.com/ruanyf/weekly</a><br><strong>star：8.1k+</strong></p><p>这是一个科技爱好者周刊。</p><p>现在是一个信息爆炸的社会，各种新媒体、自媒体，每天各个APP有看不完、层出不穷的新闻，但是，我个人认为大多数自媒体的水平有待商榷，在他们看来，一个吸引人的标题比实际的内容还要重要。所以我很苦恼，每天喜欢看看新闻，但是花费几十分钟后发现都是一些乱七八糟没有价值的新闻。</p><p>直到几个月前我在github看到weekly这个项目，它每周五定期更新一次，慢慢的，周五在我心里有了一些期待，期待着这个项目更新周刊。</p><p>为什么它如此吸引我？</p><p><img src="https://s2.ax1x.com/2019/08/25/m2Y0rd.png" alt="m2Y0rd.png"></p><p>它与众不同，而且都是经过筛选的一些新奇有趣的新闻，我觉得称其为新闻，但它不仅限于新闻，它包含如下内容：</p><ul><li>新奇的资讯</li><li>优质中文、英文文章</li><li>高效工具</li><li>资源</li><li>精选图片</li><li>文摘</li><li>言论</li></ul><h2 id="UnblockNeteaseMusic"><a href="#UnblockNeteaseMusic" class="headerlink" title="UnblockNeteaseMusic"></a>UnblockNeteaseMusic</h2><p>项目地址：<a href="http://link.zhihu.com/?target=https%3A//github.com/nondanee/UnblockNeteaseMusic" target="_blank" rel="noopener">http://link.zhihu.com/?target=https%3A//github.com/nondanee/UnblockNeteaseMusic</a></p><p><strong>star：4.4k+</strong></p><p><img src="https://s2.ax1x.com/2019/08/25/m2Ysat.png" alt="m2Ysat.png"></p><p>从这个项目的名称即可看出它的功能，<strong>unblock netease music</strong>。</p><p>网易云音乐是很多人喜欢的一款音乐播放器，我也不例外，但是发现它上面的音乐越来越少，当你想听一首歌时发现，它竟然是灰色的，也就是不能听。</p><p>有了这个项目，它可以从QQ / 虾米 / 百度 / 酷狗 / 酷我 / 咕咪 / JOOX等音乐源寻找资源进行替换，也就是说，有了UnblockNeteaseMusic+网易云音乐，你可以听来自不同音乐源的歌曲。</p><h1 id="ChineseBQB"><a href="#ChineseBQB" class="headerlink" title="ChineseBQB"></a>ChineseBQB</h1><p>项目地址：<a href="https://github.com/zhaoolee/ChineseBQB" target="_blank" rel="noopener">https://github.com/zhaoolee/ChineseBQB</a></p><p><strong>star：5k+</strong></p><p>这个一个表情包博物馆，目前共收录了3319个表情包，包含各种各样热门、搞笑的表情包，有了这个github项目，再也不用为”斗图”担心了。</p><p>先来几个看一下，</p><p><img src="https://s2.ax1x.com/2019/08/25/m2Yoaq.gif" alt="m2Yoaq.gif"><br><img src="https://s2.ax1x.com/2019/08/25/m2Y4qs.gif" alt="m2Y4qs.gif"><br><img src="https://s2.ax1x.com/2019/08/25/m2YIZn.gif" alt="m2YIZn.gif"></p><h1 id="LeetCodeAnimation"><a href="#LeetCodeAnimation" class="headerlink" title="LeetCodeAnimation"></a>LeetCodeAnimation</h1><p>项目地址：<a href="https://github.com/MisterBooo/LeetCodeAnimation" target="_blank" rel="noopener">https://github.com/MisterBooo/LeetCodeAnimation</a></p><p><strong>star：38k+</strong></p><p>娱乐之后不得不说一些沉重的话题，已经是8月底了，大批量的校招马上就要开始了 ~</p><p>不知道关注我的同学里有多少位要参加今年的校园招聘，如果有，首先预祝各位找到理想的工作！</p><p>其次，就是推荐一份不错的学习资源。</p><p>LeetCode，这个大名鼎鼎的平台应该很多参加过校招或者即将参加校招的同学应该都有所耳闻，是很多参加互联网、IT方向校招同学的必经之路，甚至周围有同事说”没有刷过LeetCode的校招，是不完整的！”。</p><p>github上有关leetcode的项目有很多，但是99%都是如出一辙，把leetcode上的题目做一下或者寻找一些答案，然后上传到github，只有静态的代码和简短的文字描述，这对于很多初学者是很难以理解的。</p><p>LeetCodeAnimation这个项目却与众不同，它通过动画的形式来阐述不同算法的解题思路，更加生动形象，下面就看一个例子—无重复字符的最长子串，</p><p><img src="https://s2.ax1x.com/2019/08/25/m2YvL9.gif" alt="m2YvL9.gif"></p><hr><p>更多内容，请关注公众号【平凡而诗意】~</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;Github，应该很多同学都听过这个鼎鼎大名的开源项目托管平台。&lt;/p&gt;
+&lt;p&gt;刚开始接触github，我和大多数同学一样，仅仅把它当作一个开源项目搜索工具。比如当看到一篇文章，会去搜索一下看看作者有没有开源源代码，仅此而已，因此一直以来对github的依赖都不太强。&lt;/p&gt;
+&lt;p&gt;
+    
+    </summary>
+    
+      <category term="学习资源" scheme="https://jackpopc.github.io/categories/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90/"/>
+    
+    
+      <category term="机器学习" scheme="https://jackpopc.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="Github" scheme="https://jackpopc.github.io/tags/Github/"/>
+    
+      <category term="资源" scheme="https://jackpopc.github.io/tags/%E8%B5%84%E6%BA%90/"/>
+    
+  </entry>
   
   <entry>
     <title>【动手学计算机视觉】第十二讲：激活函数</title>
@@ -496,33 +550,6 @@
       <category term="Docker" scheme="https://jackpopc.github.io/tags/Docker/"/>
     
       <category term="容器" scheme="https://jackpopc.github.io/tags/%E5%AE%B9%E5%99%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CVPR2019最佳论文解读</title>
-    <link href="https://jackpopc.github.io/2019/06/28/CVPR2019%E6%9C%80%E4%BD%B3%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/"/>
-    <id>https://jackpopc.github.io/2019/06/28/CVPR2019最佳论文解读/</id>
-    <published>2019-06-28T13:08:26.000Z</published>
-    <updated>2019-06-29T17:22:19.665Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><img src="https://i.loli.net/2019/06/29/5d177346c5c3386434.png" alt="1"></p><p>CVPR，全称IEEE Conference on Computer Vision and Pattern Recognition，与ECCV(Europeon Conference on Computer Vision)，ICCV( IEEE International Conference on Computer Vision)并称为计算机视觉领域三大会议，均为计算机视觉领域的顶级会议。<a id="more"></a>由于近几年计算机视觉的异常火热，CVPR也就成为很多计算机视觉领域研究者趋之若鹜的盛宴，它的受关注程度更是今非昔比。CVPR2019于2019年6月16日在美国召开，此次会议共收到来自全球14104位研究者提交的5160篇文章，同比2018年增长56%，一举打破记录，受欢迎程度可见一斑。</p><p>CVPR2019最终共接收1294篇文章，尽管CVPR被计算机视觉领域视为顶尖，我个人认为，其中不乏质量平平的水文，真正令人印象深刻，几年之后依然被人所熟知且实用，并在算法思想方面取得跨越的却寥寥无几。闲话说完，回到本文的重点<strong>CVPR2019最佳论文</strong>，该荣誉最终由卡耐基梅隆大学、多伦多大学、伦敦大学学院的多位研究者斩获，论文名称为<a href="http://openaccess.thecvf.com/content_CVPR_2019/papers/Xin_A_Theory_of_Fermat_Paths_for_Non-Line-Of-Sight_Shape_Reconstruction_CVPR_2019_paper.pdf" target="_blank" rel="noopener">A Theory of Fermat Paths for Non-Line-of-Sight Shape Reconstruction</a>，接下来，我详细解读一下这篇文章。</p><h2 id="数学符号含义"><a href="#数学符号含义" class="headerlink" title="数学符号含义"></a>数学符号含义</h2><p>$s$ 光源上的点<br>$v$  可见场景内的点<br>$x$  不可见场景内的点<br>$d$  检测器上的点<br>$\tau_{\mathcal{F}}$  费马路径长度<br>$I(\tau ; \boldsymbol{v})$  瞬态</p><h2 id="概念解释"><a href="#概念解释" class="headerlink" title="概念解释"></a>概念解释</h2><p><strong>瞬态(transients)</strong>:一种测量值，用于重建隐藏形状信息的大多数方法采用快速调制光源已经传感器来记录光子强度和旅行时间的测量值。<br><strong>费马路径(Fermat paths)</strong>:首先返回的光子路径的超集合。<br><strong>费马路径长度(Fermat pathlengths)</strong>:顾名思义，就是通过光速等计算出来的离散路径长度。</p><h2 id="算法详解"><a href="#算法详解" class="headerlink" title="算法详解"></a>算法详解</h2><p><img src="https://i.loli.net/2019/06/29/5d17734711c1853486.png" alt="3"></p><p>目前大多数计算机视觉领域的研究都是围绕着视觉可见范围内的研究，但是理解视野范围之外的场景在很多领域却有着非常重要的应用，因此，这使得这项研究更加具有价值。<br>被动方式通过分析隐藏场景所投射的阴影来粗略估计物体的运动和结构，或者利用光的相干性来定位隐藏对象。这些方法没有足够的信息来精确计算位置隐藏场景的三维形状。主动方式提取隐藏场景的附加信息时可能的。大多数重建隐藏形状信息的方法都是用调制光源和时间分辨传感器、超快光电二极管等，这些传感器不仅记录入射光子的强度，还在时间分辨率范围内记录它们到达的时间，这种测量称为瞬态。</p><p>大多数主动技术都是通过测量一个已知可见场景的不同位置的瞬态，然后根据已经获取的辐射成像逆向来进行三维重建，例如椭圆反投影、正则化线性系统、光锥变换等。这些方法主要有两个缺点：</p><ul><li>它们依赖于辐射测量信息</li><li>为了简化反演问题，所有现有的重建技术都依赖于非视线场景的Lambertian 反射假设</li></ul><p>在这篇文章中，作者提出一种使用视线以外场景的瞬态测量得到的几何信息的方法，克服了上述的限制。简言之，它主要使用视线内和视线外场景之间的一种称之为费马路径的几何路径星系，通过观察发现这些路径遵循镜面或者物体边界特点的反射定理。作者证明，费马路径对应于瞬态测量中的不连续性，不连续点的时间位置仅是视线外场景对象的形状而不是其反射率。<br>利用上述理论，推导出一种精确重建视线外物体形状的算法，称之为费马流(Fermat Flow)。作者证明，费马路径长度的空间导数提供了一个简单的约束，它唯一地决定了隐藏场景点的深度和法线。这个导数是通过将光滑的路径函数拟合到一组稀疏的测量值上而得到，然后结合深度和法线信息来计算平滑网网格。<br>概括一下，本文在隐藏物体重建方面主要包含以下3个步骤：</p><ul><li>瞬态测量</li><li>求解费马流方程</li><li>表面拟合</li></ul><h2 id="测量瞬态"><a href="#测量瞬态" class="headerlink" title="测量瞬态"></a>测量瞬态</h2><p><img src="https://i.loli.net/2019/06/29/5d177346e393c92434.png" alt="2"></p><p>假设已经校准了从光源到可见点，和从可见点到检测器的距离 </p><script type="math/tex; mode=display">\mathcal{\tau\mathcal{V}}(\boldsymbol{v}) \triangleq\|s-v\|+\|d-v\|</script><p>，那么可以通过光速等计算在非可见场景的路径长度，</p><script type="math/tex; mode=display">I(\tau ; \boldsymbol{v})=\int_{\mathcal{X}} f(\boldsymbol{x} ; \boldsymbol{v}) \delta(\tau-\tau(\boldsymbol{x} ; \boldsymbol{v})) \mathrm{d} A(p, q)</script><p>其中 $\tau(\boldsymbol{x} ; \boldsymbol{v}) \triangleq 2 \cdot|\boldsymbol{x}-\boldsymbol{v}|,(p, q) \in[0,1]^{2} $是非可见物体表面的参数化表示。</p><h2 id="费马流方程"><a href="#费马流方程" class="headerlink" title="费马流方程"></a>费马流方程</h2><p><img src="http://tva1.sinaimg.cn/large/0060lm7Tly1g4igpktfp0j30gm05s0vu.jpg" alt="4"></p><p>给定测量的瞬态$I(\tau ; \boldsymbol{v})$ ，可以把它的离散性定义为对费马路径长度的贡献，每个路径长度约束了球面上的点的法线和曲率。这是本文的核心所在，给定一组费马路径长度，就可以得到隐藏物体表面点集的位置和法线。<br>首先定义费马路径函数，</p><script type="math/tex; mode=display">\tau_{\mathcal{F}}(\boldsymbol{v})=\{\tau : I(\tau ; \boldsymbol{v}) \text { is discontinuous }\}</script><p>在每个瞬态可以有多个不连续的路径长度，因此费马路径函数是一个多值函数</p><script type="math/tex; mode=display">\boldsymbol{x}_{\mathcal{F}}=\boldsymbol{v}-\left(\tau_{\mathcal{F}}(\boldsymbol{v}) / 4\right) \nabla_{\boldsymbol{v}} \tau_{\mathcal{F}}(\boldsymbol{v})</script><p>其中 $\boldsymbol{x}_{\mathcal{F}} $是隐藏物体球面上的点，因此，物体可以唯一的被可见点\boldsymbol{v}、路径长度、梯度 $\nabla_{\boldsymbol{v}} \tau_{\mathcal{F}}(\boldsymbol{v})$ 重建，得到隐藏物体表面的点，然后通过一些简单的集合操作即可。<br>但是就算路径长度的导数是一件非常难的事情，它和选取的可视面的形状、位置有密切的关系，为了简化，文中采用选取平面作为可视区域，得到的导数为，</p><script type="math/tex; mode=display">\begin{array}{l}{\nabla_{\boldsymbol{v}^{\tau} \mathcal{F}}(\boldsymbol{v})=} \\ {\left.\left(\frac{\partial \tau_{\mathcal{F}}}{\partial x}, \frac{\partial \tau_{\mathcal{F}}}{\partial y}, \sqrt{4-\left(\frac{\partial \tau_{\mathcal{F}}}{\partial x}\right)^{2}-\left(\frac{\partial \tau_{\mathcal{F}}}{\partial y}\right)^{2}}\right)\right|_{\boldsymbol{v}}}\end{array}</script><h2 id="表面拟合"><a href="#表面拟合" class="headerlink" title="表面拟合"></a>表面拟合</h2><p>上述的步骤生成了一系列的<strong>有向点云</strong>，它的密度相当于在可视区域 \mathcal{V} 上的测量密度，然后，可以使用算法，利用正常信息，以更高的精度将曲面表示(如三角形网格)匹配到点云，给定这样一个初始的表面重建，在补充中，我们描述了一个基于高光路径扰动理论的优化过程，该过程对拟合表面进行了细化，以考虑由于梯度 $\nabla_{\boldsymbol{v}} \tau_{\mathcal{F}}(\boldsymbol{v})$ 估计不准确而可能产生的误差。</p><h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p><img src="https://i.loli.net/2019/06/29/5d17734704bf863453.png" alt="5"></p><p>如图中所示，分别从两个视图中重建了一个有方向的点云，点按它们的法线着色。最后，我们将一个表面与点云相匹配，显示在右边的两个视图下。</p><p><img src="https://i.loli.net/2019/06/29/5d1773471f04f97966.png" alt="6"></p><p>扫描的对象跨越各种形状(凸，凹)和反射(半透明，光泽，镜面)。对于每一个物体，我们展示了环境光下的照片，以及它表面重建的两个视图。</p><hr><h2 id="更多我的作品"><a href="#更多我的作品" class="headerlink" title="更多我的作品"></a>更多我的作品</h2><p><a href="https://zhuanlan.zhihu.com/p/57521026" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第一讲：图像预处理之图像去噪</a></p><p><a href="https://zhuanlan.zhihu.com/p/57537622" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第二讲：图像预处理之图像增强</a></p><p><a href="https://zhuanlan.zhihu.com/p/60847136" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第三讲：图像预处理之图像分割</a></p><p><a href="https://zhuanlan.zhihu.com/p/65367068" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第四讲：图像预处理之图像增广</a></p><p><a href="https://zhuanlan.zhihu.com/p/66166633" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第五讲：传统目标检测之特征工程</a></p><p><a href="https://zhuanlan.zhihu.com/p/67770305" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第六讲：传统目标检测之Harris角点检测</a></p><p><a href="https://zhuanlan.zhihu.com/p/70385018" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第七讲：传统目标检测之SIFT特征</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;https://i.loli.net/2019/06/29/5d177346c5c3386434.png&quot; alt=&quot;1&quot;&gt;&lt;/p&gt;
-&lt;p&gt;CVPR，全称IEEE Conference on Computer Vision and Pattern Recognition，与ECCV(Europeon Conference on Computer Vision)，ICCV( IEEE International Conference on Computer Vision)并称为计算机视觉领域三大会议，均为计算机视觉领域的顶级会议。
-    
-    </summary>
-    
-      <category term="计算机视觉" scheme="https://jackpopc.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/"/>
-    
-    
-      <category term="CV" scheme="https://jackpopc.github.io/tags/CV/"/>
-    
-      <category term="AI" scheme="https://jackpopc.github.io/tags/AI/"/>
-    
-      <category term="图像处理" scheme="https://jackpopc.github.io/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"/>
     
   </entry>
   
