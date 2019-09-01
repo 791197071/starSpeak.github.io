@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jackpopc.github.io/2019/09/01/cnn-dropout/</loc>
+    <lastmod>2019-09-01</lastmod>
+  </url>  <url>
+    <loc>https://jackpopc.github.io/2019/08/13/kite/</loc>
+    <lastmod>2019-09-01</lastmod>
+  </url>  <url>
     <loc>https://jackpopc.github.io/2019/08/28/python-4/</loc>
     <lastmod>2019-08-28</lastmod>
   </url>  <url>
@@ -20,9 +26,6 @@
     <lastmod>2019-08-17</lastmod>
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/08/16/cv-cnn-pool/</loc>
-    <lastmod>2019-08-17</lastmod>
-  </url>  <url>
-    <loc>https://jackpopc.github.io/2019/08/13/kite/</loc>
     <lastmod>2019-08-17</lastmod>
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/07/10/cv-hog/</loc>

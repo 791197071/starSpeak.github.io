@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jackpopc.github.io/2019/09/01/cnn-dropout/</loc>
+    
+    <lastmod>2019-09-01T10:05:47.006Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/08/13/kite/</loc>
+    
+    <lastmod>2019-09-01T10:04:09.782Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jackpopc.github.io/2019/08/28/python-4/</loc>
     
     <lastmod>2019-08-28T14:13:54.343Z</lastmod>
@@ -47,13 +61,6 @@
     <loc>https://jackpopc.github.io/2019/08/16/cv-cnn-pool/</loc>
     
     <lastmod>2019-08-17T11:03:37.063Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jackpopc.github.io/2019/08/13/kite/</loc>
-    
-    <lastmod>2019-08-17T11:01:55.597Z</lastmod>
     
   </url>
   
