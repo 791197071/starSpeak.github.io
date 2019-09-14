@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jackpopc.github.io/2019/09/06/autohotkey/</loc>
+    
+    <lastmod>2019-09-14T10:55:46.586Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/09/13/lenet/</loc>
+    
+    <lastmod>2019-09-14T10:55:19.743Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jackpopc.github.io/2019/09/01/cnn-dropout/</loc>
     
     <lastmod>2019-09-01T10:05:47.006Z</lastmod>

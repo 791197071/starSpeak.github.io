@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="文件查找,工具,实用,">
+  <meta name="keywords" content="CV,AI,图像处理,">
 
 
 
@@ -81,30 +81,26 @@
 
 
 
-<meta name="description" content="前言对于大多数人来说，日常生活和工作中接触较多的软件和工具就是浏览器、专业软件、翻译软件、笔记、办公等。其实有很多软件在名气上虽然不如这些商业软件，但是功能却丝毫不输这些知名软件。在工作中能够大大提高办公效率，而且内存占用小、免费开源。大家都知道windows自带的文件浏览器查找文件是一件非常令人痛苦的事情，不仅速度缓慢，而且准确度出奇的低，让人感觉很鸡肋。但是当我们要找一个文档时却忘记放在哪里，">
-<meta name="keywords" content="文件查找,工具,实用">
+<meta name="description" content="前言 提起卷积神经网络，也许可以避开VGG、GoogleNet，甚至可以忽略AleNet，但是很难不提及LeNet。 LeNet是由2019年图灵奖获得者、深度学习三位顶级大牛之二的Yann LeCun、Yoshua Bengio于1998年提出(Gradient-based learning applied to document recognition)，">
+<meta name="keywords" content="CV,AI,图像处理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="效率工具 | Windows下一款强大的启动搜索工具">
-<meta property="og:url" content="https://jackpopc.github.io/2019/07/02/tools-wox/index.html">
+<meta property="og:title" content="【动手学计算机视觉】第十五讲：卷积神经网络之LeNet">
+<meta property="og:url" content="https://jackpopc.github.io/2019/09/13/lenet/index.html">
 <meta property="og:site_name" content="平凡而诗意">
-<meta property="og:description" content="前言对于大多数人来说，日常生活和工作中接触较多的软件和工具就是浏览器、专业软件、翻译软件、笔记、办公等。其实有很多软件在名气上虽然不如这些商业软件，但是功能却丝毫不输这些知名软件。在工作中能够大大提高办公效率，而且内存占用小、免费开源。大家都知道windows自带的文件浏览器查找文件是一件非常令人痛苦的事情，不仅速度缓慢，而且准确度出奇的低，让人感觉很鸡肋。但是当我们要找一个文档时却忘记放在哪里，">
+<meta property="og:description" content="前言 提起卷积神经网络，也许可以避开VGG、GoogleNet，甚至可以忽略AleNet，但是很难不提及LeNet。 LeNet是由2019年图灵奖获得者、深度学习三位顶级大牛之二的Yann LeCun、Yoshua Bengio于1998年提出(Gradient-based learning applied to document recognition)，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/DhtkzcEPA4eXxjM.png">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/YkiAyPpcGMXShjl.gif">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/ktIl1Serdy7Ozwc.gif">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/6mn2SKAJspxievH.gif">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/MVs2enfP31GdtaY.png">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/hdVI84C5FYQljHR.gif">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/LanitTCUXDqhy2O.gif">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/w8JgimoZunKShBF.png">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/VRPU5YB8nSzCu9e.png">
-<meta property="og:image" content="https://i.loli.net/2019/08/03/fcVaPu4oCYOlnNH.png">
-<meta property="og:image" content="https://b2.bmp.ovh/imgs/2019/08/7f8f6b94b86583ea.gif">
-<meta property="og:updated_time" content="2019-08-03T11:01:49.802Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/14/n6JaHe.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/14/n6JwAH.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/14/n6J6jf.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/14/n6JB4A.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/14/n6YwrT.gif">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/14/n6J0Nd.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/14/n6YcGR.png">
+<meta property="og:updated_time" content="2019-09-14T10:55:19.743Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="效率工具 | Windows下一款强大的启动搜索工具">
-<meta name="twitter:description" content="前言对于大多数人来说，日常生活和工作中接触较多的软件和工具就是浏览器、专业软件、翻译软件、笔记、办公等。其实有很多软件在名气上虽然不如这些商业软件，但是功能却丝毫不输这些知名软件。在工作中能够大大提高办公效率，而且内存占用小、免费开源。大家都知道windows自带的文件浏览器查找文件是一件非常令人痛苦的事情，不仅速度缓慢，而且准确度出奇的低，让人感觉很鸡肋。但是当我们要找一个文档时却忘记放在哪里，">
-<meta name="twitter:image" content="https://i.loli.net/2019/08/03/DhtkzcEPA4eXxjM.png">
+<meta name="twitter:title" content="【动手学计算机视觉】第十五讲：卷积神经网络之LeNet">
+<meta name="twitter:description" content="前言 提起卷积神经网络，也许可以避开VGG、GoogleNet，甚至可以忽略AleNet，但是很难不提及LeNet。 LeNet是由2019年图灵奖获得者、深度学习三位顶级大牛之二的Yann LeCun、Yoshua Bengio于1998年提出(Gradient-based learning applied to document recognition)，">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/09/14/n6JaHe.png">
 
 
 
@@ -134,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="https://jackpopc.github.io/2019/07/02/tools-wox/">
+  <link rel="canonical" href="https://jackpopc.github.io/2019/09/13/lenet/">
 
 
 
 
 
-  <title>效率工具 | Windows下一款强大的启动搜索工具 | 平凡而诗意</title>
+  <title>【动手学计算机视觉】第十五讲：卷积神经网络之LeNet | 平凡而诗意</title>
   
 
 
@@ -309,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/07/02/tools-wox/">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/09/13/lenet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jackpop">
@@ -326,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">效率工具 | Windows下一款强大的启动搜索工具</h1>
+          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第十五讲：卷积神经网络之LeNet</h1>
         
 
         <div class="post-meta">
@@ -338,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-02T11:57:58+08:00">
-                2019-07-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-13T13:48:55+08:00">
+                2019-09-13
               </time>
             
 
@@ -361,8 +357,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/实用工具/" itemprop="url" rel="index">
-                    <span itemprop="name">实用工具</span>
+                  <a href="/categories/计算机视觉/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机视觉</span>
                   </a>
                 </span>
 
@@ -379,8 +375,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/07/02/tools-wox/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/02/tools-wox/" itemprop="commentCount"></span>
+                <a href="/2019/09/13/lenet/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/13/lenet/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -413,84 +409,85 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对于大多数人来说，日常生活和工作中接触较多的软件和工具就是浏览器、专业软件、翻译软件、笔记、办公等。其实有很多软件在名气上虽然不如这些商业软件，但是功能却丝毫不输这些知名软件。在工作中能够大大提高办公效率，而且内存占用小、免费开源。大家都知道windows自带的文件浏览器查找文件是一件非常令人痛苦的事情，不仅速度缓慢，而且准确度出奇的低，让人感觉很鸡肋。但是当我们要找一个文档时却忘记放在哪里，挨个硬盘去翻更加令人感到折磨。所以不得不去借助一些高效的搜索工具，其中用的较多、名气较大的就是everything。<a id="more"></a>我个人也一直在用这款工具，的确非常强大，快速、支持正则表达式匹配。它作为一个文件搜索工具的确很称职，但是当我们想要更多扩展功能，例如用于程序启动工具时everything就显得有些不足了。之前我介绍过一款工具叫做Listary，能够完美的与everything结合，既能涵盖everything强大的搜索功能，还能融合Listary实用的启动功能。本文再给大家介绍一款与Listary类似的工具—Wox，有相同之处，也有很大的差异之处，各位可以根据自己的喜好进行选择。</p>
-<h2 id="Wox"><a href="#Wox" class="headerlink" title="Wox"></a>Wox</h2><p><img src="https://i.loli.net/2019/08/03/DhtkzcEPA4eXxjM.png" alt="1.png"></p>
-<p>Wox是一款启动器。<br>这就是它与Listary的最大的不同之处—定位不同。Listary本身兼顾搜索与启动，但是在搜索方面不如everything，如果想使用更加丰富的搜索功能需要在设置里配置一下everything，如果满足于Listary提供的快速搜索功能则无需配置。而Wox的定位就是一个简单、纯净的启动器。它可以快速的启动本机安装的各种程序、文件、网页等。当然，它也可以用于文件搜索，它指定的后端搜索工具是everything，所以在打开Wox之前需要先启动everything，这样才能够使用强大的搜索功能。它不仅可以用于搜索程序和文件，还可以配置各种丰富的插件满足更多场景的需求，例如计算器、天气、翻译、网页搜索等。</p>
-<h2 id="Wox与Listary"><a href="#Wox与Listary" class="headerlink" title="Wox与Listary"></a>Wox与Listary</h2><p>前面提到了，Wox与Listary有很多类似之处：</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><img src="https://s2.ax1x.com/2019/09/14/n6JaHe.png" alt="n6JaHe.png"></p>
+<p>提起卷积神经网络，也许可以避开VGG、GoogleNet，甚至可以忽略AleNet，但是很难不提及LeNet。</p>
+<p>LeNet是由2019年图灵奖获得者、深度学习三位顶级大牛之二的Yann LeCun、Yoshua Bengio于1998年提出(Gradient-based learning applied to document recognition)，<a id="more"></a>它也被认为被认为是最早的卷积神经网络模型。但是，由于算力和数据集的限制，卷积神经网络提出之后一直都被传统目标识别算法(特征提取+分类器)所压制。终于在沉寂了14年之后的2012年，AlexNet在ImageNet挑战赛上一骑绝尘，使得卷积神经网络又一次成为了研究的热点。</p>
+<p>近几年入门计算机视觉的同学大多数都是从AlexNet甚至更新的网络模型入手，了解比较多的就是R-CNN系列和YOLO系列，在很多知名的课程中对LeNet的介绍也是非常浅显或者没有介绍。虽然近几年卷积神经网络模型在LeNet的基础上加入了很多新的单元，在效果方面要明显优于LeNet，但是作为卷积神经网络的基础和源头，它的很多思想对后来的卷积神经网络模型具有很深的影响，因此，我认为了解一下LeNet还是非常有必要的。</p>
+<p>本文首先介绍一下LeNet的网络模型，然后使用tensorflow来一步一步实现LeNet。</p>
+<h1 id="LeNet"><a href="#LeNet" class="headerlink" title="LeNet"></a>LeNet</h1><p><img src="https://s2.ax1x.com/2019/09/14/n6JwAH.png" alt="n6JwAH.png"></p>
+<p>上图就是LeNet的网络结构，LeNet又被称为LeNet-5，其之所以称为这个名称是由于原始的LeNet是一个5层的卷积神经网络，它主要包括两部分：</p>
 <ul>
-<li>搜索</li>
-<li>启动器</li>
-<li>配合everything使用</li>
+<li>卷积层</li>
+<li>全连接层</li>
 </ul>
-<p>但是Wox也有很多特别之处是Listary无法比拟的，Wox的特别之处主要有如下几点：</p>
+<p>其中卷积层数为2，全连接层数为3。</p>
+<p><b>这里需要注意一下</b>，之前在介绍卷积、池化时特意提到，在网络层计数中池化和卷积往往是被算作一层的，虽然池化层也被称为”层”，但是它不是一个独立的运算，往往都是紧跟着卷积层使用，因此它不单独计数。在LeNet中也是这样，卷积层块其实是包括两个单元：卷积层与池化层。</p>
+<p>在网络模型的搭建过程中，我们关注的除了网络层的结构，还需要关注一些超参数的设定，例如，卷积层中使用卷积核的大小、池化层的步幅等，下面就来介绍一下LeNet详细的网络结构和参数。</p>
+<p><b>第一层：卷积层</b></p>
+<p>卷积核大小为5*5，输入通道数根据图像而定，例如灰度图像为单通道，那么通道数为1，彩色图像为三通道，那么通道数为3。虽然输入通道数是一个变量，但是输出通道数是固定的为6。</p>
+<p>池化层中窗口大小为2*2，步幅为2。</p>
+<p><b>第二层：卷积层</b></p>
+<p>卷积核大小为5*5，输入通道数即为上一层的输出通道数6，输出通道数为16。</p>
+<p>池化层和第一层相同，窗口大小为2*2，步幅为2。</p>
+<p><b>第三层：全连接层</b></p>
+<p>全连接层顾名思义，就是把卷积层的输出进行展开，变为一个二维的矩阵(第一维是批量样本数，第二位是前一层输出的特征展开后的向量)，输入大小为上一层的输出16，输出大小为120。</p>
+<p><b>第四层：全连接层</b></p>
+<p>输入大小为120，输出大小为84。</p>
+<p><b>第五层：全连接层</b></p>
+<p>输入大小为84，输出大小为类别个数，这个根据不同任务而定，假如是二分类问题，那么输出就是2，对于手写字识别是一个10分类问题，那么输出就是10。</p>
+<p><b>激活函数</b></p>
+<p>前面文章中详细的介绍了激活函数的作用和使用方法，本文就不再赘述。激活函数有很多，例如Sigmoid、relu、双曲正切等，在LeNet中选取的激活函数为Sigmoid。</p>
+<h1 id="模型构建"><a href="#模型构建" class="headerlink" title="模型构建"></a>模型构建</h1><p><img src="https://s2.ax1x.com/2019/09/14/n6J6jf.png" alt="n6J6jf.png"></p>
+<p>如果已经了解一个卷积神经网络模型的结构，知道它有哪些层、每一层长什么样，那样借助目前成熟的机器学习平台是非常容易的，例如tensorflow、pytorch、mxnet、caffe这些都是高度集成的深度学习框架，虽然在强化学习、图神经网络中表现一般，但是在卷积神经网络方面还是很不错的。</p>
+<p>我绘制了模型构建的过程，详细的可以看一下上图，很多刚入门的同学会把tensorflow使用、网络搭建看成已经非常困难的事情，其实理清楚之后发现并没有那么复杂，它主要包括如下几个部分：</p>
 <ul>
-<li>支持丰富的插件</li>
-<li>支持自己定义插件</li>
-<li>支持多种主题切换</li>
-<li>支持自定义快捷键</li>
+<li>数据输入</li>
+<li>网络模型</li>
+<li>训练预测</li>
 </ul>
-<h2 id="支持丰富插件"><a href="#支持丰富插件" class="headerlink" title="支持丰富插件"></a>支持丰富插件</h2><p>Wox的插件主要分类两种：</p>
+<p>其中，重点之处就在于网络模型的搭建，需要逐层的去搭建一个卷积神经网络，复杂程度因不同的模型而异。训练测试过程相对简单一些，可以通过交叉熵、均方差等构建损失函数，然后使用深度学习框架自带的优化函数进行优化即可，代码量非常少。</p>
+<p>LeNet、AlexNet、VGG、ResNet等，各种卷积神经网络模型主要的区别之处就在于网络模型，但是网络搭建的过程是相同的，均是通过上述流程进行搭建，因此，本文单独用一块内容介绍模型搭建的过程，后续内容不再介绍网络模型的搭建，会直接使用tensorflow进行编程实践。</p>
+<h1 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h1><p><b>完整代码</b>请查看github项目： <a href="https://github.com/Jackpopc/aiLearnNotes/blob/master/computer_vision/LeNet.py" target="_blank" rel="noopener">aiLearnNotes</a></p>
+<p>首先需要说明一下，后续的内容中涉及网络模型搭建的均会选择tensorflow进行编写。虽然近几年pytorch的势头非常迅猛，关于tensorflow的批评之声不绝于耳，但是我一向认为，灵活性和易用性总是成反比的，tensorflow虽然相对复杂，但是它的灵活性非常强，而且支持强大的可视化tensorboard，虽然pytorch也可以借助tensorboard实现可视化，但是这样让我觉得有一些”不伦不类”的感觉，我更加倾向于一体化的框架。此外，有很多同学认为Gluon、keras非常好用，的确，这些在tensorflow、mxnet之上进一步封装的高级深度学习框架非常易用，很多参数甚至不需要开发者去定义，但是正是因为这样，它们已经强行的预先定义在框架里了，可想而知，它的灵活性是非常差的。因此，综合灵活性、一体化、丰富性等方面的考虑，本系列会采用tensorflow进行编程实践。</p>
+<p>其次，需要说明的是本系列重点关注的是网络模型，因此，关于数据方面会采用MNIST进行实践。MNIST是一个成熟的手写字数据集，它提供了易用的接口，方便读取和处理。</p>
+<p>在使用tensorflow接口读取MNIST时，如果本地有数据，它会从本地加载，否则它会从官网下载数据，如果由于代理或者网速限制的原因自动下载数据失败，可以手动从官网下载数据放在MNIST目录下，数据包括4个文件，分别是：</p>
 <ul>
-<li>系统插件</li>
-<li>第三方插件  </li>
+<li>train-images-idx3-ubyte.gz</li>
+<li>train-labels-idx1-ubyte.gz</li>
+<li>t10k-images-idx3-ubyte.gz</li>
+<li>t10k-labels-idx1-ubyte.gz</li>
 </ul>
-<p>系统插件不需要关键字唤醒，直接用<strong>Alt + Space</strong>调出Wox的工具栏输入相应的命令即可，系统插件主要包含如下几类：</p>
-<ul>
-<li>程序插件</li>
-<li>颜色插件</li>
-<li>控制面板插件</li>
-<li>计算器插件</li>
-<li>网址插件</li>
-<li>Web搜索插件</li>
-<li>命令行插件</li>
-<li>文件夹插件</li>
-</ul>
-<p>拿其中几个举个例子，</p>
-<p><strong>程序插件</strong></p>
-<p><strong>Alt+空格键</strong>激活Wox，然后输入要启动的程序即可，</p>
-<p><img src="https://i.loli.net/2019/08/03/YkiAyPpcGMXShjl.gif" alt="2.gif"></p>
-<p><strong>计算器插件</strong></p>
-<p>计算器对于很多人来说虽然不是主要的工作工具，但是偶尔会用到，当我们需要用计算器的时候就需要点击windows图标，搜索“计算器”，这样比较麻烦，Wox集成了计算器插件，激活Wox后输入要计算的公式即可，</p>
-<p><img src="https://i.loli.net/2019/08/03/ktIl1Serdy7Ozwc.gif" alt="3.gif"></p>
-<p><strong>网址插件</strong></p>
-<p>当我们要浏览某个网站时往往需要打开浏览器-&gt;在地址栏输入网址，Wox的浏览器插件大大简化这个过程，只需要激活Wox，输入相应网址即可，</p>
-<p><img src="https://i.loli.net/2019/08/03/6mn2SKAJspxievH.gif" alt="4.gif"></p>
-<p>其他还有很多实用的系统插件，可以查看网站进行了解，</p>
-<p><a href="http://doc.wox.one/zh/basic/" target="_blank" rel="noopener">http://doc.wox.one/zh/basic/</a></p>
-<p>除了Wox自带的系统插件，Wox还提供了多大230款第三方插件，其中就包含有道翻译、天气查询、Steam、Putty、二维码、维基百科、书签搜索、待办事项、进制转换、哔哩哔哩、Skype、FileZilla、Stack Overflow、沪江日语等等。只需要下载安装一下即可，而且Wox提供了多选、简单的安装方式，</p>
-<p><img src="https://i.loli.net/2019/08/03/MVs2enfP31GdtaY.png" alt="5.png"></p>
-<p><strong>安装第三方插件</strong></p>
-<p><strong><em>命令安装</em></strong></p>
-<p>这是最简单的一种安装方式，使用wpm进行插件的安装、卸载管理，</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装插件</span><br><span class="line">wpm install &lt;插件名称&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 卸载插件</span><br><span class="line">wpm uninstall &lt;插件名称&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 列出已安装插件</span><br><span class="line"></span><br><span class="line">wpm list</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2019/08/03/hdVI84C5FYQljHR.gif" alt="6.gif"></p>
-<p><strong><em>手动安装</em></strong></p>
-<p>如果由于网络、代理等原因无法命令安装，可以打开插件主页[<a href="http://www.wox.one/plugin]下载到本地(以.wox结尾),拖动到Wox搜索框进行安装，" target="_blank" rel="noopener">http://www.wox.one/plugin]下载到本地(以.wox结尾),拖动到Wox搜索框进行安装，</a></p>
-<p><img src="https://i.loli.net/2019/08/03/LanitTCUXDqhy2O.gif" alt="7.gif"></p>
-<h2 id="支持自己定义插件"><a href="#支持自己定义插件" class="headerlink" title="支持自己定义插件"></a>支持自己定义插件</h2><p>除了官网提供的系统插件和第三方插件之外，Wox还支持自定义插件，它支持以下3种方式来定义插件，</p>
-<ul>
-<li>plugin.json</li>
-<li>C#</li>
-<li>Python</li>
-</ul>
-<p>Wox与插件之间的通信原理：</p>
-<p><img src="https://i.loli.net/2019/08/03/w8JgimoZunKShBF.png" alt="8.png"></p>
-<h2 id="支持多种主题切换"><a href="#支持多种主题切换" class="headerlink" title="支持多种主题切换"></a>支持多种主题切换</h2><p><img src="https://i.loli.net/2019/08/03/VRPU5YB8nSzCu9e.png" alt="9.png"></p>
-<p>Wox安装后会发现自带BlurBlack、BlurWhite、Dark、Gray、Light、Metro Server、Pink七种主题，除了上述提到的7种主题之外，还可以在官网自定义主题，配置之后下载主题(.xaml文件)，放置到<strong><em>C:\Users\YourUserName\AppData\Local\Wox\app-1.3.524\Themes</em></strong>路径下，重启Wox即可。</p>
-<h2 id="支持自定义快捷键"><a href="#支持自定义快捷键" class="headerlink" title="支持自定义快捷键"></a>支持自定义快捷键</h2><p>这一点也是Wox吸引人的一点，它支持自定义快捷键。如果觉得<strong>Alt+空格</strong>启动程序、文件夹还不够快捷，可以把常用的命令保存到快捷键，这样当使用快捷键时能够快速达到目的。</p>
-<p>例如，我想百度搜索“哈尔滨工业大学”，使用Wox的方式是这样的，</p>
-<ul>
-<li>Alt + 空格激活Wox</li>
-<li>输入”bd 哈尔滨工业大学”</li>
-</ul>
-<p><img src="https://i.loli.net/2019/08/03/fcVaPu4oCYOlnNH.png" alt="10.png"></p>
-<p>这样比起”打开浏览器-&gt;打开百度-&gt;搜索”已经便捷了很多，但是还有更便捷的，就是Wox支持的快捷键。</p>
-<p><img src="https://b2.bmp.ovh/imgs/2019/08/7f8f6b94b86583ea.gif" alt></p>
-<p>可以把常用的命令添加到快捷键，例如把”bd 哈尔滨工业大学”添加为快捷键”Ctrl+Alt+H”,能够同时激活Wox并输入相应的命令，然后按Enter键即可搜索。</p>
+<p>它们分别是训练数据集和标签，测试数据集和标签。</p>
+<p>可能会有人有疑问，手写体识别不是图像吗？为什么是gz的压缩包？因为作者对手写体进行了序列化处理，方便读取，数据原本是衣服单通道28*28的灰度图像，处理后是784的向量，我们可以通过一段代码对它可视化一下，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line"></span><br><span class="line">mnist = input_data.read_data_sets(<span class="string">"MNIST"</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">12</span>):</span><br><span class="line">    plt.subplot(<span class="number">3</span>, <span class="number">4</span>, i+<span class="number">1</span>)</span><br><span class="line">    img = mnist.train.images[i + <span class="number">1</span>]</span><br><span class="line">    img = img.reshape(<span class="number">28</span>, <span class="number">28</span>)</span><br><span class="line">    plt.imshow(img)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>通过读取训练集中的12副图像，然后把它修改成28*28的图像，显示之后会发现和我们常见的图像一样，</p>
+<p><img src="https://s2.ax1x.com/2019/09/14/n6JB4A.png" alt="n6JB4A.png"></p>
+<p>下面开始一步一步进行搭建网络LeNet，由前面介绍的模型构建过程可以知道，其中最为核心的就是搭建模型的网络架构，所以，首先先搭建网络模型，</p>
+<script type="math/tex; mode=display">y=wx+b</script><p>卷积的运算是符合上述公式的，因此，首先构造第一层网络，输入为批量784维的向量，需要首先把它转化为28*28的图像，然后初始化卷积核，进行卷积、激活、池化运算，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">X = tf.reshape(X, [<span class="number">-1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])</span><br><span class="line">w_1 = tf.get_variable(<span class="string">"weights"</span>, shape=[<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">6</span>])</span><br><span class="line">b_1 = tf.get_variable(<span class="string">"bias"</span>, shape=[<span class="number">6</span>])</span><br><span class="line">conv_1 = tf.nn.conv2d(X, w_1, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</span><br><span class="line">act_1 = tf.sigmoid(tf.nn.bias_add(conv_1, b_1))</span><br><span class="line">max_pool_1 = tf.nn.max_pool(act_1, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</span><br></pre></td></tr></table></figure>
+<p>然后构建第二层网络，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">w_2 = tf.get_variable(<span class="string">"weights"</span>, shape=[<span class="number">5</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">16</span>])</span><br><span class="line">b_2 = tf.get_variable(<span class="string">"bias"</span>, shape=[<span class="number">16</span>])</span><br><span class="line">conv_2 = tf.nn.conv2d(max_pool_1, w_2, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</span><br><span class="line">act_2 = tf.nn.sigmoid(tf.nn.bias_add(conv_2, b_2))</span><br><span class="line">max_pool_2 = tf.nn.max_pool(act_2, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</span><br></pre></td></tr></table></figure>
+<p>到这里，卷积层就搭建完了，下面就开始搭建全连接层。</p>
+<p>首先需要把卷积层的输出进行展开成向量，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flatten = tf.reshape(max_pool_2, shape=[<span class="number">-1</span>, <span class="number">2</span> * <span class="number">2</span> * <span class="number">16</span>])</span><br></pre></td></tr></table></figure>
+<p>然后紧接着是3个全连接层，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 全连接层1</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"fc_1"</span>) <span class="keyword">as</span> scope:</span><br><span class="line">    w_fc_1 = tf.get_variable(<span class="string">"weight"</span>, shape=[<span class="number">2</span> * <span class="number">2</span> * <span class="number">16</span>, <span class="number">120</span>])</span><br><span class="line">    b_fc_1 = tf.get_variable(<span class="string">"bias"</span>, shape=[<span class="number">120</span>], trainable=<span class="literal">True</span>)</span><br><span class="line">fc_1 = tf.nn.xw_plus_b(flatten, w_fc_1, b_fc_1)</span><br><span class="line">act_fc_1 = tf.nn.sigmoid(fc_1)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全连接层2</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"fc_2"</span>) <span class="keyword">as</span> scope:</span><br><span class="line">    w_fc_2 = tf.get_variable(<span class="string">"weight"</span>, shape=[<span class="number">120</span>, <span class="number">84</span>])</span><br><span class="line">    b_fc_2 = tf.get_variable(<span class="string">"bias"</span>, shape=[<span class="number">84</span>], trainable=<span class="literal">True</span>)</span><br><span class="line">fc_2 = tf.nn.xw_plus_b(act_fc_1, w_fc_2, b_fc_2)</span><br><span class="line">act_fc_2 = tf.nn.sigmoid(fc_2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全连接层3</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"fc_3"</span>) <span class="keyword">as</span> scope:</span><br><span class="line">    w_fc_3 = tf.get_variable(<span class="string">"weight"</span>, shape=[<span class="number">84</span>, <span class="number">10</span>])</span><br><span class="line">    b_fc_3 = tf.get_variable(<span class="string">"bias"</span>, shape=[<span class="number">10</span>], trainable=<span class="literal">True</span>)</span><br><span class="line">fc_3 = tf.nn.xw_plus_b(act_fc_2, w_fc_3, b_fc_3)</span><br></pre></td></tr></table></figure>
+<p>这样就把整个网络模型搭完成了，输入是批量图像X，输出是预测的图像，输出是一个10维向量，每一维的含义是当前数字的概率，选择概率最大的位置，就是图像对应的数字。</p>
+<p>完成了网络模型的搭建，它能够将输入图像转化成预测标签进行输出，接下来要做的就是训练和测试部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 1. 输入数据的占位符</span></span><br><span class="line">    x = tf.placeholder(tf.float32, [<span class="literal">None</span>, <span class="number">784</span>])</span><br><span class="line">    y = tf.placeholder(tf.float32, [BATCH_SIZE, <span class="number">10</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 2. 初始化LeNet模型，构造输出标签y_</span></span><br><span class="line">    le = LeNet()</span><br><span class="line">    y_ = le.create(x)</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 3. 损失函数，使用交叉熵作为损失函数</span></span><br><span class="line">    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_, labels=y))</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 4. 优化函数，首先声明I个优化函数，然后调用minimize去最小化损失函数</span></span><br><span class="line">    optimizer = tf.train.AdamOptimizer()</span><br><span class="line">    train_op = optimizer.minimize(loss)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 5. summary用于数据保存，用于tensorboard可视化</span></span><br><span class="line">    tf.summary.scalar(<span class="string">"loss"</span>, loss)</span><br><span class="line">    merged = tf.summary.merge_all()</span><br><span class="line">    writer = tf.summary.FileWriter(<span class="string">"logs"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 6. 构造验证函数，如果对应位置相同则返回true，否则返回false</span></span><br><span class="line">    correct_pred = tf.equal(tf.argmax(y_, <span class="number">1</span>), tf.argmax(y, <span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 7. 通过tf.cast把true、false布尔型的值转化为数值型，分别转化为1和0，然后相加就是判断正确的数量</span></span><br><span class="line">    accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 8. 初始化一个saver，用于后面保存训练好的模型</span></span><br><span class="line">    saver = tf.train.Saver()</span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        <span class="comment"># 9. 初始化变量</span></span><br><span class="line">        sess.run((tf.global_variables_initializer()))</span><br><span class="line">        writer.add_graph(sess.graph)</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">            <span class="keyword">for</span> step <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">                <span class="comment"># 10. feed_dict把数据传递给前面定义的占位符x、y</span></span><br><span class="line">                batch_xs, batch_ys = mnist.train.next_batch(BATCH_SIZE)</span><br><span class="line">                summary, loss_value, _ = sess.run(([merged, loss, train_op]),</span><br><span class="line">                                                  feed_dict=&#123;x: batch_xs,</span><br><span class="line">                                                             y: batch_ys&#125;)</span><br><span class="line">                print(<span class="string">"epoch : &#123;&#125;----loss : &#123;&#125;"</span>.format(epoch, loss_value))</span><br><span class="line">                <span class="comment"># 11. 记录数据点</span></span><br><span class="line">                writer.add_summary(summary, i)</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">        <span class="comment"># 验证准确率</span></span><br><span class="line">        test_acc = <span class="number">0</span></span><br><span class="line">        test_count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">            batch_xs, batch_ys = mnist.test.next_batch(BATCH_SIZE)</span><br><span class="line">            acc = sess.run(accuracy, feed_dict=&#123;x: batch_xs, y: batch_ys&#125;)</span><br><span class="line">            test_acc += acc</span><br><span class="line">            test_count += <span class="number">1</span></span><br><span class="line">        print(<span class="string">"accuracy : &#123;&#125;"</span>.format(test_acc / test_count))</span><br><span class="line">        saver.save(sess, os.path.join(<span class="string">"temp"</span>, <span class="string">"mode.ckpt"</span>))</span><br></pre></td></tr></table></figure>
+<p>上述就是训练部分的完整代码，在代码中已经详细的注释了每个部分的功能，分别包含数据记录、损失函数、优化函数、验证函数、训练过程等，然后运行代码可以看到效果，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">epoch : 4----loss : 0.07602085173130035</span><br><span class="line">epoch : 4----loss : 0.05565792694687843</span><br><span class="line">epoch : 4----loss : 0.08458487689495087</span><br><span class="line">epoch : 4----loss : 0.012194767594337463</span><br><span class="line">epoch : 4----loss : 0.026294417679309845</span><br><span class="line">epoch : 4----loss : 0.04952147603034973</span><br><span class="line">accuracy : 0.9953125</span><br></pre></td></tr></table></figure>
+<p>准确率为99.5%，可以看得出，在效果方面，LeNet在某些任务方面并不比深度卷积神经网络差。</p>
+<p>打开tensorboard可以直观的看到网络的结构、训练的过程以及训练中数据的变换，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tensorboard --logdir=logs</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/09/14/n6YwrT.gif" alt="n6YwrT.gif"></p>
+<p>通过损失函数的变化过程可以看出，训练过程在2000步左右基本达到了最优解，</p>
+<p><img src="https://s2.ax1x.com/2019/09/14/n6J0Nd.png" alt="n6J0Nd.png"></p>
 <hr>
 <blockquote>
-<p>更多精彩内容请关注公众号【平凡而诗意】~</p>
+<p>更多精彩内容请关注公众号【平凡而诗意】，或者加入我的知识星球【平凡而诗意】~</p>
 </blockquote>
+<p><img src="https://s2.ax1x.com/2019/09/14/n6YcGR.png" alt="n6YcGR.png"></p>
 
       
     </div>
@@ -508,11 +505,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/文件查找/" rel="tag"># 文件查找</a>
+            <a href="/tags/CV/" rel="tag"># CV</a>
           
-            <a href="/tags/工具/" rel="tag"># 工具</a>
+            <a href="/tags/AI/" rel="tag"># AI</a>
           
-            <a href="/tags/实用/" rel="tag"># 实用</a>
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
           
         </div>
       
@@ -525,8 +522,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/01/homemade-machine-learning/" rel="next" title="推荐一份热门机器学习资源">
-                <i class="fa fa-chevron-left"></i> 推荐一份热门机器学习资源
+              <a href="/2019/09/06/autohotkey/" rel="next" title="效率工具 | 神器AutoHotkey的使用教程">
+                <i class="fa fa-chevron-left"></i> 效率工具 | 神器AutoHotkey的使用教程
               </a>
             
           </div>
@@ -534,10 +531,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/10/cv-hog/" rel="prev" title="【动手学计算机视觉】第八讲：传统目标检测之HOG特征">
-                【动手学计算机视觉】第八讲：传统目标检测之HOG特征 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -747,7 +740,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wox"><span class="nav-number">2.</span> <span class="nav-text">Wox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wox与Listary"><span class="nav-number">3.</span> <span class="nav-text">Wox与Listary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持丰富插件"><span class="nav-number">4.</span> <span class="nav-text">支持丰富插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持自己定义插件"><span class="nav-number">5.</span> <span class="nav-text">支持自己定义插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持多种主题切换"><span class="nav-number">6.</span> <span class="nav-text">支持多种主题切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持自定义快捷键"><span class="nav-number">7.</span> <span class="nav-text">支持自定义快捷键</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LeNet"><span class="nav-number">2.</span> <span class="nav-text">LeNet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型构建"><span class="nav-number">3.</span> <span class="nav-text">模型构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编程实践"><span class="nav-number">4.</span> <span class="nav-text">编程实践</span></a></li></ol></div>
             
 
           </div>
