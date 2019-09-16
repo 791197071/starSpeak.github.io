@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="CV,AI,图像处理,">
+  <meta name="keywords" content="工具,实用,插件,开发工具,">
 
 
 
@@ -81,23 +81,27 @@
 
 
 
-<meta name="description" content="完整代码链接：aiLearnNotes 前言激活函数不仅对于卷积神经网络非常重要，在传统机器学习中也具备着举足轻重的地位，是卷积神经网络模型中必不可少的一个单元，要理解激活函数，需要从2个方面进行讨论：  什么是激活函数？ 为什么需要激活函数？">
-<meta name="keywords" content="CV,AI,图像处理">
+<meta name="description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？">
+<meta name="keywords" content="工具,实用,插件,开发工具">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【动手学计算机视觉】第十二讲：激活函数">
-<meta property="og:url" content="https://jackpopc.github.io/2019/08/21/activation/index.html">
+<meta property="og:title" content="开发工具 | 你真的会用jupyter吗？">
+<meta property="og:url" content="https://jackpopc.github.io/2019/09/14/jupyter/index.html">
 <meta property="og:site_name" content="平凡而诗意">
-<meta property="og:description" content="完整代码链接：aiLearnNotes 前言激活函数不仅对于卷积神经网络非常重要，在传统机器学习中也具备着举足轻重的地位，是卷积神经网络模型中必不可少的一个单元，要理解激活函数，需要从2个方面进行讨论：  什么是激活函数？ 为什么需要激活函数？">
+<meta property="og:description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://s2.ax1x.com/2019/08/21/maP6SO.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/08/21/maPrY6.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/08/21/maPDFx.png">
-<meta property="og:image" content="https://s2.ax1x.com/2019/08/21/maPsfK.png">
-<meta property="og:updated_time" content="2019-08-21T14:08:43.554Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfW7c9.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nffsUK.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nffhDI.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nffXKs.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfhGqI.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfhNIf.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfhHdx.gif">
+<meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nf4FFf.png">
+<meta property="og:updated_time" content="2019-09-16T12:36:53.599Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【动手学计算机视觉】第十二讲：激活函数">
-<meta name="twitter:description" content="完整代码链接：aiLearnNotes 前言激活函数不仅对于卷积神经网络非常重要，在传统机器学习中也具备着举足轻重的地位，是卷积神经网络模型中必不可少的一个单元，要理解激活函数，需要从2个方面进行讨论：  什么是激活函数？ 为什么需要激活函数？">
-<meta name="twitter:image" content="https://s2.ax1x.com/2019/08/21/maP6SO.png">
+<meta name="twitter:title" content="开发工具 | 你真的会用jupyter吗？">
+<meta name="twitter:description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/09/16/nfW7c9.jpg">
 
 
 
@@ -127,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="https://jackpopc.github.io/2019/08/21/activation/">
+  <link rel="canonical" href="https://jackpopc.github.io/2019/09/14/jupyter/">
 
 
 
 
 
-  <title>【动手学计算机视觉】第十二讲：激活函数 | 平凡而诗意</title>
+  <title>开发工具 | 你真的会用jupyter吗？ | 平凡而诗意</title>
   
 
 
@@ -302,7 +306,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/08/21/activation/">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/09/14/jupyter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jackpop">
@@ -319,7 +323,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第十二讲：激活函数</h1>
+          <h1 class="post-title" itemprop="name headline">开发工具 | 你真的会用jupyter吗？</h1>
         
 
         <div class="post-meta">
@@ -331,8 +335,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-21T20:04:17+08:00">
-                2019-08-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-14T18:58:21+08:00">
+                2019-09-14
               </time>
             
 
@@ -354,8 +358,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机视觉/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机视觉</span>
+                  <a href="/categories/开发工具/" itemprop="url" rel="index">
+                    <span itemprop="name">开发工具</span>
                   </a>
                 </span>
 
@@ -372,8 +376,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/08/21/activation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/21/activation/" itemprop="commentCount"></span>
+                <a href="/2019/09/14/jupyter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/14/jupyter/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -406,75 +410,107 @@
       
 
       
-        <p><strong>完整代码</strong>链接：<a href="https://github.com/Jackpopc/aiLearnNotes/blob/master/computer_vision/activation.py" target="_blank" rel="noopener">aiLearnNotes</a></p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>激活函数不仅对于卷积神经网络非常重要，在传统机器学习中也具备着举足轻重的地位，是卷积神经网络模型中必不可少的一个单元，要理解激活函数，需要从2个方面进行讨论：</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><img src="https://s2.ax1x.com/2019/09/16/nfW7c9.jpg" alt="nfW7c9.jpg"></p>
+<p>提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？</p>
+<a id="more"></a>以Python开发为例，我们只需要在windows命令行或者linux/Mac终端输入“jupyter notebook”或者“ipython notebook”即可使用默认浏览器打开一个在线IDE，
+
+![nffQun.png](https://s2.ax1x.com/2019/09/16/nffQun.png)
+
+首先说一下交互式，
+
+jupyter notebook中一个非常重要的概念就是cell，每个cell能够单独进行运算，这样适合于代码调试。我们开发一个完整的脚本时变量会随着代码执行的结束而从内存中释放，如果我们想看中间的变量或者结构，我们只能通过断点或者输出日志信息的方式进行调试，这样无疑是非常繁琐的，如果一个程序运行很多这种方式还可行，如果运行时间长达几个小时，这样我们调试一圈耗费的时间就太长了。
+
+而在jupyter notebook中我们可以把代码分隔到不同的cell里逐个进行调试，这样它会持续化变量的值，我们可以交互式的在不同cell里获取到我们想要测试的变量值和类型。
+
+![nffGNT.png](https://s2.ax1x.com/2019/09/16/nffGNT.png)
+
+然后说一下富文本，
+
+开发代码不仅是给机器去“阅读”，也需要让其他的同事、同学能够很容易的阅读，因此，注释就在开发过程中变的非常重要，一个完善的注释能够让周围人更加容易理解，协作效率也更高，避免重复性劳动。在大多数IDE中都可以进行注释，但是几乎都是相同的，只支持一些简单的文本格式注释，这显然是不够的，jupyter notebook支持Markdown编辑，它的cell不仅可以用于编码，还可以用于书写文本，Markdown可以轻松完成标题、数学公式等格式的编辑，更加有助于解释代码，适用于教学等场景。
+
+最后在说一下轻量、触手可及，
+
+开发过程中我经常需要测试一个小的代码块或者函数，这时候有两个选择：在IDE中新建一个测试脚本；打开命令行下的Python。我觉的这两个都不是好的选择，如果在项目下新建一个脚本后续还需要记住把它清理掉，如果写一个完善的测试脚本用于Alpha、beta测试这显然是低效不现实的。而选择在命令行下，界面不友好，操作不灵活，体验更差。
+
+这时候就显现出jupyter notebook的优势，只需要输入jupyter notebook就会在流量器中打开一个网页，能轻量、快捷的进行开发验证，效率很好。此外，我们还可以通过搭建jupyter notebook服务使得它一直在服务器下运行来避免每次需要时都要在命令行下重复打开，我们只需要在浏览器打开对应的网页即可，这一点下文会详细介绍。
+
+其实，除了这些我们耳熟能详的优点之外，jupyter还有很多令人惊叹的亮点：
+
+- 丰富的插件
+- 主题修改
+- 多语言支持
+
+下面就针对这3点分别介绍一下，介绍下面3个功能的前提条件是已经通过下方命令成功安装jupyter notebook，
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pip install jupyter notebook</span><br></pre></td></tr></table></figure>
+<h1 id="丰富的插件"><a href="#丰富的插件" class="headerlink" title="丰富的插件"></a>丰富的插件</h1><p><b>安装插件管理器</b></p>
+<p>如果没有安装插件管理器，打开jupyter notebook后菜单栏只有如下3项，</p>
 <ul>
-<li>什么是激活函数？</li>
-<li>为什么需要激活函数？<a id="more"></a></li>
+<li>Files</li>
+<li>Running</li>
+<li>Clusters</li>
 </ul>
-<p><strong>什么是激活函数？</strong></p>
-<p>对于神经网络，一层的输入通过加权求和之后输入到一个函数，被这个函数作用之后它的非线性性增强，这个作用的函数即是激活函数。</p>
-<p><strong>为什么需要激活函数？</strong></p>
-<p>试想一下，对于神经网络而言，如果没有激活函数，每一层对输入进行加权求和后输入到下一层，直到从第一层输入到最后一层一直采用的就是线性组合的方式，根据线性代数的知识可以得知，第一层的输入和最后一层的输出也是呈线性关系的，换句话说，这样的话无论中加了多少层都没有任何价值，这是第一点。</p>
-<p>第二点是由于如果没有激活函数，输入和输出是呈线性关系的，但是现实中很多模型都是非线性的，通过引入激活函数可以增加模型的非线性，使得它更好的拟合非线性空间。</p>
-<p>目前激活函数有很多，例如阶跃函数、逻辑函数、双曲正切函数、ReLU函数、Leaky ReLU函数、高斯函数、softmax函数等，虽然函数有很多，但是比较常用的主要就是逻辑函数和ReLU函数，在大多数卷积神经网络模型中都是采用这两种，当然也有部分会采用Leaky ReLU函数和双曲正切函数，本文就介绍一下这4个激活函数长什么样？有什么优缺点？在tensorflow中怎么使用？</p>
-<h2 id="Sigmoid"><a href="#Sigmoid" class="headerlink" title="Sigmoid"></a>Sigmoid</h2><p>Sigmoid函数的方程式为：</p>
-<script type="math/tex; mode=display">f(x)=\sigma(x)=\frac{1}{1+e^{-x}}</script><p><img src="https://s2.ax1x.com/2019/08/21/maP6SO.png" alt="maP6SO.png"></p>
-<p>绘图程序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">()</span>:</span></span><br><span class="line">    x = np.arange(<span class="number">-10</span>, <span class="number">10</span>, <span class="number">0.1</span>)</span><br><span class="line">    y = <span class="number">1</span> / (<span class="number">1</span>+np.exp(-x))</span><br><span class="line">    plt.plot(x, y)</span><br><span class="line">    plt.grid()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
-<p>Sigmoid函数就是前面所讲的逻辑函数，它的主要优点如下：</p>
+<p>我们需要安装插件管理器来管理我们需要的插件，</p>
+<p>第一步：用pip安装插件管理包，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pip install jupyter_contrib_nbextensions</span><br><span class="line"><span class="meta">$</span> pip install jupyter_nbextensions_configurator</span><br></pre></td></tr></table></figure>
+<p>第二步：安装一些插件并启用插件管理器，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> jupyter nbextensions_configurator enable --user</span><br><span class="line"><span class="meta">$</span> jupyter nbextensions_configurator enable --user</span><br></pre></td></tr></table></figure>
+<p>然后再次打开jupyter notebook会发现菜单栏多了一个选项<b>Nbextensions</b>,</p>
+<p><img src="https://s2.ax1x.com/2019/09/16/nffsUK.png" alt="nffsUK.png"></p>
+<p>记得勾选disable configuration for nbextensions without explicit compatibility (they may break your notebook environment, but can be useful to show for nbextension development)，否则下方插件是不可选状态。</p>
+<p>我们可以通过命令来管理开启或关闭某个插件，但是我觉得还是通过直接勾选我们需要的插件效率更高。</p>
+<p><b>选择插件</b></p>
+<p>我们从上面可以看出，jupyter notebook有很多插件，我们该用哪一个呢？我推荐5款个人认为不错的插件。</p>
 <ul>
-<li>能够将函数压缩至区间[0, 1]之间，保证数据稳定，波动幅度小</li>
-<li>容易求导</li>
+<li><b>Table of Contents</b></li>
+<li><b>Execute Time</b></li>
+<li><b>Nofity</b></li>
+<li><b>Codefolding</b></li>
+<li><b>Hinterland</b></li>
 </ul>
-<p>缺点：</p>
-<ul>
-<li>函数在两端的饱和区梯度趋近于0，当反向传播时容易出现梯度消失或梯度爆炸</li>
-<li>输出不是0均值(zero-centered)，这样会导致，如果输入为正，那么导数总为正，反向传播总往正方向更新，如果输入为负，那么导数总为负，反向传播总往负方向更新，收敛速度缓慢</li>
-<li>对于幂运算和规模较大的网络运算量较大</li>
-</ul>
-<h1 id="双曲正切函数"><a href="#双曲正切函数" class="headerlink" title="双曲正切函数"></a>双曲正切函数</h1><p>双曲正切函数方程式：</p>
-<script type="math/tex; mode=display">f(x)=\tanh (x)=\frac{\left(e^{x}-e^{-x}\right)}{\left(e^{x}+e^{-x}\right)}</script><p><img src="https://s2.ax1x.com/2019/08/21/maPrY6.png" alt="maPrY6.png"></p>
-<p>绘图程序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tanh</span><span class="params">()</span>:</span></span><br><span class="line">    x = np.arange(<span class="number">-10</span>, <span class="number">10</span>, <span class="number">0.1</span>)</span><br><span class="line">    y = (np.exp(x) - np.exp(-x)) / (np.exp(x) + np.exp(-x))</span><br><span class="line">    plt.plot(x, y)</span><br><span class="line">    plt.grid()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
-<p>可以看出，从图形上看双曲正切和Sigmoid函数非常类似，但是从纵坐标可以看出，Sigmoid被压缩在[0, 1]之间，而双曲正切函数在[-1, 1]之间，两者的不同之处在于，Sigmoid是非0均值(zero-centered)，而双曲是0均值的，它的相对于Sigmoid的优点就很明显了：</p>
-<ul>
-<li>提高了训练效率</li>
-</ul>
-<p>虽然双曲正切函数解决了Sigmoid函数非0均值的问题，但是它依然没有解决Sigmoid的两位两个问题，这也是tanh的缺点：</p>
-<ul>
-<li>梯度消失和梯度爆炸</li>
-<li>对于幂运算和规模较大的网络运算量较大</li>
-</ul>
-<h1 id="ReLU"><a href="#ReLU" class="headerlink" title="ReLU"></a>ReLU</h1><p>ReLU函数方程式：</p>
-<script type="math/tex; mode=display">f(x)=\left\{\begin{array}{ll}{0} & {\text { for } x<0} \\ {x} & {\text { for } x \geq 0}\end{array}\right.</script><p><img src="https://s2.ax1x.com/2019/08/21/maPDFx.png" alt="maPDFx.png"></p>
-<p>绘图程序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">relu</span><span class="params">()</span>:</span></span><br><span class="line">    x = np.arange(<span class="number">-10</span>, <span class="number">10</span>, <span class="number">0.1</span>)</span><br><span class="line">    y = np.where(x&lt;<span class="number">0</span>, <span class="number">0</span>, x)</span><br><span class="line">    plt.plot(x, y)</span><br><span class="line">    plt.grid()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
-<p>线性整流函数(Rectified Linear Unit，ReLU)，对比于Sigmoid函数和双曲正切函数的优点如下：</p>
-<ul>
-<li>梯度不饱和，收敛速度快</li>
-<li>减轻反向传播时梯度弥散的问题</li>
-<li>由于不需要进行指数运算，因此运算速度快、复杂度低</li>
-</ul>
-<p>虽然解决了Sigmoid和双曲正切函数的缺点，但是它也有明显的不足：</p>
-<ul>
-<li>输出不是0均值(zero-centered)</li>
-<li>对参数初始化和学习率非常敏感，设置不当容易造成神经元坏死现象，也就是有些神经元永远不会被激活(由于负部梯度永远为0造成)</li>
-</ul>
-<h1 id="Leaky-ReLU"><a href="#Leaky-ReLU" class="headerlink" title="Leaky ReLU"></a>Leaky ReLU</h1><p>Leaky ReLU函数方程式：</p>
-<script type="math/tex; mode=display">f(x)=\left\{\begin{array}{ll}{0.01 x} & {\text { for } x<0} \\ {x} & {\text { for } x \geq 0}\end{array}\right.</script><p><img src="https://s2.ax1x.com/2019/08/21/maPsfK.png" alt="maPsfK.png"></p>
-<p>绘图程序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">leaky_relu</span><span class="params">()</span>:</span></span><br><span class="line">    x = np.arange(<span class="number">-2</span>, <span class="number">2</span>, <span class="number">0.1</span>)</span><br><span class="line">    y = np.where(x&lt;<span class="number">0</span>, <span class="number">0.01</span>*x, x)</span><br><span class="line">    plt.plot(x, y)</span><br><span class="line">    plt.grid()</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
-<p>为了解决ReLU函数神经元坏死现象，Leaky ReLU函数在输入为负是引入了一个(0, 1)之间的常数，使得输入为负时梯度不为0。虽然Leaky ReLU解决了ReLU的这个严重问题，但是它并不总是比ReLU函数效果好，在很多情况下ReLU函数的效果还是更胜一筹。</p>
-<h1 id="tensorflow激活函数使用"><a href="#tensorflow激活函数使用" class="headerlink" title="tensorflow激活函数使用"></a>tensorflow激活函数使用</h1><p>tensorflow中激活函数在tf.nn模块下，例如，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.nn.relu</span><br><span class="line">tf.nn.sigmoid</span><br><span class="line">tf.nn.tanh</span><br><span class="line">tf.nn.leaky_relu</span><br></pre></td></tr></table></figure>
-<p>其中relu、sigmoid、tanh函数的参数完全相同，leaky_relu多一个输入参数，就是斜率，默认值为0.2，以relu函数为例介绍一下tensorflow中激活函数的使用，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">features = tf.nn.max_poo()</span><br><span class="line">tf.nn.relu(features, name=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>tensorflow中激活函数输入有两个参数：</p>
-<ul>
-<li>features：输入的特征张量，也就是前一层池化层或者卷积层输出的结果，数据类型限制在float32, float64, int32, uint8, int16, int8, int64, float16, uint16, uint32, uint64</li>
-<li>name：运算的名称，这个可以自行命名</li>
-</ul>
+<p>下面分别介绍一下它们的功能，</p>
+<p><img src="https://s2.ax1x.com/2019/09/16/nffhDI.png" alt="nffhDI.png"></p>
+<p><b>Table of Contents</b>是一款自动生成目录的工具，它能够通过我们我们富文本中定义的标题自动生成目录，这样我们能够通过点击左侧目录快速定位到我们想要的到达的代码片段。</p>
+<p><img src="https://s2.ax1x.com/2019/09/16/nffXKs.png" alt="nffXKs.png"></p>
+<p><b>Execute Time</b>顾名思义，执行时间，我觉得这是一款非常实用的插件，在企业项目开发中，效率是永远无法越过的一个门槛，和学术上理论效果足够优秀即可不同，在企业项目中对效率要求也很高，因此，我们需要统计代码的运行时间，其中最初级的用法就是在每个函数开始和结尾处写一个计时语句，这样比较繁琐。然后再高阶一些的用法就是通过装饰器写一些计时器，在每个函数上调用这个装饰器。其实，如果用jupyter notebook完全没必要这么麻烦。我们只需要打开<b>Execute Time</b>，它就能统计每个cell的运行耗费时间，结束时间等，非常详细，一目了然。</p>
+<p><img src="https://s2.ax1x.com/2019/09/16/nfhGqI.png" alt="nfhGqI.png"></p>
+<p><b>Nofity</b>同样是一款非常实用的插件，当我们运行一个耗时较长的代码时，我们不可能一直盯着屏幕等待，但是我们又希望及时知道它运行结束了，Notify这款插件就可以实现这个功能，它能够在代码运行结束时发出通知，及时告知你代码运行结束了。</p>
+<p><img src="https://s2.ax1x.com/2019/09/16/nfhNIf.png" alt="nfhNIf.png"></p>
+<p><b>Codefolding</b>是一款代码折叠工具，有时候我们写的一个函数非常长，但是我们又不关注 ，这样在阅读过程中会使得效率很低，代码折叠就是一个不错的选择，折叠我们不关注的代码块，<b>Codefolding</b>能够像其他IDE那样让你轻松自如的折叠代码块。</p>
+<p><img src="https://s2.ax1x.com/2019/09/16/nfhHdx.gif" alt="nfhHdx.gif"></p>
+<p><b>Hinterland</b>是一款自动补全插件，称一个IDE“优秀”，如果没有自动补全显然是说不过去的。jupyter notebook自带补全功能，但是每次都需要点击<b>tab</b>键来补全，这样效率比较低，我们可以通过勾选<b>Hinterland</b>让jupyter notebook具备自动补全功能，当我们输入几个包含字母后它能够快速补全我们想要的函数，补全速度堪比pycharm。</p>
+<h1 id="主题修改"><a href="#主题修改" class="headerlink" title="主题修改"></a>主题修改</h1><p>很多同学使用jupyter notebook都会觉得，这款开发工具界面太单调了，只有纯白色的主题，其实并不是这样，jupyter notebook也支持主题修改，而且非常方便。</p>
+<p>首先在命令行下输入下面命令安装主题，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pip install jupyterthemes</span><br></pre></td></tr></table></figure>
+<p>jupyter notebook的主题管理工具叫做<b>jt</b>，我们可以通过下面命令查看可用主题，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> jt -l</span><br><span class="line">Available Themes:</span><br><span class="line">   chesterish</span><br><span class="line">   grade3</span><br><span class="line">   gruvboxd</span><br><span class="line">   gruvboxl</span><br><span class="line">   monokai</span><br><span class="line">   oceans16</span><br><span class="line">   onedork</span><br><span class="line">   solarizedd</span><br><span class="line">   solarizedl</span><br></pre></td></tr></table></figure>
+<p>然后通过下面命令设置主题，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> jt -t &lt;theme_name&gt;</span><br></pre></td></tr></table></figure>
+<p>其中theme_name为主题名称。</p>
+<p><img src="https://s2.ax1x.com/2019/09/16/nf4FFf.png" alt="nf4FFf.png"></p>
+<p>如果觉得不满意，想退回默认主题，可以通过下方命令实现，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> jt -r</span><br></pre></td></tr></table></figure>
+<h1 id="多语言支持"><a href="#多语言支持" class="headerlink" title="多语言支持"></a>多语言支持</h1><p>很多同学是因为Python而解除到jupyter notebook的，因此会认为这就是一款Python专属的开发工具，如果这样的话，那么也不足以我专门用一篇文章来介绍这款开发工具。</p>
+<p>它更像是eclipse、IDEA、vscode，是一款综合的开发工具，它不仅支持Python，还支持C++、julia、R、ruby、Go、Scala、C#、Perl、PHP、Octave、Matlab、Lua、Tcl、等多种编程语言，功能十分强大，支持语言详情，请查看下方链接，</p>
+<p><a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels" target="_blank" rel="noopener">https://github.com/jupyter/jupyter/wiki/Jupyter-kernels</a></p>
+<p>不同语言的配置方式各不相同，这里不再一一介绍，可以根据自己需要的语言自行在网上搜索相关配置资料进行配置。</p>
+<h1 id="jupyter-notebook服务"><a href="#jupyter-notebook服务" class="headerlink" title="jupyter notebook服务"></a>jupyter notebook服务</h1><p>如果非要找出使用jupyter notebook的缺点，我认为就是每次启动的时候相对繁琐，我们启动本地安装的IDE，一个命令或者点击一下图标即可，但是如果启动jupyter notebook就需要进入命令行或终端，输入“jupyter notebook”进行打开，如果使用的是虚拟环境，首先还要激活虚拟环境，这无疑是非常繁琐的，而且启动后它会占用一个终端或命令行窗口，如果意外关闭则会终止jupyter notebook服务。其实，这也是有解决方法的，我们搭建一个持续化的jupyter notebook服务，让它一直在服务器后台运行，这样既不占用窗口，也不需要繁琐的打开步骤，我们只需要把对应的URL收藏，每次需要时能够秒级速度打开，下面就来介绍一下jupyter notebook的搭建步骤。</p>
+<p><b>第一步：获取sha1密码</b></p>
+<p>在命令行下输入ipython，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [1]: from IPython.lib import passwd</span><br><span class="line">In [2]: passwd()</span><br><span class="line">Enter password:</span><br><span class="line">Verify password:</span><br><span class="line">Out[2]: 'sha1:746cf729d33f:0af9cda409de9791f237a6c46c3c76a3237962fc'</span><br></pre></td></tr></table></figure>
+<p>导入passwd函数，调用后会让你输入密码，你可以设置一个明文密码，例如123，然后它会生成一个sha1密码串，这个很重要，后面会用到。</p>
+<p>修改jupyter配置文件，linux系统配置文件路径为<b>~/.jupyter/jupyter_notebook_config.py</b>，windows系统配置文件路径为<b>C:\\Users\\User\.jupyter\\jupyter_notebook_config.py</b>，如果没有这个文件，可以使用下面命令生成，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> jupyter notebook --generate-config</span><br></pre></td></tr></table></figure>
+<p>这个配置文件很长，以linux为例，主要关注的是如下几项，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'*'</span>  </span><br><span class="line">c.NotebookApp.password = u<span class="string">'sha1:xxx:xxx'</span> </span><br><span class="line">c.NotebookApp.open_browser = False </span><br><span class="line">c.NotebookApp.port = 8888</span><br><span class="line">c.NotebookApp.enable_mathjax = True</span><br></pre></td></tr></table></figure>
+<p><b>c.NotebookApp.ip</b>、<b>c.NotebookApp.port</b>，ip要和服务器保持一致，端口可以自行设定，不和其他端口冲突即可，后续访问时在浏览器输入<b>ip:port</b>即可。</p>
+<p><b>c.NotebookApp.password</b>就是前面生成的sha1密码串，复制过来即可。</p>
+<p><b>c.NotebookApp.open_browser = False </b>的含义为是每次启动命令时是否打开浏览器，由于我们用的时候直接输入URL即可，所以这里不需要打开浏览器。</p>
+<p><b>c.NotebookApp.enable_mathjax</b>的含义为是否用mathjax，它是一种用于数学公式显示的工具，这里选True。</p>
+<p>配置好这几项之后保存退出，输入下面命令即可启动，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nohup jupyter notebook &gt; /dev/null 2&gt;&amp;1 &amp;</span></span><br></pre></td></tr></table></figure>
+<p>nohup的含义是后台运行，这样就不用占用一个窗口来了。</p>
+<p>配置好之后只要服务器不关机，jupyter notebook的服务会一直处于运行状态，我们随时可以使用，只需要打开<b>ip:port</b>即可。</p>
 
       
     </div>
@@ -492,11 +528,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/CV/" rel="tag"># CV</a>
+            <a href="/tags/工具/" rel="tag"># 工具</a>
           
-            <a href="/tags/AI/" rel="tag"># AI</a>
+            <a href="/tags/实用/" rel="tag"># 实用</a>
           
-            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+            <a href="/tags/插件/" rel="tag"># 插件</a>
+          
+            <a href="/tags/开发工具/" rel="tag"># 开发工具</a>
           
         </div>
       
@@ -509,8 +547,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/18/python-3/" rel="next" title="【进阶Python】第三讲：类的特殊方法(上篇)">
-                <i class="fa fa-chevron-left"></i> 【进阶Python】第三讲：类的特殊方法(上篇)
+              <a href="/2019/09/13/lenet/" rel="next" title="【动手学计算机视觉】第十五讲：卷积神经网络之LeNet">
+                <i class="fa fa-chevron-left"></i> 【动手学计算机视觉】第十五讲：卷积神经网络之LeNet
               </a>
             
           </div>
@@ -518,10 +556,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/23/github-project/" rel="prev" title="实用资源 | 推荐6个高赞有趣的Github项目">
-                实用资源 | 推荐6个高赞有趣的Github项目 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -731,7 +765,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sigmoid"><span class="nav-number">1.1.</span> <span class="nav-text">Sigmoid</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#双曲正切函数"><span class="nav-number">2.</span> <span class="nav-text">双曲正切函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReLU"><span class="nav-number">3.</span> <span class="nav-text">ReLU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Leaky-ReLU"><span class="nav-number">4.</span> <span class="nav-text">Leaky ReLU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tensorflow激活函数使用"><span class="nav-number">5.</span> <span class="nav-text">tensorflow激活函数使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#丰富的插件"><span class="nav-number">2.</span> <span class="nav-text">丰富的插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主题修改"><span class="nav-number">3.</span> <span class="nav-text">主题修改</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多语言支持"><span class="nav-number">4.</span> <span class="nav-text">多语言支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jupyter-notebook服务"><span class="nav-number">5.</span> <span class="nav-text">jupyter notebook服务</span></a></li></ol></div>
             
 
           </div>
