@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jackpopc.github.io/2019/10/08/generatorr-iterator/</loc>
+    
+    <lastmod>2019-10-08T14:38:27.556Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jackpopc.github.io/2019/09/14/jupyter/</loc>
     
     <lastmod>2019-10-08T14:25:03.836Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>https://jackpopc.github.io/2019/10/08/spark/</loc>
     
     <lastmod>2019-10-08T14:22:49.460Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jackpopc.github.io/2019/10/08/generatorr-iterator/</loc>
-    
-    <lastmod>2019-10-08T14:06:13.467Z</lastmod>
     
   </url>
   

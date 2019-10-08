@@ -90,7 +90,7 @@
 <meta property="og:description" content="前言迭代是Python中常用且非常强大的一个功能，它可以用于访问集合、列表、字符串、字典等数据结构的元素。我们经常使用循环和条件语句，我们也清楚哪些是可以迭代访问，但是具体它们之间有什么有什么异同之处？有哪些特点？什么是迭代器、什么是生成器、什么是可迭代对象？这些问题对于初学者而言却是很少去细致的研究，本文就来详细阐述一下它们之间的关系已经它们的特别之处。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/08/uhyvcT.png">
-<meta property="og:updated_time" content="2019-10-08T14:06:13.467Z">
+<meta property="og:updated_time" content="2019-10-08T14:38:27.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【进阶Python】第五讲：迭代器与生成器">
 <meta name="twitter:description" content="前言迭代是Python中常用且非常强大的一个功能，它可以用于访问集合、列表、字符串、字典等数据结构的元素。我们经常使用循环和条件语句，我们也清楚哪些是可以迭代访问，但是具体它们之间有什么有什么异同之处？有哪些特点？什么是迭代器、什么是生成器、什么是可迭代对象？这些问题对于初学者而言却是很少去细致的研究，本文就来详细阐述一下它们之间的关系已经它们的特别之处。">
@@ -471,7 +471,10 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">X = [1, 2, 3, 4, 5]</span><br><span class="line">it = [i for i in X]</span><br><span class="line">gen = (i for i in X)</span><br><span class="line">print(type(X))</span><br><span class="line">print(type(it))</span><br><span class="line">print(type(gen))</span><br><span class="line"></span><br><span class="line"># 输出</span><br><span class="line">&lt;class &apos;list&apos;&gt;</span><br><span class="line">&lt;class &apos;list&apos;&gt;</span><br><span class="line">&lt;class &apos;generator&apos;&gt;</span><br></pre></td></tr></table></figure>
 <p>首先说一下<strong>it = [i for i in X]</strong>，这种用法叫做<strong>列表生成式</strong>，在很多编程规范中非常推崇的一种替代for循环的方式，仔细看一下代码会发现，<strong>it = [i for i in X]</strong>与<strong>gen = (i for i in X)</strong>的区别非常小，只是一个用了中括号，一个用了小括号，但是它们的区别缺失非常大的，使用中括号的叫做列表生成式，获得的返回值是一个列表，而使用小括号叫做生成器表达式，获得的返回结果是一个生成器，这也是前面提到的，除了使用yield和yield from两个关键字外还可以使用生成器表达式获得生成器。</p>
 <hr>
-<h2 id="往期内容"><a href="#往期内容" class="headerlink" title="往期内容"></a>往期内容</h2><blockquote>
+<h2 id="往期内容"><a href="#往期内容" class="headerlink" title="往期内容"></a>往期内容</h2><p><a href="https://jackpopc.github.io/2019/09/14/jupyter/#more">开发工具 | 你真的会用jupyter吗？</a></p>
+<p><a href="https://jackpopc.github.io/2019/09/01/cnn-dropout/">【动手学计算机视觉】第十四讲：正则化之Dropout</a></p>
+<p><a href="https://jackpopc.github.io/2019/09/13/lenet/">【动手学计算机视觉】第十五讲：卷积神经网络之LeNet</a></p>
+<blockquote>
 <p>更多精彩内容，请关注公众号【平凡而诗意】，也可以收藏我的个人主页~</p>
 </blockquote>
 
