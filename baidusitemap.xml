@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jackpopc.github.io/2019/09/14/jupyter/</loc>
+    <lastmod>2019-10-08</lastmod>
+  </url>  <url>
+    <loc>https://jackpopc.github.io/2019/10/08/spark/</loc>
+    <lastmod>2019-10-08</lastmod>
+  </url>  <url>
+    <loc>https://jackpopc.github.io/2019/10/08/generatorr-iterator/</loc>
+    <lastmod>2019-10-08</lastmod>
+  </url>  <url>
+    <loc>https://jackpopc.github.io/2019/08/10/1-decorators/</loc>
+    <lastmod>2019-10-08</lastmod>
+  </url>  <url>
     <loc>https://jackpopc.github.io/2019/09/22/app/</loc>
     <lastmod>2019-09-22</lastmod>
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/09/21/regex/</loc>
     <lastmod>2019-09-22</lastmod>
-  </url>  <url>
-    <loc>https://jackpopc.github.io/2019/09/14/jupyter/</loc>
-    <lastmod>2019-09-16</lastmod>
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/09/06/autohotkey/</loc>
     <lastmod>2019-09-14</lastmod>
@@ -36,9 +45,6 @@
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/08/21/activation/</loc>
     <lastmod>2019-08-21</lastmod>
-  </url>  <url>
-    <loc>https://jackpopc.github.io/2019/08/10/1-decorators/</loc>
-    <lastmod>2019-08-17</lastmod>
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/08/16/cv-cnn-pool/</loc>
     <lastmod>2019-08-17</lastmod>

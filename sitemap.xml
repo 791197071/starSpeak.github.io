@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jackpopc.github.io/2019/09/14/jupyter/</loc>
+    
+    <lastmod>2019-10-08T14:25:03.836Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/10/08/spark/</loc>
+    
+    <lastmod>2019-10-08T14:22:49.460Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/10/08/generatorr-iterator/</loc>
+    
+    <lastmod>2019-10-08T14:06:13.467Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/08/10/1-decorators/</loc>
+    
+    <lastmod>2019-10-08T13:59:24.785Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jackpopc.github.io/2019/09/22/app/</loc>
     
     <lastmod>2019-09-22T06:18:15.987Z</lastmod>
@@ -12,13 +40,6 @@
     <loc>https://jackpopc.github.io/2019/09/21/regex/</loc>
     
     <lastmod>2019-09-22T06:17:55.788Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jackpopc.github.io/2019/09/14/jupyter/</loc>
-    
-    <lastmod>2019-09-16T12:36:53.599Z</lastmod>
     
   </url>
   
@@ -82,13 +103,6 @@
     <loc>https://jackpopc.github.io/2019/08/21/activation/</loc>
     
     <lastmod>2019-08-21T14:08:43.554Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jackpopc.github.io/2019/08/10/1-decorators/</loc>
-    
-    <lastmod>2019-08-17T14:17:52.945Z</lastmod>
     
   </url>
   

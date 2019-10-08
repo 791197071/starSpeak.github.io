@@ -81,15 +81,17 @@
 
 
 
-<meta name="description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？">
+<meta name="description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，">
 <meta name="keywords" content="工具,实用,插件,开发工具">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开发工具 | 你真的会用jupyter吗？">
 <meta property="og:url" content="https://jackpopc.github.io/2019/09/14/jupyter/index.html">
 <meta property="og:site_name" content="平凡而诗意">
-<meta property="og:description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？">
+<meta property="og:description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfW7c9.jpg">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/08/uh2NDO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/08/uh2UbD.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nffsUK.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nffhDI.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nffXKs.png">
@@ -97,10 +99,10 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfhNIf.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfhHdx.gif">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nf4FFf.png">
-<meta property="og:updated_time" content="2019-09-16T12:36:53.599Z">
+<meta property="og:updated_time" content="2019-10-08T14:25:03.836Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发工具 | 你真的会用jupyter吗？">
-<meta name="twitter:description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？">
+<meta name="twitter:description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/09/16/nfW7c9.jpg">
 
 
@@ -411,37 +413,25 @@
 
       
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><img src="https://s2.ax1x.com/2019/09/16/nfW7c9.jpg" alt="nfW7c9.jpg"></p>
-<p>提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，但是，试问一下，你真的会用jupyter吗？</p>
-<a id="more"></a>以Python开发为例，我们只需要在windows命令行或者linux/Mac终端输入“jupyter notebook”或者“ipython notebook”即可使用默认浏览器打开一个在线IDE，
-
-![nffQun.png](https://s2.ax1x.com/2019/09/16/nffQun.png)
-
-首先说一下交互式，
-
-jupyter notebook中一个非常重要的概念就是cell，每个cell能够单独进行运算，这样适合于代码调试。我们开发一个完整的脚本时变量会随着代码执行的结束而从内存中释放，如果我们想看中间的变量或者结构，我们只能通过断点或者输出日志信息的方式进行调试，这样无疑是非常繁琐的，如果一个程序运行很多这种方式还可行，如果运行时间长达几个小时，这样我们调试一圈耗费的时间就太长了。
-
-而在jupyter notebook中我们可以把代码分隔到不同的cell里逐个进行调试，这样它会持续化变量的值，我们可以交互式的在不同cell里获取到我们想要测试的变量值和类型。
-
-![nffGNT.png](https://s2.ax1x.com/2019/09/16/nffGNT.png)
-
-然后说一下富文本，
-
-开发代码不仅是给机器去“阅读”，也需要让其他的同事、同学能够很容易的阅读，因此，注释就在开发过程中变的非常重要，一个完善的注释能够让周围人更加容易理解，协作效率也更高，避免重复性劳动。在大多数IDE中都可以进行注释，但是几乎都是相同的，只支持一些简单的文本格式注释，这显然是不够的，jupyter notebook支持Markdown编辑，它的cell不仅可以用于编码，还可以用于书写文本，Markdown可以轻松完成标题、数学公式等格式的编辑，更加有助于解释代码，适用于教学等场景。
-
-最后在说一下轻量、触手可及，
-
-开发过程中我经常需要测试一个小的代码块或者函数，这时候有两个选择：在IDE中新建一个测试脚本；打开命令行下的Python。我觉的这两个都不是好的选择，如果在项目下新建一个脚本后续还需要记住把它清理掉，如果写一个完善的测试脚本用于Alpha、beta测试这显然是低效不现实的。而选择在命令行下，界面不友好，操作不灵活，体验更差。
-
-这时候就显现出jupyter notebook的优势，只需要输入jupyter notebook就会在流量器中打开一个网页，能轻量、快捷的进行开发验证，效率很好。此外，我们还可以通过搭建jupyter notebook服务使得它一直在服务器下运行来避免每次需要时都要在命令行下重复打开，我们只需要在浏览器打开对应的网页即可，这一点下文会详细介绍。
-
-其实，除了这些我们耳熟能详的优点之外，jupyter还有很多令人惊叹的亮点：
-
-- 丰富的插件
-- 主题修改
-- 多语言支持
-
-下面就针对这3点分别介绍一下，介绍下面3个功能的前提条件是已经通过下方命令成功安装jupyter notebook，
-
+<p>提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，<a id="more"></a>但是，试问一下，你真的会用jupyter吗？</p>
+<p>以Python开发为例，我们只需要在windows命令行或者linux/Mac终端输入“jupyter notebook”或者“ipython notebook”即可使用默认浏览器打开一个在线IDE，</p>
+<p><img src="https://s2.ax1x.com/2019/10/08/uh2NDO.png" alt="uh2NDO.png"></p>
+<p>首先说一下交互式，</p>
+<p>jupyter notebook中一个非常重要的概念就是cell，每个cell能够单独进行运算，这样适合于代码调试。我们开发一个完整的脚本时变量会随着代码执行的结束而从内存中释放，如果我们想看中间的变量或者结构，我们只能通过断点或者输出日志信息的方式进行调试，这样无疑是非常繁琐的，如果一个程序运行很多这种方式还可行，如果运行时间长达几个小时，这样我们调试一圈耗费的时间就太长了。</p>
+<p>而在jupyter notebook中我们可以把代码分隔到不同的cell里逐个进行调试，这样它会持续化变量的值，我们可以交互式的在不同cell里获取到我们想要测试的变量值和类型。</p>
+<p><img src="https://s2.ax1x.com/2019/10/08/uh2UbD.png" alt="uh2UbD.png"></p>
+<p>然后说一下富文本，</p>
+<p>开发代码不仅是给机器去“阅读”，也需要让其他的同事、同学能够很容易的阅读，因此，注释就在开发过程中变的非常重要，一个完善的注释能够让周围人更加容易理解，协作效率也更高，避免重复性劳动。在大多数IDE中都可以进行注释，但是几乎都是相同的，只支持一些简单的文本格式注释，这显然是不够的，jupyter notebook支持Markdown编辑，它的cell不仅可以用于编码，还可以用于书写文本，Markdown可以轻松完成标题、数学公式等格式的编辑，更加有助于解释代码，适用于教学等场景。</p>
+<p>最后在说一下轻量、触手可及，</p>
+<p>开发过程中我经常需要测试一个小的代码块或者函数，这时候有两个选择：在IDE中新建一个测试脚本；打开命令行下的Python。我觉的这两个都不是好的选择，如果在项目下新建一个脚本后续还需要记住把它清理掉，如果写一个完善的测试脚本用于Alpha、beta测试这显然是低效不现实的。而选择在命令行下，界面不友好，操作不灵活，体验更差。</p>
+<p>这时候就显现出jupyter notebook的优势，只需要输入jupyter notebook就会在流量器中打开一个网页，能轻量、快捷的进行开发验证，效率很好。此外，我们还可以通过搭建jupyter notebook服务使得它一直在服务器下运行来避免每次需要时都要在命令行下重复打开，我们只需要在浏览器打开对应的网页即可，这一点下文会详细介绍。</p>
+<p>其实，除了这些我们耳熟能详的优点之外，jupyter还有很多令人惊叹的亮点：</p>
+<ul>
+<li>丰富的插件</li>
+<li>主题修改</li>
+<li>多语言支持</li>
+</ul>
+<p>下面就针对这3点分别介绍一下，介绍下面3个功能的前提条件是已经通过下方命令成功安装jupyter notebook，</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pip install jupyter notebook</span><br></pre></td></tr></table></figure>
 <h1 id="丰富的插件"><a href="#丰富的插件" class="headerlink" title="丰富的插件"></a>丰富的插件</h1><p><b>安装插件管理器</b></p>
 <p>如果没有安装插件管理器，打开jupyter notebook后菜单栏只有如下3项，</p>
@@ -679,7 +669,7 @@ jupyter notebook中一个非常重要的概念就是cell，每个cell能够单�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -701,7 +691,7 @@ jupyter notebook中一个非常重要的概念就是cell，每个cell能够单�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
