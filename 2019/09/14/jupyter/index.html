@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfhNIf.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nfhHdx.gif">
 <meta property="og:image" content="https://s2.ax1x.com/2019/09/16/nf4FFf.png">
-<meta property="og:updated_time" content="2019-10-08T14:25:03.836Z">
+<meta property="og:updated_time" content="2019-10-10T11:30:45.475Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="开发工具 | 你真的会用jupyter吗？">
 <meta name="twitter:description" content="前言 提起jupyter notebook，应该很多学习过Python的同学都不模型。虽然用jupyter notebook的同学相对较少，但是提及这款开发工具，很多人都会赞不绝口，“jupyter很强大，交互式、富文本”，很多人都知道jupyter notebook的这几个优点，">
@@ -444,7 +444,7 @@
 <p>第一步：用pip安装插件管理包，</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pip install jupyter_contrib_nbextensions</span><br><span class="line"><span class="meta">$</span> pip install jupyter_nbextensions_configurator</span><br></pre></td></tr></table></figure>
 <p>第二步：安装一些插件并启用插件管理器，</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> jupyter nbextensions_configurator enable --user</span><br><span class="line"><span class="meta">$</span> jupyter nbextensions_configurator enable --user</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> jupyter nbextensions_configurator install --user</span><br><span class="line"><span class="meta">$</span> jupyter nbextensions_configurator enable --user</span><br></pre></td></tr></table></figure>
 <p>然后再次打开jupyter notebook会发现菜单栏多了一个选项<b>Nbextensions</b>,</p>
 <p><img src="https://s2.ax1x.com/2019/09/16/nffsUK.png" alt="nffsUK.png"></p>
 <p>记得勾选disable configuration for nbextensions without explicit compatibility (they may break your notebook environment, but can be useful to show for nbextension development)，否则下方插件是不可选状态。</p>
