@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jackpopc.github.io/2019/10/19/singleton/</loc>
+    
+    <lastmod>2019-10-19T14:46:43.981Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/10/16/clean-c/</loc>
+    
+    <lastmod>2019-10-19T14:46:38.572Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jackpopc.github.io/2019/10/13/alexnet/</loc>
     
     <lastmod>2019-10-13T08:58:33.298Z</lastmod>
@@ -23,7 +37,7 @@
   </url>
   
   <url>
-    <loc>https://jackpopc.github.io/2019/10/08/generatorr-iterator/</loc>
+    <loc>https://jackpopc.github.io/2019/10/08/generator-iterator/</loc>
     
     <lastmod>2019-10-08T14:38:27.556Z</lastmod>
     

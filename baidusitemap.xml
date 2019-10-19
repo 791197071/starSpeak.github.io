@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jackpopc.github.io/2019/10/19/singleton/</loc>
+    <lastmod>2019-10-19</lastmod>
+  </url>  <url>
+    <loc>https://jackpopc.github.io/2019/10/16/clean-c/</loc>
+    <lastmod>2019-10-19</lastmod>
+  </url>  <url>
     <loc>https://jackpopc.github.io/2019/10/13/alexnet/</loc>
     <lastmod>2019-10-13</lastmod>
   </url>  <url>
@@ -10,7 +16,7 @@
     <loc>https://jackpopc.github.io/2019/09/14/jupyter/</loc>
     <lastmod>2019-10-10</lastmod>
   </url>  <url>
-    <loc>https://jackpopc.github.io/2019/10/08/generatorr-iterator/</loc>
+    <loc>https://jackpopc.github.io/2019/10/08/generator-iterator/</loc>
     <lastmod>2019-10-08</lastmod>
   </url>  <url>
     <loc>https://jackpopc.github.io/2019/10/08/spark/</loc>

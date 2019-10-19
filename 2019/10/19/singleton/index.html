@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/jsmile.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/jsmile_32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/jsmile_16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/jsmile.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="编程,Python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="平凡而诗意" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言在第三讲：类的特殊方法(上篇)中我在讲解Python特殊方法__new__的使用时提及了一个概念—单例模式，这是一个软件设计中非常重要的概念，由于它不属于某一类特定的语言，既可以用于Java、也可以用于Python，因此在这些单一编程语言的书籍里很少特意花费篇幅介绍单例模式，因此，我准备用这整篇文章来介绍一下Python的单例模式的实现及使用场景。">
+<meta name="keywords" content="编程,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【进阶Python】第六讲：单例模式的妙用">
+<meta property="og:url" content="https://jackpopc.github.io/2019/10/19/singleton/index.html">
+<meta property="og:site_name" content="平凡而诗意">
+<meta property="og:description" content="前言在第三讲：类的特殊方法(上篇)中我在讲解Python特殊方法__new__的使用时提及了一个概念—单例模式，这是一个软件设计中非常重要的概念，由于它不属于某一类特定的语言，既可以用于Java、也可以用于Python，因此在这些单一编程语言的书籍里很少特意花费篇幅介绍单例模式，因此，我准备用这整篇文章来介绍一下Python的单例模式的实现及使用场景。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-10-19T14:46:43.981Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【进阶Python】第六讲：单例模式的妙用">
+<meta name="twitter:description" content="前言在第三讲：类的特殊方法(上篇)中我在讲解Python特殊方法__new__的使用时提及了一个概念—单例模式，这是一个软件设计中非常重要的概念，由于它不属于某一类特定的语言，既可以用于Java、也可以用于Python，因此在这些单一编程语言的书籍里很少特意花费篇幅介绍单例模式，因此，我准备用这整篇文章来介绍一下Python的单例模式的实现及使用场景。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackpopc.github.io/2019/10/19/singleton/">
+
+
+
+
+
+  <title>【进阶Python】第六讲：单例模式的妙用 | 平凡而诗意</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平凡而诗意</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Jackpop</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/10/19/singleton/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jackpop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/zhihu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平凡而诗意">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【进阶Python】第六讲：单例模式的妙用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-19T20:19:20+08:00">
+                2019-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/19/singleton/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/19/singleton/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在<b>第三讲：类的特殊方法(上篇)</b>中我在讲解Python特殊方法<b>__new__</b>的使用时提及了一个概念—单例模式，这是一个软件设计中非常重要的概念，由于它不属于某一类特定的语言，既可以用于Java、也可以用于Python，因此在这些单一编程语言的书籍里很少特意花费篇幅介绍单例模式，因此，我准备用这整篇文章来介绍一下Python的单例模式的实现及使用场景。</p>
+<a id="more"></a>本文，我将从如下3个方面阐述Python单例模式的使用，
+
+- 单例模式的概念
+- Python单例模式的实现
+- 单例模式的使用场景
+
+# 单例模式
+
+首先看一下<b>维基百科</b>对单例模式的解释，
+
+> 单例模式，也叫单子模式，是一种常用的软件设计模式。在应用这个模式时，单例对象的类必须保证只有一个实例存在。许多时候整个系统只需要拥有一个的全局对象，这样有利于我们协调系统整体的行为。比如在某个服务器程序中，该服务器的配置信息存放在一个文件中，这些配置数据由一个单例对象统一读取，然后服务进程中的其他对象再通过这个单例对象获取这些配置信息。这种方式简化了在复杂环境下的配置管理。
+
+上述描述也许有点让人云里雾里，我来提炼一下维基百科关于单例模式解释的关键点，
+
+1. 单例模式是一种软件设计模式，而不是专属于某种编程语言的语法；
+2. 单例模式只有一个实例存在；
+3. 单例模式有助于协调系统的整体性、统一性；
+
+<b>软件设计模式</b>
+
+我一直认为，对于一门编程语言“入门容易，精通不易”，哪怕是对于很多人都认为简单的Python语言。
+
+我们学会一门语言的基本语法和基本使用也许只需要2个月、2个周，甚至2天或者2个小时，但是如果用一门编程语言开发出高性能的系统，却是一件日积月累的事情。
+
+当使用一门编程语言时一定要认清一个问题，代码不仅是给机器看的，同时也要给人看。因此，我们实现一个工程项目，要同时兼顾代码的高效性和简洁易读性。在效率方面我们可以借助分而治之、动态规划、二叉树、B-树等算法设计模式和数据结构，但是要实现代码的简洁性和高效性还离不开一个好的<b>软件设计模式</b>，软件设计模式有很多种，例如，
+
+- 工厂模式
+- 原型模式
+- 单例模式
+- 生成器模式
+- ......
+
+使用合理的软件设计模式可以使得代码重用性更高、更易于理解、可靠性更高。
+
+<b>单例模式只有一个实例存在</b>
+
+这是单例模式的主要特征，也是设计单例模式的要求，和普通软件设计模式允许多个实例同时存在不同，单例模式只允许一个实例存在，首先来看一个示例，
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Software</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">soft1 = Software()</span><br><span class="line">soft2 = Software()</span><br><span class="line">print(id(soft1))</span><br><span class="line">print(id(soft2))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="number">2538846619576</span></span><br><span class="line"><span class="number">2538846620024</span></span><br></pre></td></tr></table></figure>
+<p>上述给出的Python的一个普通软件设计模式，当我们定义一个名为<b>Software</b>的类后，我们先后实例化两个对象，分别是<b>soft1</b>和<b>soft2</b>，输出它们的地址可以看出，它们不是同一个示例，这就限制了它在某些场景下无法使用，后面关于单例模式的使用场景部分会专门介绍。</p>
+<p><b>单例模式有助于协调系统的整体性、统一性</b></p>
+<p>由于单例模式的设计要求使得每一个应用、活动只有一个实例，这使得不管我们怎么去调用、实例化，当前唯一存在一个实例，这在资源调度、日志管理、信息注册等应用场景下保证了只有一个实例对其进行操作，而避免了多个实例同时操作一个对象，这保证了协调系统的整体性和统一性。</p>
+<h1 id="Python单例模式"><a href="#Python单例模式" class="headerlink" title="Python单例模式"></a>Python单例模式</h1><p>其实，关于Python单例模式的实现，在<b>第三讲：类的特殊方法(上篇)</b>中已经有所提及，可以通过重写<b>__new__</b>方法来实现单例模式，但是Python实现单例模式不仅包含这一种方式，还可以使用装饰器来实现单例模式，下面来看一下两种实现Python单例模式的方式。</p>
+<p>首先，定义一个名为<b>Singleton</b>的基类，在这个基类里面对new方法进行重写，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kw)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(cls, <span class="string">'_instance'</span>):</span><br><span class="line">            orig = super(Singleton, cls)</span><br><span class="line">            cls._instance = orig.__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br></pre></td></tr></table></figure>
+<p>然后，凡是继承<b>Singleton</b>基类的子类都属于单例模式，下面来看一下，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Books</span><span class="params">(Singleton)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"> </span><br><span class="line">book1 = Books()</span><br><span class="line">book2 = Books()</span><br><span class="line">print(id(book1))</span><br><span class="line">print(id(book2))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="number">2538847457968</span></span><br><span class="line"><span class="number">2538847457968</span></span><br></pre></td></tr></table></figure>
+<p>可以从上面输出看得出来，我们虽然对Books类实例化两次，分别得到两个名为book1和book2的实例，但是id却是相同的，也就说这两个实例指向同一个地址，为同一个实例。</p>
+<p><b>装饰器</b></p>
+<p>在第二讲中我详细的介绍了Python装饰器的使用，简而言之，Python装饰器就是操作函数的函数，当然，它类也可以作为装饰器的输入。利用装饰器实现Python单例模式就是通过类进行操作实现单例模式，</p>
+<p>首先，我们完成装饰器的编写，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">singleton</span><span class="params">(cls, *args, **kw)</span>:</span>    </span><br><span class="line">    instances = &#123;&#125;    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">()</span>:</span>    </span><br><span class="line">        <span class="keyword">if</span> cls <span class="keyword">not</span> <span class="keyword">in</span> instances:    </span><br><span class="line">            instances[cls] = cls(*args, **kw)    </span><br><span class="line">        <span class="keyword">return</span> instances[cls]    </span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>然后调用装饰器，实现单例模式，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@singleton</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">animal1 = Animal()</span><br><span class="line">animal2 = Animal()</span><br><span class="line">print(id(animal1))</span><br><span class="line">print(id(animal2))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line"><span class="number">2538848208544</span></span><br><span class="line"><span class="number">2538848208544</span></span><br></pre></td></tr></table></figure>
+<p>看一下上面的输出，和new方法实现的效果是相同的。</p>
+<p>除此之外，还可以通过<b>__metaclass__</b>元类、共有属性等来实现，但是由于它本质上与上述两种方式并没有什么区别，也许看代码过程中会觉得有点不太明白，其实上述两种方式都是基于同一个思想进行实现的：<b>创建实例(instance)时首先判断是否已经存在，如果已经存在则返回，否则创建。</b></p>
+<h1 id="单例模式的使用场景"><a href="#单例模式的使用场景" class="headerlink" title="单例模式的使用场景"></a>单例模式的使用场景</h1><p>由于单例模式的特殊性，使得它具备<b>整体性、统一性</b>的优势，因此，它的使用场景大多数也是围绕这两点优势进行展开的，如果遇到以下场景，我们可以考虑是否能够使用单例模式来实现，</p>
+<ul>
+<li>资源管理的场景</li>
+<li>难以同步的场景</li>
+<li>涉及共享的场景</li>
+<li>有关认证的场景</li>
+</ul>
+<p>以上述第四点展开进行讨论一下，结合代码更加容易理解单例模式的妙处所在。</p>
+<p><b>场景描述</b></p>
+<p>做项目开发过程中，大多数岗位都会和数据打交道，无论是前端还是后端。假如，我们存储数据工具是SQL Server，我们需要通过host、user、passwd来连接数据库进行读取数据，这时候就需要<b>一次认证，多次调用</b>，请注意这句话，很关键。</p>
+<p><b>普通模式</b></p>
+<p>我们首先来实现一个连接SQL的类，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SqlClient</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, host, user, passwd)</span>:</span></span><br><span class="line">        self.host = host</span><br><span class="line">        self.user = user</span><br><span class="line">        self.passwd = passwd</span><br><span class="line">        self.register()</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.info = <span class="string">"&#123;&#125;--&#123;&#125;---&#123;&#125;"</span>.format(self.host, self.user, self.passwd)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">select</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"SELECT * FROM &#123;&#125;"</span>.format(self.host))</span><br></pre></td></tr></table></figure>
+<p>SqlClient中有3个方法，<b>__init__</b>用于初始化参数，register是认证SQL客户端，select是执行SQL语句的操作。</p>
+<p>到这里，我们完成了SQL的认证，后面我们会在不同的地方查找数据，也就是在多个地方需要调用<b>SqlClient</b>类的select方法，试想一下我们该怎么实现？</p>
+<p>有两种方法：</p>
+<ul>
+<li>反复实例化、反复认证</li>
+<li>把实例化后的对象作为参数传入到每个用到select的函数里</li>
+</ul>
+<p>先看第一种，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">host = <span class="string">"10.293.291.19"</span></span><br><span class="line">user = <span class="string">"admin"</span></span><br><span class="line">passwd = <span class="string">"666666"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_1</span><span class="params">()</span>:</span></span><br><span class="line">    sql_client = SqlClient(host, user, passwd)</span><br><span class="line">    sql_client.select()</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_2</span><span class="params">()</span>:</span></span><br><span class="line">    sql_client = SqlClient(host, user, passwd)</span><br><span class="line">    sql_client.select()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_3</span><span class="params">()</span>:</span></span><br><span class="line">    sql_client = SqlClient(host, user, passwd)</span><br><span class="line">    sql_client.select()</span><br><span class="line">    </span><br><span class="line">use_data_1()</span><br><span class="line">use_data_2()</span><br><span class="line">use_data_3()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">SELECT * FROM <span class="number">10.293</span><span class="number">.291</span><span class="number">.19</span></span><br><span class="line">SELECT * FROM <span class="number">10.293</span><span class="number">.291</span><span class="number">.19</span></span><br><span class="line">SELECT * FROM <span class="number">10.293</span><span class="number">.291</span><span class="number">.19</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，我们在<b>use_data_1、use_data_2、use_data_3</b>三处使用到了SQL选择工具，每一次我们都要重新实例化SqlClient，显然，这是很麻烦的。</p>
+<p>然后再看一下第二种方式，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">host = <span class="string">"10.293.291.19"</span></span><br><span class="line">user = <span class="string">"admin"</span></span><br><span class="line">passwd = <span class="string">"666666"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_1</span><span class="params">(sql_client)</span>:</span></span><br><span class="line">    sql_client.select()</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_2</span><span class="params">(sql_client)</span>:</span></span><br><span class="line">    sql_client.select()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_3</span><span class="params">(sql_client)</span>:</span></span><br><span class="line">    sql_client.select()</span><br><span class="line">    </span><br><span class="line">sql_client = SqlClient(host, user, passwd)</span><br><span class="line">use_data_1(sql_client)</span><br><span class="line">use_data_2(sql_client)</span><br><span class="line">use_data_3(sql_client)</span><br></pre></td></tr></table></figure>
+<p>我们可以先对实例化SqlClient，然后作为参数传入到每一个用到SQL工具的地方。</p>
+<p>这样看来显然比第一种要好很多，在代码简洁性方面比第一种方法优化了不少，但是，开发中我们应该意识到一个问题，尽量少传参数，尤其是链式调用的函数，只在其中某几个环境用到，我们却需要不断的把它当作参数一致往下传递，如果这样的话，我们会发现，我们会传递很多参数，例如下面这个示例，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">host = <span class="string">"10.293.291.19"</span></span><br><span class="line">user = <span class="string">"admin"</span></span><br><span class="line">passwd = <span class="string">"666666"</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_1</span><span class="params">(sql_client)</span>:</span></span><br><span class="line">    sql_client.select()</span><br><span class="line">    use_data_2(sql_client)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_2</span><span class="params">(sql_client)</span>:</span></span><br><span class="line">    use_data_3(sql_client)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_3</span><span class="params">(sql_client)</span>:</span></span><br><span class="line">    sql_client.select()</span><br><span class="line">    </span><br><span class="line">sql_client = SqlClient(host, user, passwd)</span><br><span class="line">use_data_1(sql_client)</span><br></pre></td></tr></table></figure>
+<p>可以看到上述示例，use_data_1调用use_data_2，use_data_2调用use_data_3,而我们在use_data_1、use_data_3中需要用到SQL工具，但是在use_data_2这个中间环节用不到，但是为了让参数继续传递下去，sql_client却不得不作为use_data_2的一个入参。</p>
+<p><b>单例模式</b></p>
+<p>这时候我们就可以使用单例模式来轻松解决这个问题，我们只需要实例化一次用于认证，然后再每个位置调用即可，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kw)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> hasattr(cls, <span class="string">'_instance'</span>):</span><br><span class="line">            orig = super(Singleton, cls)</span><br><span class="line">            cls._instance = orig.__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SqlClient</span><span class="params">(Singleton)</span>:</span></span><br><span class="line">    info = <span class="literal">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, host, user, passwd)</span>:</span></span><br><span class="line">        self.info = <span class="string">"&#123;&#125;--&#123;&#125;--&#123;&#125;"</span>.format(host, user, passwd)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">select</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(self.info)</span><br></pre></td></tr></table></figure>
+<p>我们通过继承Singleton实现SqlClient的单例模式，我们只需要调用register一次，用于认证客户端，然后后期每次重新实例化都是指向的同一个实例，也就是已经认证过的示例，我们后面任何其他地方调用的地方直接使用select方法即可，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_1</span><span class="params">()</span>:</span></span><br><span class="line">    SqlClient().select()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_2</span><span class="params">()</span>:</span></span><br><span class="line">    SqlClient().select()</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_data_3</span><span class="params">()</span>:</span></span><br><span class="line">    SqlClient().select()</span><br><span class="line">    </span><br><span class="line">SqlClient().register(host, user, passwd)</span><br><span class="line">use_data_1()</span><br><span class="line">use_data_2()</span><br><span class="line">use_data_3()</span><br></pre></td></tr></table></figure>
+<p>依此可以发散思维一下，凡是类似的场景都可以考虑一下是否可以使用单例模式。</p>
+<p>当然，凡事既有优点就会有缺点，单例模式也是，它可以实现系统的整体性和统一性，但是也不是在任何场景下都是适用的，例如，</p>
+<ul>
+<li>多线程</li>
+<li>可变对象</li>
+</ul>
+<p>在这些场景下，它违背了单例模式单一性原则，而且很容易因此数据错误。</p>
+<p>因此，使用单例模式之前需要考虑一下对应场景是否适合，如果适合，单例模式能够大大提高代码的效率，同时使得代码更加简洁，但是如果不适合而强行使用单例模式，那样会导致很多未知的问题。</p>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><p>我把完整代码已经放在github，感兴趣的可以点击下方链接，或者直接搜索项目<b><strong>advance-python</strong></b>，</p>
+<p><a href="https://github.com/Jackpopc/advance-python/blob/master/4-Singleton.ipynb" target="_blank" rel="noopener">https://github.com/Jackpopc/advance-python/blob/master/4-Singleton.ipynb</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/16/clean-c/" rel="next" title="实用工具 | 2款强大的C盘清理工具">
+                <i class="fa fa-chevron-left"></i> 实用工具 | 2款强大的C盘清理工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/zhihu.jpg" alt="Jackpop">
+            
+              <p class="site-author-name" itemprop="name">Jackpop</p>
+              <p class="site-description motion-element" itemprop="description">原创技术分享网站</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Jackpopc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:498073774@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/sharetechlee" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-book"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://zhuanlan.zhihu.com/sharetechlee" target="_blank" title="专栏">
+                      
+                        <i class="fa fa-fw fa-edit"></i>专栏</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python单例模式"><span class="nav-number">2.</span> <span class="nav-text">Python单例模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单例模式的使用场景"><span class="nav-number">3.</span> <span class="nav-text">单例模式的使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码"><span class="nav-number">4.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackpop</span>
+
+  
+</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'U1oIMCJI4zYogWXqIKva7Fsa-gzGzoHsz',
+        appKey: 'qJvgYGbG712q47zzMmQ5z9XF',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
