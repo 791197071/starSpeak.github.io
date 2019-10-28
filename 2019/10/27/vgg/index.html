@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/jsmile.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/jsmile_32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/jsmile_16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/jsmile.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CV,AI,图像处理,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="平凡而诗意" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言 2014年对于计算机视觉领域是一个丰收的一年，在这一年的ImageNet图像识别挑战赛(ILSVRC,ImageNet Large Scale Visual Recognition Challenge)中出现了两个经典、响至深的卷积神经网络模型，">
+<meta name="keywords" content="CV,AI,图像处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【动手学计算机视觉】第十七讲：卷积神经网络之VGG">
+<meta property="og:url" content="https://jackpopc.github.io/2019/10/27/vgg/index.html">
+<meta property="og:site_name" content="平凡而诗意">
+<meta property="og:description" content="前言 2014年对于计算机视觉领域是一个丰收的一年，在这一年的ImageNet图像识别挑战赛(ILSVRC,ImageNet Large Scale Visual Recognition Challenge)中出现了两个经典、响至深的卷积神经网络模型，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/27/KyYVj1.md.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/27/KytAIS.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/27/KyY8gA.md.gif">
+<meta property="og:updated_time" content="2019-10-27T13:36:05.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【动手学计算机视觉】第十七讲：卷积神经网络之VGG">
+<meta name="twitter:description" content="前言 2014年对于计算机视觉领域是一个丰收的一年，在这一年的ImageNet图像识别挑战赛(ILSVRC,ImageNet Large Scale Visual Recognition Challenge)中出现了两个经典、响至深的卷积神经网络模型，">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/10/27/KyYVj1.md.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackpopc.github.io/2019/10/27/vgg/">
+
+
+
+
+
+  <title>【动手学计算机视觉】第十七讲：卷积神经网络之VGG | 平凡而诗意</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平凡而诗意</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Jackpop</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/10/27/vgg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jackpop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/zhihu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平凡而诗意">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第十七讲：卷积神经网络之VGG</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-27T12:51:41+08:00">
+                2019-10-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机视觉/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机视觉</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/27/vgg/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/10/27/vgg/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><a href="https://imgchr.com/i/KyYVj1" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/10/27/KyYVj1.md.png" alt="KyYVj1.md.png"></a></p>
+<p>2014年对于计算机视觉领域是一个丰收的一年，在这一年的ImageNet图像识别挑战赛(ILSVRC,ImageNet Large Scale Visual Recognition Challenge)中出现了两个经典、响至深的卷积神经网络模型，<a id="more"></a>其中第一名是GoogLeNet、第二名是VGG，都可以称得上是深度计算机视觉发展过程中的经典之作。</p>
+<p>虽然在名次上GoogLeNet盖过了VGG，但是在可迁移性方面GoogLeNet对比于VGG却有很大的差距，而且在模型构建思想方面对比于它之前的AlexNet、LeNet做出了很大的改进，因此，VGG后来常作为后续卷积神经网络模型的基础模块，用于特征提取。直到5年后的今天，依然可以在很多新颖的CNN模型中可以见到VGG的身影，本文就来详细介绍一下这个经典的卷积神经网络模型。        </p>
+<h1 id="VGG模型"><a href="#VGG模型" class="headerlink" title="VGG模型"></a>VGG模型</h1><p><img src="https://s2.ax1x.com/2019/10/27/KytAIS.png" alt="config"></p>
+<p>VGG(VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION)，是由牛津大学的研究者提出，它的名称也是以作者所在实验室而命名(Visual Geometry Group)。</p>
+<p>前一篇文章介绍了经典的AlexNet，虽然它在识别效果方面非常令人惊艳，但是这些都是建立在对超参数进行大量的调整的基础上，而它并没有提出一种明确的模型设计规则以便指导后续的新网络模型设计，这也限制了它的迁移能力。因此，虽然它很知名，但是在近几年的模型基础框架却很少出现AlexNet的身影，反观VGG则成为了很多新模型基础框架的必选项之一，这也是它相对于AlexNet的优势之一：<b>VGG提出用基础块代替网络层的思想，这使得它在构建深度网络模型时可以重复使用这些基础块。</b></p>
+<p>正如前面所说，VGG使用了<b>块</b>代替<b>层</b>的思想，具体的来说，它提出了构建基础的<b>卷积块</b>和<b>全连接块</b>来替代<b>卷积层</b>和<b>全连接层</b>，而这里的<b>块</b>是由多个<b>输出通道相同</b>的层组成。</p>
+<p>VGG和AlexNet指代单一的模型不同，VGG其实包含多个不同的模型，从上图可以看出，它主要包括下列模型，</p>
+<ul>
+<li>VGG-11</li>
+<li>VGG-13</li>
+<li>VGG-16</li>
+<li>VGG-19</li>
+</ul>
+<p>其中，后面的数字11、13、16、19是网络层数。</p>
+<p>从图中可以看出，VGG的特点是每个<b>卷积块</b>(由1个或多个卷积层组成)后面跟随一个最大池化层，整体架构和AlexNet非常类似，主要区别就是把层替换成了块。</p>
+<p>从图中红框标记可以看出，每个卷积块中输出通道数相同，另外从横向维度来看，不同模型在相同卷积块中输出通道也相同。</p>
+<p>下面就以比较常用的VGG-16这个模型为例来介绍一下VGG的模型架构。</p>
+<p>VGG-16是由<b>5个卷积块</b>和<b>3个全连接层</b>共8部分组成(回想一下，AlexNet也是由8个部分组成，只不过AlexNet是由5个卷积层和3个全连接层组成)，下面详细介绍每一个部门的详细情况。</p>
+<p><b>注意：</b>前两篇文章我们在搭建LeNet和AlexNet时会发现，不同层的卷积核、步长均有差别，这也是迁移过程中比较困难的一点，而在VGG中就没有这样的困扰，VGG卷积块中统一采用的是<b>3*3</b>的卷积核，卷积层的步长均为<b>1</b>，而在池化层窗口大小统一采用<b>2*2</b>，步长为<b>2</b>。因为每个卷积层、池化层窗口大小、步长都是确定的，因此要搭建VGG我们只需要关注每一层输入输出的通道数即可。</p>
+<p><b>卷积块1</b></p>
+<p>包含<b>2</b>个卷积层，输入是<b>224*224*3</b>的图像，输入通道数为<b>3</b>，输出通道数为<b>64</b>。</p>
+<p><b>卷积块2</b></p>
+<p>包含<b>2</b>个卷积层，输入是上一个卷积块的输出，输入通道数为<b>64</b>，输出通道数为<b>128</b>。</p>
+<p><b>卷积块3</b></p>
+<p>包含<b>3</b>个卷积层，输入是上一个卷积块的输出，输入通道数为<b>128</b>，输出通道数为<b>256</b>。</p>
+<p><b>卷积块4</b></p>
+<p>包含<b>3</b>个卷积层，输入是上一个卷积块的输出，输入通道数为<b>256</b>，输出通道数为<b>512</b>。</p>
+<p><b>卷积块5</b></p>
+<p>包含<b>3</b>个卷积层，输入是上一个卷积块的输出，输入通道数为<b>512</b>，输出通道数为<b>512</b>。</p>
+<p><b>全连接层1</b></p>
+<p>输入为上一层的输出，输入通道数为前一卷积块输出reshape成一维的长度,输出通道数为<b>4096</b>。</p>
+<p><b>全连接层2</b></p>
+<p>输入为上一层的输出，输入通道数为<b>4096</b>,输出通道数为<b>4096</b>。</p>
+<p><b>全连接层3</b></p>
+<p>输入为上一层的输出，输入通道数为<b>4096</b>,输出通道数为<b>1000</b>。</p>
+<p><b>激活函数</b></p>
+<p>VGG中每层使用的激活函数为<b>ReLU</b>激活函数。</p>
+<p>由于VGG非常经典，所以，网络上有关于VGG-16、VGG-19预训练的权重，为了为了展示一下每一层的架构，读取VGG-16预训练权重看一下，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">path = <span class="string">"vgg16.npy"</span></span><br><span class="line">layers = [<span class="string">"conv1_1"</span>, <span class="string">"conv1_2"</span>,</span><br><span class="line">          <span class="string">"conv2_1"</span>, <span class="string">"conv2_2"</span>,</span><br><span class="line">          <span class="string">"conv3_1"</span>, <span class="string">"conv3_2"</span>, <span class="string">"conv3_3"</span>,</span><br><span class="line">          <span class="string">"conv4_1"</span>, <span class="string">"conv4_2"</span>, <span class="string">"conv4_3"</span>,</span><br><span class="line">          <span class="string">"conv5_1"</span>, <span class="string">"conv5_2"</span>, <span class="string">"conv5_3"</span>,</span><br><span class="line">          <span class="string">"fc6"</span>, <span class="string">"fc7"</span>, <span class="string">"fc8"</span>]</span><br><span class="line"></span><br><span class="line">data_dict = np.load(path, encoding=<span class="string">'latin1'</span>).item()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> layer <span class="keyword">in</span> layers:</span><br><span class="line">    print(data_dict[layer][<span class="number">0</span>].shape)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">64</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">64</span>, <span class="number">64</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">64</span>, <span class="number">128</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">128</span>, <span class="number">128</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">128</span>, <span class="number">256</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">256</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">512</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">512</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">512</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">512</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">512</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">25088</span>, <span class="number">4096</span>)</span><br><span class="line">(<span class="number">4096</span>, <span class="number">4096</span>)</span><br><span class="line">(<span class="number">4096</span>, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+<p>网络共16层，卷积层部分为<b>1*4</b>维的，其中从前到后分别是<b>卷积核高度</b>、<b>卷积核宽度</b>、<b>输入数据通道数</b>、<b>输出数据通道数</b>。</p>
+<p>到此为止，应该已经了解了VGG的模型结构，下面就开始使用tensorflow编程实现一下 VGG。</p>
+<h1 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h1><p>因为 VGG非常经典，所以网络上有VGG的预训练权重，我们可以直接读取预训练的权重去搭建模型，这样就可以忽略对输入和输出通道数的感知，要简单很多，但是为了更加清楚的理解网络模型，在这里还是从最基本的部分开始搭建，自己初始化权重和偏差，这样能够更加清楚每层输入和输出的结构。</p>
+<p><b>卷积块</b></p>
+<p>经过前面的介绍应该了解，VGG的主要特点就在于卷积块的使用，因此，我们首先来完成卷积块部分的编写。在完成一段代码的编写之前，我们应该首先弄明白两点：输入和输出。</p>
+<p>输出当然很明确，就是经过每个卷积块(多个卷积层)卷积、激活后的tensor，我们要明确的就是应该输入哪些参数？</p>
+<p>最重要的3个输入：<b>要进行运算的tensor</b>、<b>每个卷积块内卷积层的个数</b>、<b>输出通道数</b>。</p>
+<p>当然，我们为了更加规范的搭建模型，也需要对每一层规定一个命名空间，这样还需要输入每一层的名称。至于<b>输入通道数</b>，我们可以通过tensorflow的get_shape函数获取，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv_block</span><span class="params">(self, X, num_layers, block_index, num_channels)</span>:</span></span><br><span class="line">    in_channels = int(X.get_shape()[<span class="number">-1</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_layers):</span><br><span class="line">        name = <span class="string">"conv&#123;&#125;_&#123;&#125;"</span>.format(block_index, i)</span><br><span class="line">        <span class="keyword">with</span> tf.variable_scope(name) <span class="keyword">as</span> scope:</span><br><span class="line">            weight = tf.get_variable(<span class="string">"weight"</span>, [<span class="number">3</span>, <span class="number">3</span>, in_channels, num_channels])</span><br><span class="line">            bias = tf.get_variable(<span class="string">"bias"</span>, [num_channels])</span><br><span class="line">        conv = tf.nn.conv2d(X, weight, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</span><br><span class="line">        X = tf.nn.relu(tf.nn.bias_add(conv, bias))</span><br><span class="line">        in_channels = num_channels</span><br><span class="line">        print(X.get_shape())</span><br><span class="line">    <span class="keyword">return</span> X</span><br></pre></td></tr></table></figure>
+<p>从代码中可以看出，有几个参数是固定的：</p>
+<ul>
+<li>卷积窗口大小</li>
+<li>步长</li>
+<li>填充方式</li>
+<li>激活函数</li>
+</ul>
+<p>到此为止，我们就完成了VGG最核心一部分的搭建。</p>
+<p><b>池化层</b></p>
+<p>之前看过前两篇关于AlexNet、LeNet的同学应该记得，池化层有两个重要的参数：<b>窗口大小</b>、<b>步长</b>。由于在VGG中这两个超参数是固定的，因此，不用再作为函数的入参，直接写在代码中即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_pool</span><span class="params">(self, X)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tf.nn.max_pool(X, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">"SAME"</span>)</span><br></pre></td></tr></table></figure>
+<p><b>全连接层</b></p>
+<p>至于全连接层，和前面介绍的两个模型没有什么区别，我们只需要知道输出通道数即可，每一层的输出为上一层的输出，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">full_connect_layer</span><span class="params">(self, X, out_filters, name)</span>:</span></span><br><span class="line">    in_filters = X.get_shape()[<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">with</span> tf.variable_scope(name) <span class="keyword">as</span> scope:</span><br><span class="line">        w_fc = tf.get_variable(<span class="string">"weight"</span>, shape=[in_filters, out_filters])</span><br><span class="line">        b_fc = tf.get_variable(<span class="string">"bias"</span>, shape=[out_filters], trainable=<span class="literal">True</span>)</span><br><span class="line">    fc = tf.nn.xw_plus_b(X, w_fc, b_fc)</span><br><span class="line">    <span class="keyword">return</span> tf.nn.relu(fc)</span><br></pre></td></tr></table></figure>
+<p>由于不同网络模型之前主要的不同之处就在于模型的结构，至于训练和验证过程中需要的准确率、损失函数、优化函数等都大同小异，在前两篇文章中已经实现了训练和验证部分，所以这里就不再赘述。在本文里，我使用numpy生成一个随机的测试集测试一下网络模型是否搭建成功即可。</p>
+<p><b>测试</b></p>
+<p>首先使用numpy生成符合正态分布的随机数，形状为(5, 224, 224, 3)，5为批量数据的大小，244为输入图像的尺寸，3为输入图像的通道数，设定输出类别数为1000，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    X = np.random.normal(size=(<span class="number">5</span>, <span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>))</span><br><span class="line">    images = tf.placeholder(<span class="string">"float"</span>, [<span class="number">5</span>, <span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>])</span><br><span class="line">    vgg = VGG(<span class="number">1000</span>)</span><br><span class="line">    writer = tf.summary.FileWriter(<span class="string">"logs"</span>)</span><br><span class="line">    <span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        model = vgg.create(images)</span><br><span class="line">        sess.run(tf.global_variables_initializer())</span><br><span class="line">        writer.add_graph(sess.graph)</span><br><span class="line">        prob = sess.run(model, feed_dict=&#123;images: X&#125;)</span><br><span class="line">        print(sess.run(tf.argmax(prob, <span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">(<span class="number">5</span>, <span class="number">224</span>, <span class="number">224</span>, <span class="number">64</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">224</span>, <span class="number">224</span>, <span class="number">64</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">112</span>, <span class="number">112</span>, <span class="number">128</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">112</span>, <span class="number">112</span>, <span class="number">128</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">56</span>, <span class="number">56</span>, <span class="number">256</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">56</span>, <span class="number">56</span>, <span class="number">256</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">56</span>, <span class="number">56</span>, <span class="number">256</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">14</span>, <span class="number">14</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">14</span>, <span class="number">14</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">14</span>, <span class="number">14</span>, <span class="number">512</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">4096</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">4096</span>)</span><br><span class="line">(<span class="number">5</span>, <span class="number">1000</span>)</span><br><span class="line">[<span class="number">862</span> <span class="number">862</span> <span class="number">862</span> <span class="number">862</span> <span class="number">862</span>]</span><br></pre></td></tr></table></figure>
+<p>可以对比看出，每层网络的尺寸和前面加载的预训练模型是匹配的，下面在看一下tensorboard的结果，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tensorboard --logdir=<span class="string">"logs"</span></span></span><br></pre></td></tr></table></figure>
+<p>结果，</p>
+<p><a href="https://imgchr.com/i/KyY8gA" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/10/27/KyY8gA.md.gif" alt="KyY8gA.md.gif"></a></p>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><p>完整代码请查看github项目<b>aiLearnNotes</b>，也可以直接访问下面链接，</p>
+<p><a href="https://github.com/Jackpopc/aiLearnNotes/blob/master/computer_vision/VGG-16.py" target="_blank" rel="noopener">https://github.com/Jackpopc/aiLearnNotes/blob/master/computer_vision/VGG-16.py</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CV/" rel="tag"># CV</a>
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/19/singleton/" rel="next" title="【进阶Python】第六讲：单例模式的妙用">
+                <i class="fa fa-chevron-left"></i> 【进阶Python】第六讲：单例模式的妙用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/27/abstract/" rel="prev" title="【进阶Python】第七讲：接口与抽象基类">
+                【进阶Python】第七讲：接口与抽象基类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/zhihu.jpg" alt="Jackpop">
+            
+              <p class="site-author-name" itemprop="name">Jackpop</p>
+              <p class="site-description motion-element" itemprop="description">原创技术分享网站</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Jackpopc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:498073774@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/sharetechlee" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-book"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://zhuanlan.zhihu.com/sharetechlee" target="_blank" title="专栏">
+                      
+                        <i class="fa fa-fw fa-edit"></i>专栏</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VGG模型"><span class="nav-number">2.</span> <span class="nav-text">VGG模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编程实践"><span class="nav-number">3.</span> <span class="nav-text">编程实践</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码"><span class="nav-number">4.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackpop</span>
+
+  
+</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'U1oIMCJI4zYogWXqIKva7Fsa-gzGzoHsz',
+        appKey: 'qJvgYGbG712q47zzMmQ5z9XF',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
