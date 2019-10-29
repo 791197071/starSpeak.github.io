@@ -2,6 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jackpopc.github.io/2019/05/07/7-SIFT/</loc>
+    
+    <lastmod>2019-10-29T13:59:59.667Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/05/06/6-harris/</loc>
+    
+    <lastmod>2019-10-29T13:59:51.256Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/05/05/5-feature-engineering/</loc>
+    
+    <lastmod>2019-10-29T13:59:42.898Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/05/04/4-image-augmented/</loc>
+    
+    <lastmod>2019-10-29T13:59:38.543Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/05/03/3-image-segmentation/</loc>
+    
+    <lastmod>2019-10-29T13:59:34.367Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/05/02/2-image-enhancement/</loc>
+    
+    <lastmod>2019-10-29T13:59:28.375Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/05/01/1-image-denoising/</loc>
+    
+    <lastmod>2019-10-29T13:59:22.945Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jackpopc.github.io/2019/10/27/vgg/</loc>
     
     <lastmod>2019-10-27T13:36:05.697Z</lastmod>

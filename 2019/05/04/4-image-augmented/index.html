@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/jsmile.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/jsmile_32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/jsmile_16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/jsmile.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CV,AI,图像处理,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="平凡而诗意" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言近几年深度学习的大规模成功应用主要的就是得益于数据的累积和算例的提升，虽然近几年很多研究者竭力的攻克半监督和无监督学习，减少对大量数据的依赖，但是目前数据在计算机视觉、自然语言处理等人工智能技术领域依然占据着非常重要的地位。甚至可以说，">
+<meta name="keywords" content="CV,AI,图像处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【动手学计算机视觉】第四讲：图像预处理之图像增广">
+<meta property="og:url" content="https://jackpopc.github.io/2019/05/04/4-image-augmented/index.html">
+<meta property="og:site_name" content="平凡而诗意">
+<meta property="og:description" content="前言近几年深度学习的大规模成功应用主要的就是得益于数据的累积和算例的提升，虽然近几年很多研究者竭力的攻克半监督和无监督学习，减少对大量数据的依赖，但是目前数据在计算机视觉、自然语言处理等人工智能技术领域依然占据着非常重要的地位。甚至可以说，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=w">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf3dZn.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(x_0%2Cy_0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(x_1%2Cy_1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctheta">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf3zJf.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf8kes.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf8eYV.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf8KlF.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf8QOJ.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf8USO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf8wOH.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf8cff.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf850s.png">
+<meta property="og:updated_time" content="2019-10-29T13:59:38.543Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【动手学计算机视觉】第四讲：图像预处理之图像增广">
+<meta name="twitter:description" content="前言近几年深度学习的大规模成功应用主要的就是得益于数据的累积和算例的提升，虽然近几年很多研究者竭力的攻克半监督和无监督学习，减少对大量数据的依赖，但是目前数据在计算机视觉、自然语言处理等人工智能技术领域依然占据着非常重要的地位。甚至可以说，">
+<meta name="twitter:image" content="https://www.zhihu.com/equation?tex=w">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackpopc.github.io/2019/05/04/4-image-augmented/">
+
+
+
+
+
+  <title>【动手学计算机视觉】第四讲：图像预处理之图像增广 | 平凡而诗意</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平凡而诗意</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Jackpop</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/05/04/4-image-augmented/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jackpop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/zhihu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平凡而诗意">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第四讲：图像预处理之图像增广</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-04T21:33:00+08:00">
+                2019-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机视觉/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机视觉</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/04/4-image-augmented/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/04/4-image-augmented/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>近几年深度学习的大规模成功应用主要的就是得益于数据的累积和算例的提升，虽然近几年很多研究者竭力的攻克半监督和无监督学习，减少对大量数据的依赖，但是目前数据在计算机视觉、自然语言处理等人工智能技术领域依然占据着非常重要的地位。甚至可以说，<a id="more"></a>大规模的数据是计算机视觉成功应用的前提条件。但是由于种种原因导致数据的采集变的十分困难，因此图像增广技术就在数据的准备过程中占据着举足轻重的角色，本文就概括一下常用的图像增广技术并编程实现相应手段。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a><strong>介绍</strong></h2><p>图像增广（image augmentation）技术通过对训练图像做一系列随机改变，来产生相似但又不同的训练样本，从而扩大训练数据集的规模。图像增广的另一种解释是，随机改变训练样本可以降低模型对某些属性的依赖，从而提高模型的泛化能力。</p>
+<p>目前常用的图像增广技术有如下几种：</p>
+<ul>
+<li>镜像变换</li>
+<li>旋转</li>
+<li>缩放</li>
+<li>裁剪</li>
+<li>平移</li>
+<li>亮度修改</li>
+<li>添加噪声</li>
+<li>剪切</li>
+<li>变换颜色</li>
+</ul>
+<p>在图像增广过程中可以使用其中一种手段进行扩充，也可以使用其中的几种方法进行组合使用，由于概念比较简单，容易理解，所以接下来就边实现，边详细阐述理论知识。</p>
+<h2 id="几何变换"><a href="#几何变换" class="headerlink" title="几何变换"></a><strong>几何变换</strong></h2><p>首先以水平镜像为例，假设在原图中像素的坐标为，在镜像变换之后的图像中的坐标为，原图像坐标和镜像变换后的坐标之间的关系式：</p>
+<script type="math/tex; mode=display">\left\{ \begin{aligned} x_1 &=& w-1-x_0 \\ y_1 &=& y_0 \end{aligned} \right.</script><p>其中 <img src="https://www.zhihu.com/equation?tex=w" alt="w">w 为图像的宽度。</p>
+<p>那么两张图像的关系就是：</p>
+<script type="math/tex; mode=display">\left[ \begin{array}{c}{x_{1}} \\ {y_{1}} \\ {1}\end{array}\right]=\left[ \begin{array}{ccc}{-1} & {0} & {w-1} \\ {0} & {1} & {0} \\ {0} & {0} & {1}\end{array}\right] \left[ \begin{array}{l}{x_{0}} \\ {y_{0}} \\ {1}\end{array}\right]</script><p>它的逆变换就是</p>
+<script type="math/tex; mode=display">\left[ \begin{array}{c}{x_{0}} \\ {y_{0}} \\ {1}\end{array}\right]=\left[ \begin{array}{ccc}{-1} & {0} & {w-1} \\ {0} & {1} & {0} \\ {0} & {0} & {1}\end{array}\right] \left[ \begin{array}{l}{x_{1}} \\ {y_{1}} \\ {1}\end{array}\right]</script><p>从原图到水平镜像的变换矩阵就是：</p>
+<script type="math/tex; mode=display">\left[ \begin{array}{ccc}{-1} & {0} & {w-1} \\ {0} & {1} & {0} \\ {0} & {0} & {1}\end{array}\right]</script><p>同理，可知，垂直镜像变换的关系式为：</p>
+<script type="math/tex; mode=display">\left[ \begin{array}{ccc}{-1} & {0} & {w-1} \\ {0} & {1} & {0} \\ {0} & {0} & {1}\end{array}\right]</script><p>其中为图像高度。</p>
+<p>通过上述可以知道，<strong>平移</strong>变换的数学矩阵为：</p>
+<script type="math/tex; mode=display">H=\left[ \begin{array}{lll}{1} & {0} & {d_{x}} \\ {0} & {1} & {d_{y}} \\ {0} & {0} & {1}\end{array}\right]</script><p> 其中和分别是像素在水平和垂直方向移动的距离。</p>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf3dZn.png" alt="Kf3dZn.png"></p>
+<p>同理可以推广到旋转变换上，加上原像素的坐标为 <img src="https://www.zhihu.com/equation?tex=(x_0%2Cy_0" alt="(x_0,y_0)">)(x_0,y_0) ，该像素点相对于原点的角度为，假设有一个半径为的圆，那么原像素的坐标可以表示为：</p>
+<script type="math/tex; mode=display">\left\{\begin{array}{l}{x_{0}=r \cos \alpha} \\ {y_{0}=r \cos \alpha}\end{array}\right.</script><p>加上旋转后的像素坐标为 <img src="https://www.zhihu.com/equation?tex=(x_1%2Cy_1" alt="(x_1,y_1)">)(x_1,y_1) ，旋转角度为 <img src="https://www.zhihu.com/equation?tex=%5Ctheta" alt="\theta">\theta ，那么可以表示为：</p>
+<script type="math/tex; mode=display">\left\{\begin{array}{l}{x_1=r \cos (\alpha+\theta)} \\ {y_1=r \sin (\alpha+\theta)}\end{array}\right.</script><p>通过展开、化简可得，</p>
+<script type="math/tex; mode=display">\left\{\begin{array}{l}{x_1=r \cos (\alpha+\theta)=r \cos \alpha \cos \theta-r \sin \alpha \sin \theta=x_{0} \cos \theta-y_{0} \sin \theta} \\ {y_1=r \sin (\alpha+\theta)=r \sin \alpha \cos \theta+r \cos \alpha \sin \theta=x_{0} \sin \theta+y_{0} \cos \theta}\end{array}\right.</script><p>把上述公式写成数学矩阵形式为：</p>
+<script type="math/tex; mode=display">\left[ \begin{array}{l}{x_1} \\ {y_1} \\ {1}\end{array}\right]=\left[ \begin{array}{ccc}{\cos \theta} & {-\sin \theta} & {0} \\ {\sin \theta} & {\cos \theta} & {0} \\ {0} & {0} & {1}\end{array}\right] \left[ \begin{array}{l}{x_{0}} \\ {y_{0}} \\ {1}\end{array}\right]</script><p>因此旋转变换的矩阵为：</p>
+<script type="math/tex; mode=display">H=\left[ \begin{array}{ccc}{\cos \theta} & {-\sin \theta} & {0} \\ {\sin \theta} & {\cos \theta} & {0} \\ {0} & {0} & {1}\end{array}\right]</script><p>其他的几何变换方式和上述提到的核心思想大同小异，因此，就不再详细展开，感兴趣的可以在网上搜集一下，或者看一下数字图像处理相关的书籍，关注这些内容的讲解有很多。</p>
+<h2 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a><strong>编程实践</strong></h2><blockquote>
+<p>编程实践过程中主要用到opencv、numpy和skimage。</p>
+</blockquote>
+<p>读取图像：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 读取图像</span></span><br><span class="line">img = cv2.imread(<span class="string">"./data/000023.jpg"</span>)</span><br><span class="line">cv2.imshow(<span class="string">"Origin"</span>, img)</span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf3zJf.png" alt="Kf3zJf.png"></p>
+<p>初始化一个矩阵，用于存储转化后的图像，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">generate_img = np.zeros(img.shape)</span><br></pre></td></tr></table></figure>
+<p><strong>1.水平镜像</strong></p>
+<p>遍历图像的像素，用前文提到的数学关系式进行像素的转化，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(h):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(w):</span><br><span class="line">        generate_img[i, w - <span class="number">1</span> - j] = img[i, j]</span><br><span class="line"></span><br><span class="line">cv2.imshow(<span class="string">"Ver"</span>, generate_img.astype(np.uint8))</span><br><span class="line">cv2.waitKey()</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf8kes.png" alt="Kf8kes.png"></p>
+<blockquote>
+<p>备注：初始化的图像数据类型是numpy.float64，用opencv显示时无法正常显示，因此在显示时需要用astype(np.uint8)把图像转化成numpy.uint8数据格式。</p>
+</blockquote>
+<p><strong>2.垂直镜像</strong></p>
+<p>垂直镜像变换代码，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(h):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(w):</span><br><span class="line">        generate_img[h<span class="number">-1</span>-i, j] = img[i, j]</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf8eYV.png" alt="Kf8eYV.png"></p>
+<blockquote>
+<p>镜像变换也可以直接调用opencv的flip进行使用。</p>
+</blockquote>
+<p><strong>3.图像缩放</strong></p>
+<p>这个比较简单，直接调用opencv的resize函数即可，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = cv2.resize(img, (<span class="number">100</span>, <span class="number">300</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf8KlF.png" alt="Kf8KlF.png"></p>
+<p><strong>4.旋转变换</strong></p>
+<p>这个相对复杂一些，需要首先用getRotationMatrix2D函数获取一个旋转矩阵，然后调用opencv的warpAffine仿射函数安装旋转矩阵对图像进行旋转变换，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">center = cv2.getRotationMatrix2D((w/<span class="number">2</span>, h/<span class="number">2</span>), <span class="number">45</span>, <span class="number">1</span>)</span><br><span class="line">rotated_img = cv2.warpAffine(img, center, (w, h))</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf8QOJ.png" alt="Kf8QOJ.png"></p>
+<p><strong>5. 平移变换</strong></p>
+<p>首先用numpy生成一个平移矩阵，然后用仿射变换函数对图像进行平移变换，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">move = np.float32([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">100</span>], [<span class="number">0</span>, <span class="number">1</span>, <span class="number">100</span>]])</span><br><span class="line">move_img = cv2.warpAffine(img, move, (w, h))</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf8USO.png" alt="Kf8USO.png"></p>
+<p><strong>6.亮度变换</strong></p>
+<p>亮度变换的方法有很多种，本文介绍一种叠加图像的方式，通过给原图像叠加一副同样大小，不同透明度的全零像素图像来修改图像的亮度，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alpha = <span class="number">1.5</span></span><br><span class="line">light = cv2.addWeighted(img, alpha, np.zeros(img.shape).astype(np.uint8), <span class="number">1</span>-alpha, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>其中alpha是原图像的透明度，</p>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf8wOH.png" alt="Kf8wOH.png"></p>
+<p><strong>7.添加噪声</strong></p>
+<p>首先写一下噪声添加的函数，原理就是给图像添加一些符合正态分布的随机数，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_noise</span><span class="params">(img)</span>:</span></span><br><span class="line">    img = np.multiply(img, <span class="number">1.</span> / <span class="number">255</span>,</span><br><span class="line">                        dtype=np.float64)</span><br><span class="line">    mean, var = <span class="number">0</span>, <span class="number">0.01</span></span><br><span class="line">    noise = np.random.normal(mean, var ** <span class="number">0.5</span>,</span><br><span class="line">                             img.shape)</span><br><span class="line">    img = convert(img, np.floating)</span><br><span class="line">    out = img + noise</span><br><span class="line">    <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf8cff.png" alt="Kf8cff.png"></p>
+<p><strong>8.组合变换</strong></p>
+<p>除了以上方法单独使用之外，还可以叠加其中多种方法进行组合使用，比如可以结合选择、镜像进行使用，</p>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf850s.png" alt="Kf850s.png"></p>
+<p>完整代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> skimage.util.dtype <span class="keyword">import</span> convert</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImageAugmented</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, path=<span class="string">"./data/000023.jpg"</span>)</span>:</span></span><br><span class="line">        self.img = cv2.imread(path)</span><br><span class="line">        self.h, self.w = self.img.shape[<span class="number">0</span>], self.img.shape[<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 1. 镜像变换</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">flip</span><span class="params">(self, flag=<span class="string">"h"</span>)</span>:</span></span><br><span class="line">        generate_img = np.zeros(self.img.shape)</span><br><span class="line">        <span class="keyword">if</span> flag == <span class="string">"h"</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.h):</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(self.w):</span><br><span class="line">                    generate_img[i, self.h - <span class="number">1</span> - j] = self.img[i, j]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(self.h):</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(self.w):</span><br><span class="line">                    generate_img[self.h<span class="number">-1</span>-i, j] = self.img[i, j]</span><br><span class="line">        <span class="keyword">return</span> generate_img</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2. 缩放</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_resize_img</span><span class="params">(self, shape=<span class="params">(<span class="number">100</span>, <span class="number">300</span>)</span>)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> cv2.resize(self.img, shape)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 3. 旋转</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rotated</span><span class="params">(self)</span>:</span></span><br><span class="line">        center = cv2.getRotationMatrix2D((self.w / <span class="number">2</span>, self.h / <span class="number">2</span>), <span class="number">45</span>,<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> cv2.warpAffine(self.img, center, (self.w, self.h))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 4. 平移</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">translation</span><span class="params">(self, x_scale=<span class="number">100</span>, y_scale=<span class="number">100</span>)</span>:</span></span><br><span class="line">        move = np.float32([[<span class="number">1</span>, <span class="number">0</span>, x_scale], [<span class="number">0</span>, <span class="number">1</span>, y_scale]])</span><br><span class="line">        <span class="keyword">return</span> cv2.warpAffine(self.img, move, (self.w, self.h))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 5. 改变亮度</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change_light</span><span class="params">(self, alpha=<span class="number">1.5</span>, scale=<span class="number">3</span>)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> cv2.addWeighted(self.img, alpha, np.zeros(self.img.shape).astype(np.uint8), <span class="number">1</span>-alpha, scale)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 6. 添加噪声</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_noise</span><span class="params">(self, mean=<span class="number">0</span>, var=<span class="number">0.01</span>)</span>:</span></span><br><span class="line">        img = np.multiply(self.img, <span class="number">1.</span> / <span class="number">255</span>, dtype=np.float64)</span><br><span class="line">        noise = np.random.normal(mean, var ** <span class="number">0.5</span>,</span><br><span class="line">                                 img.shape)</span><br><span class="line">        img = convert(img, np.floating)</span><br><span class="line">        out = img + noise</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="往期回顾"><a href="#往期回顾" class="headerlink" title="往期回顾"></a>往期回顾</h2><p><a href="https://zhuanlan.zhihu.com/p/57521026" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第一讲：图像预处理之图像去噪</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/57537622" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第二讲：图像预处理之图像增强</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/60847136" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第三讲：图像预处理之图像分割</a></p>
+<hr>
+<blockquote>
+<p>感兴趣的可以关注一下，也可以关注公众号”平凡而诗意”，我在公众号共享了一些资源和学习资料，关注后回复相应关键字可以获取。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CV/" rel="tag"># CV</a>
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/03/3-image-segmentation/" rel="next" title="【动手学计算机视觉】第三讲：图像预处理之图像分割">
+                <i class="fa fa-chevron-left"></i> 【动手学计算机视觉】第三讲：图像预处理之图像分割
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/05/5-feature-engineering/" rel="prev" title="【动手学计算机视觉】第五讲：传统目标检测之特征工程">
+                【动手学计算机视觉】第五讲：传统目标检测之特征工程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/zhihu.jpg" alt="Jackpop">
+            
+              <p class="site-author-name" itemprop="name">Jackpop</p>
+              <p class="site-description motion-element" itemprop="description">原创技术分享网站</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Jackpopc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:498073774@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/sharetechlee" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-book"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://zhuanlan.zhihu.com/sharetechlee" target="_blank" title="专栏">
+                      
+                        <i class="fa fa-fw fa-edit"></i>专栏</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几何变换"><span class="nav-number">3.</span> <span class="nav-text">几何变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程实践"><span class="nav-number">4.</span> <span class="nav-text">编程实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#往期回顾"><span class="nav-number">5.</span> <span class="nav-text">往期回顾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackpop</span>
+
+  
+</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'U1oIMCJI4zYogWXqIKva7Fsa-gzGzoHsz',
+        appKey: 'qJvgYGbG712q47zzMmQ5z9XF',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/jsmile.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/jsmile_32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/jsmile_16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/jsmile.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CV,AI,图像处理,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="平凡而诗意" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言图像分割是一种把图像分成若干个独立子区域的技术和过程。在图像的研究和应用中，很多时候我们关注的仅是图像中的目标或前景(其他部分称为背景)，它们对应图像中特定的、具有独特性质的区域。为了分割目标，需要将这些区域分离提取出来">
+<meta name="keywords" content="CV,AI,图像处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【动手学计算机视觉】第三讲：图像预处理之图像分割">
+<meta property="og:url" content="https://jackpopc.github.io/2019/05/03/3-image-segmentation/index.html">
+<meta property="og:site_name" content="平凡而诗意">
+<meta property="og:description" content="前言图像分割是一种把图像分成若干个独立子区域的技术和过程。在图像的研究和应用中，很多时候我们关注的仅是图像中的目标或前景(其他部分称为背景)，它们对应图像中特定的、具有独特性质的区域。为了分割目标，需要将这些区域分离提取出来">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/KfleJO.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kfl1eI.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kfl8TP.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/KflUSg.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/KflwOs.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=r%EF%BC%8C%5Ctheta">
+<meta property="og:image" content="https://s2.ax1x.com/2019/10/29/Kf16HI.png">
+<meta property="og:updated_time" content="2019-10-29T13:59:34.367Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【动手学计算机视觉】第三讲：图像预处理之图像分割">
+<meta name="twitter:description" content="前言图像分割是一种把图像分成若干个独立子区域的技术和过程。在图像的研究和应用中，很多时候我们关注的仅是图像中的目标或前景(其他部分称为背景)，它们对应图像中特定的、具有独特性质的区域。为了分割目标，需要将这些区域分离提取出来">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/10/29/KfleJO.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackpopc.github.io/2019/05/03/3-image-segmentation/">
+
+
+
+
+
+  <title>【动手学计算机视觉】第三讲：图像预处理之图像分割 | 平凡而诗意</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平凡而诗意</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Jackpop</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/05/03/3-image-segmentation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jackpop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/zhihu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平凡而诗意">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【动手学计算机视觉】第三讲：图像预处理之图像分割</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-03T21:22:05+08:00">
+                2019-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机视觉/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机视觉</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/03/3-image-segmentation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/03/3-image-segmentation/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>图像分割是一种把图像分成若干个独立子区域的技术和过程。在图像的研究和应用中，很多时候我们关注的仅是图像中的目标或前景(其他部分称为背景)，它们对应图像中特定的、具有独特性质的区域。为了分割目标，需要将这些区域分离提取出来<a id="more"></a>，在此基础上才有可能进一步利用，如进行特征提取、目标识别。因此，图像分割是由图像处理进到图像分析的关键步骤，在图像领域占据着至关重要的地位。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>提到图像分割，主要包含两个方面：</p>
+<ul>
+<li>非语义分割</li>
+<li>语义分割</li>
+</ul>
+<p>首先，介绍一下非语义分割。</p>
+<p>非语义分割在图像分割中所占比重更高，目前算法也非常多，研究时间较长，而且算法也比较成熟，此类图像分割目前的算法主要有以下几种：</p>
+<ul>
+<li>阈值分割</li>
+</ul>
+<p><img src="https://s2.ax1x.com/2019/10/29/KfleJO.png" alt="KfleJO.png"></p>
+<p>阈值分割是图像分割中应用最多的一类，该算法思想比较简单，给定输入图像一个特定阈值，如果这个阈值可以是灰度值，也可以是梯度值，如果大于这个阈值，则设定为前景像素值，如果小于这个阈值则设定为背景像素值。</p>
+<p>阈值设置为100对图像进行分割：</p>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kfl1eI.png" alt="Kfl1eI.png"></p>
+<ul>
+<li>区域分割</li>
+</ul>
+<p>区域分割算法中比较有代表性的算法有两种：区域生长和区域分裂合并。</p>
+<p>区域生长算法的核心思想是给定子区域一个种子像素，作为生长的起点，然后将种子像素周围邻域中与种子像素有相同或相似性质的像素(可以根据预先设定的规则，比如基于灰度差)合并到种子所在的区域中。</p>
+<p>区域分裂合并基本上就是区域生长的逆过程，从整个图像出发，不断分裂得到各个子区域，然后再把前景区域合并，实现目标提取。</p>
+<ul>
+<li>聚类</li>
+</ul>
+<p>聚类是一个应用非常广泛的无监督学习算法，该算法在图像分割领域也有较多的应用。聚类的核心思想就是利用样本的相似性，把相似的像素点聚合成同一个子区域。</p>
+<ul>
+<li>边缘分割</li>
+</ul>
+<p>这是图像分割中较为成熟，而且较为常用的一类算法。边缘分割主要利用图像在边缘处灰度级会发生突变来对图像进行分割。常用的方法是利用差分求图像梯度，而在物体边缘处，梯度幅值会较大，所以可以利用梯度阈值进行分割，得到物体的边缘。对于阶跃状边缘，其位置对应一阶导数的极值点，对应二阶导数的过零点(零交叉点)。因此常用微分算子进行边缘检测。常用的一阶微分算子有Roberts算子、Prewitt算子和Sobel算子，二阶微分算子有Laplace算子和Kirsh算子等。由于边缘和噪声都是灰度不连续点，在频域均为高频分量，直接采用微分运算难以克服噪声的影响。因此用微分算子检测边缘前要对图像进行平滑滤波。LoG算子和Canny算子是具有平滑功能的二阶和一阶微分算子，边缘检测效果较好，因此Canny算子也是应用较多的一种边缘分割算法。</p>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kfl8TP.png" alt="Kfl8TP.png"></p>
+<ul>
+<li>直方图</li>
+</ul>
+<p>与前面提到的算法不同，直方图图像分割算法利用统计信息对图像进行分割。通过统计图像中的像素，得到图像的灰度直方图，然后在直方图的波峰和波谷是用于定位图像中的簇。</p>
+<ul>
+<li>水平集</li>
+</ul>
+<p>水平集方法最初由Osher和Sethian提出，目的是用于界面追踪。在90年代末期被广泛应用在各种图像领域。这一方法能够在隐式有效的应对曲线/曲面演化问题。基本思想是用一个符号函数表示演化中的轮廓（曲线或曲面），其中符号函数的零水平面对应于实际的轮廓。这样对应于轮廓运动方程，可以容易的导出隐式曲线/曲面的相似曲线流，当应用在零水平面上将会反映轮廓自身的演化。水平集方法具有许多优点：它是隐式的，参数自由的，提供了一种估计演化中的几何性质的直接方法，能够改变拓扑结构并且是本质的。</p>
+<p><img src="https://s2.ax1x.com/2019/10/29/KflUSg.png" alt="KflUSg.png"></p>
+<p>语义分割和非语义分割的共同之处都是要分割出图像中物体的边缘，但是二者也有本质的区别，用通俗的话介绍就是非语义分割只想提取物体的边缘，但是不关注目标的类别。而语义分割不仅要提取到边缘像素级别，还要知道这个目标是什么。因此，非语义分割是一种图像基础处理技术，而语义分割是一种机器视觉技术，难度也更大一些，目前比较成熟且应用广泛的语义分割算法有以下几种：</p>
+<ul>
+<li>Grab cut</li>
+<li>Mask R-CNN</li>
+<li>U-Net</li>
+<li>FCN</li>
+<li>SegNet</li>
+</ul>
+<p>由于篇幅有限，所以在这里就展开介绍语义分割，后期有时间会单独对某几个算法进行详细解析，本文主要介绍非语义分割算法，本文就以2015年UCLA提出的一种新型、高效的图像分割算法—相位拉伸变换为例，详细介绍一下，并从头到尾实现一遍。</p>
+<h2 id="相位拉伸变换"><a href="#相位拉伸变换" class="headerlink" title="相位拉伸变换"></a>相位拉伸变换</h2><p>相位拉伸变换(Phase Stretch Transform, PST)，是UCLA JalaliLab于2015年提出的一种新型图像分割算法[<a href="http://downloads.hindawi.com/journals/ijbi/2015/687819.pdf" target="_blank" rel="noopener">Edge Detection in Digital Images Using Dispersive Phase Stretch Transform</a>]，该算法主要有两个显著优点：</p>
+<ul>
+<li>速度快</li>
+<li>精度高</li>
+<li>思想简单</li>
+<li>实现容易</li>
+</ul>
+<p>PST算法中，首先使用定位核对原始图像进行平滑，然后通过非线性频率相关（离散）相位操作，称为相位拉伸变换(PST)。 PST将2D相位函数应用于频域中的图像。施加到图像的相位量取决于频率;也就是说，较高的相位量被应用于图像的较高频率特征。由于图像边缘包含更高频率的特征，因此PST通过将更多相位应用于更高频率的特征来强调图像中的边缘信息。可以通过对PST输出相位图像进行阈值处理来提取图像边缘。在阈值处理之后，通过形态学操作进一步处理二值图像以找到图像边缘。思想主要包含三个步骤：</p>
+<p><img src="https://s2.ax1x.com/2019/10/29/KflwOs.png" alt="KflwOs.png"></p>
+<ul>
+<li>非线性相位离散化</li>
+<li>阈值化处理</li>
+<li>形态学运算</li>
+</ul>
+<p>下面来详细介绍一下。</p>
+<p>相位拉伸变换，核心就是一个公式，</p>
+<script type="math/tex; mode=display">A[n, m]=\angle(IFFT2(\tilde{K}[p, q]\cdot\tilde{L}[p, q]\cdot FFT2(B[n, m]))) \tag{1}</script><p>其中 $B[n, m]$ 为输入图像， $m,n$ 为图像维数， $A[n, m]$ 为输出图像， $\angle$ 为角运算， $FFT2$ 为快速傅里叶变换， $IFFT2$ 为逆快速傅里叶变换，$p$和 $q$ 是二维频率变量， $\tilde{L}[p, q]$ 为局部频率响应核，通俗的讲，就是一个用于图像平滑、去噪的滤波核，论文中没有给出，可以使用一些用于图像平滑的滤波核代替， $\tilde{K}[p, q]$ 为相位核，其中，</p>
+<script type="math/tex; mode=display">\tilde{K}[p, q]=e^{j\cdot\varphi[p,q]}</script><script type="math/tex; mode=display">\varphi[p,q]=\varphi_{polar}[r,\theta] \\=\varphi_{polar}[r]\\=S\cdot\frac{W\cdot r \cdot tan^{-1}(W \cdot r)-(1/2)\cdot ln(1+(W \cdot r)^2)}{W \cdot r_{max} \cdot tan^{-1}(W \cdot r_{max})-(1/2)ln(1+W \cdot r_{max})^2} \tag{2}</script><p>$r=\sqrt{p^2+q^2}$， $\theta=tan^{-1}(q/p)$， $S$ 和 $W$ 是施加到图像相位的强度和扭曲，是影响图像分割效果的两个重要参数。</p>
+<h2 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h2><p>PST算法中最核心的就是公式(1)，编程实现可以一步一步来实现公式中的每个模块。</p>
+<p>首先导入需要的模块，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os </span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> mahotas <span class="keyword">as</span> mh</span><br><span class="line"><span class="keyword">import</span> matplotlib.pylab <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> cv2</span><br></pre></td></tr></table></figure>
+<p>定义全局变量，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">L = <span class="number">0.5</span> </span><br><span class="line">S = <span class="number">0.48</span> </span><br><span class="line">W= <span class="number">12.14</span></span><br><span class="line">Threshold_min = <span class="number">-1</span></span><br><span class="line">Threshold_max = <span class="number">0.0019</span></span><br><span class="line">FLAG = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>计算公式中的核心参数， <img src="https://www.zhihu.com/equation?tex=r%EF%BC%8C%5Ctheta" alt="r，\theta">r，\theta ,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cart2pol</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    theta = np.arctan2(y, x)</span><br><span class="line">    rho = np.hypot(x, y)</span><br><span class="line">    <span class="keyword">return</span> theta, rho</span><br></pre></td></tr></table></figure>
+<p>生成变量 $p$ 和 $q$ ,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = np.linspace(-L, L, img.shape[<span class="number">0</span>])</span><br><span class="line">y = np.linspace(-L, L, img.shape[<span class="number">1</span>])</span><br><span class="line">X, Y = np.meshgrid(x, y)</span><br><span class="line">p, q = X.T, y.T</span><br><span class="line">theta, rho = cart2pol(p, q)</span><br></pre></td></tr></table></figure>
+<p>接下来对公式(1)从右至左依次实现，</p>
+<p>对输入图像进行快速傅里叶变换,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">orig = np.fft.fft2(img)</span><br></pre></td></tr></table></figure>
+<p>实现 $\tilde{L}[p, q]$，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expo = np.fft.fftshift(np.exp(-np.power((np.divide(rho, math.sqrt((LPF ** <span class="number">2</span>) / np.log(<span class="number">2</span>)))), <span class="number">2</span>)))</span><br></pre></td></tr></table></figure>
+<p>对图像进行平滑处理，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">orig_filtered = np.real(np.fft.ifft2((np.multiply(orig, expo))))</span><br></pre></td></tr></table></figure>
+<p>实现相位核，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PST_Kernel_1 = np.multiply(np.dot(rho, W), np.arctan(np.dot(rho, W))) - <span class="number">0.5</span> * np.log(<span class="number">1</span> + np.power(np.dot(rho, W), <span class="number">2</span>))</span><br><span class="line">PST_Kernel = PST_Kernel_1 / np.max(PST_Kernel_1) * S</span><br></pre></td></tr></table></figure>
+<p>将前面实现的部分与相位核做乘积，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">temp = np.multiply(np.fft.fftshift(np.exp(<span class="number">-1j</span> * PST_Kernel)), np.fft.fft2(orig_filtered))</span><br></pre></td></tr></table></figure>
+<p>对图像进行逆快速傅里叶变换，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">temp = np.multiply(np.fft.fftshift(np.exp(<span class="number">-1j</span> * PST_Kernel)), np.fft.fft2(Image_orig_filtered))</span><br><span class="line">orig_filtered_PST = np.fft.ifft2(temp)</span><br></pre></td></tr></table></figure>
+<p>进行角运算，得到变换图像的相位，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHI_features = np.angle(Image_orig_filtered_PST)</span><br></pre></td></tr></table></figure>
+<p>对图像进行阈值化处理，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">features = np.zeros((PHI_features.shape[<span class="number">0</span>], PHI_features.shape[<span class="number">1</span>]))</span><br><span class="line">features[PHI_features &gt; Threshold_max] = <span class="number">1</span> </span><br><span class="line">features[PHI_features &lt; Threshold_min] = <span class="number">1</span>  </span><br><span class="line">features[I &lt; (np.amax(I) / <span class="number">20</span>)] = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>应用二进制形态学操作来清除转换后的图像,</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">out = features</span><br><span class="line">out = mh.thin(out, <span class="number">1</span>)</span><br><span class="line">out = mh.bwperim(out, <span class="number">4</span>)</span><br><span class="line">out = mh.thin(out, <span class="number">1</span>)</span><br><span class="line">out = mh.erode(out, np.ones((<span class="number">1</span>, <span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+<p>到这里就完成了相位拉伸变换的核心部分，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">phase_stretch_transform</span><span class="params">(img, LPF, S, W, threshold_min, threshold_max, flag)</span>:</span></span><br><span class="line">    L = <span class="number">0.5</span></span><br><span class="line">    x = np.linspace(-L, L, img.shape[<span class="number">0</span>])</span><br><span class="line">    y = np.linspace(-L, L, img.shape[<span class="number">1</span>])</span><br><span class="line">    [X1, Y1] = (np.meshgrid(x, y))</span><br><span class="line">    X = X1.T</span><br><span class="line">    Y = Y1.T</span><br><span class="line">    theta, rho = cart2pol(X, Y)</span><br><span class="line">    orig = ((np.fft.fft2(img)))</span><br><span class="line">    expo = np.fft.fftshift(np.exp(-np.power((np.divide(rho, math.sqrt((LPF ** <span class="number">2</span>) / np.log(<span class="number">2</span>)))), <span class="number">2</span>)))</span><br><span class="line">    orig_filtered = np.real(np.fft.ifft2((np.multiply(orig, expo))))</span><br><span class="line">    PST_Kernel_1 = np.multiply(np.dot(rho, W), np.arctan(np.dot(rho, W))) - <span class="number">0.5</span> * np.log(</span><br><span class="line">        <span class="number">1</span> + np.power(np.dot(rho, W), <span class="number">2</span>))</span><br><span class="line">    PST_Kernel = PST_Kernel_1 / np.max(PST_Kernel_1) * S</span><br><span class="line">    temp = np.multiply(np.fft.fftshift(np.exp(<span class="number">-1j</span> * PST_Kernel)), np.fft.fft2(orig_filtered))</span><br><span class="line">    orig_filtered_PST = np.fft.ifft2(temp)</span><br><span class="line">    PHI_features = np.angle(orig_filtered_PST)</span><br><span class="line">    <span class="keyword">if</span> flag == <span class="number">0</span>:</span><br><span class="line">        out = PHI_features</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        features = np.zeros((PHI_features.shape[<span class="number">0</span>], PHI_features.shape[<span class="number">1</span>]))</span><br><span class="line">        features[PHI_features &gt; threshold_max] = <span class="number">1</span></span><br><span class="line">        features[PHI_features &lt; threshold_min] = <span class="number">1</span></span><br><span class="line">        features[img &lt; (np.amax(img) / <span class="number">20</span>)] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        out = features</span><br><span class="line">        out = mh.thin(out, <span class="number">1</span>)</span><br><span class="line">        out = mh.bwperim(out, <span class="number">4</span>)</span><br><span class="line">        out = mh.thin(out, <span class="number">1</span>)</span><br><span class="line">        out = mh.erode(out, np.ones((<span class="number">1</span>, <span class="number">1</span>)))</span><br><span class="line">    <span class="keyword">return</span> out, PST_Kernel</span><br></pre></td></tr></table></figure>
+<p>下面完成调用部分的功能，</p>
+<p>首先读取函数并把图像转化为灰度图，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Image_orig = mh.imread(<span class="string">"./cameraman.tif"</span>)</span><br><span class="line"><span class="keyword">if</span> Image_orig.ndim == <span class="number">3</span>:</span><br><span class="line">    Image_orig_grey = mh.colors.rgb2grey(Image_orig) </span><br><span class="line"><span class="keyword">else</span>: </span><br><span class="line">    Image_orig_grey = Image_orig</span><br></pre></td></tr></table></figure>
+<p>调用前面的函数，对图像进行相位拉伸变换，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">edge, kernel = phase_stretch_transform(Image_orig_grey, LPF, Phase_strength, Warp_strength, Threshold_min, Threshold_max, Morph_flag)</span><br></pre></td></tr></table></figure>
+<p>显示图像，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Overlay = mh.overlay(Image_orig_grey, edge)</span><br><span class="line">edge = edge.astype(np.uint8)*<span class="number">255</span></span><br><span class="line">plt.imshow(Edge)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p>主函数的完整内容为，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    Image_orig = mh.imread(<span class="string">"./cameraman.tif"</span>)</span><br><span class="line">    <span class="keyword">if</span> Image_orig.ndim == <span class="number">3</span>:</span><br><span class="line">       Image_orig_grey = mh.colors.rgb2grey(Image_orig)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">       Image_orig_grey = Image_orig</span><br><span class="line">    edge, kernel = phase_stretch_transform(Image_orig_grey, LPF, S, W, Threshold_min,</span><br><span class="line">                                           Threshold_max, FLAG)</span><br><span class="line">    Overlay = mh.overlay(Image_orig_grey, Edge)</span><br><span class="line">    Edge = Edge.astype(np.uint8)*<span class="number">255</span></span><br><span class="line">    plt.imshow(Edge)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="https://s2.ax1x.com/2019/10/29/Kf16HI.png" alt="Kf16HI.png"></p>
+<hr>
+<h2 id="往期回顾"><a href="#往期回顾" class="headerlink" title="往期回顾"></a>往期回顾</h2><p><a href="https://zhuanlan.zhihu.com/p/57521026" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第一讲：图像预处理之图像去噪</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/57537622" target="_blank" rel="noopener">Jackpop：【动手学计算机视觉】第二讲：图像预处理之图像增强</a></p>
+<p>!img](<a href="https://pic2.zhimg.com/v2-4da90f547b115c1a398b3cc516eada3d_b.png" target="_blank" rel="noopener">https://pic2.zhimg.com/v2-4da90f547b115c1a398b3cc516eada3d_b.png</a>)</p>
+<blockquote>
+<p>感兴趣的可以关注一下，也可以关注公众号”平凡而诗意”，我在公众号共享了一些资源和学习资料，关注后回复相应关键字可以获取。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CV/" rel="tag"># CV</a>
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/图像处理/" rel="tag"># 图像处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/02/2-image-enhancement/" rel="next" title="【动手学计算机视觉】第二讲：图像预处理之图像增强">
+                <i class="fa fa-chevron-left"></i> 【动手学计算机视觉】第二讲：图像预处理之图像增强
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/04/4-image-augmented/" rel="prev" title="【动手学计算机视觉】第四讲：图像预处理之图像增广">
+                【动手学计算机视觉】第四讲：图像预处理之图像增广 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/zhihu.jpg" alt="Jackpop">
+            
+              <p class="site-author-name" itemprop="name">Jackpop</p>
+              <p class="site-description motion-element" itemprop="description">原创技术分享网站</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Jackpopc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:498073774@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/sharetechlee" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-book"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://zhuanlan.zhihu.com/sharetechlee" target="_blank" title="专栏">
+                      
+                        <i class="fa fa-fw fa-edit"></i>专栏</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相位拉伸变换"><span class="nav-number">3.</span> <span class="nav-text">相位拉伸变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程实践"><span class="nav-number">4.</span> <span class="nav-text">编程实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#往期回顾"><span class="nav-number">5.</span> <span class="nav-text">往期回顾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackpop</span>
+
+  
+</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'U1oIMCJI4zYogWXqIKva7Fsa-gzGzoHsz',
+        appKey: 'qJvgYGbG712q47zzMmQ5z9XF',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
