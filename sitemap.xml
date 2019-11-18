@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jackpopc.github.io/2019/11/18/polynote/</loc>
+    
+    <lastmod>2019-11-18T15:26:41.037Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/11/17/18-GoogLeNet/</loc>
+    
+    <lastmod>2019-11-17T11:40:05.253Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jackpopc.github.io/2019/10/27/vgg/</loc>
+    
+    <lastmod>2019-11-17T10:14:47.393Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jackpopc.github.io/2019/11/16/tabnine/</loc>
     
     <lastmod>2019-11-16T13:45:24.192Z</lastmod>
@@ -68,13 +89,6 @@
     <loc>https://jackpopc.github.io/2019/05/01/1-image-denoising/</loc>
     
     <lastmod>2019-10-29T13:59:22.945Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jackpopc.github.io/2019/10/27/vgg/</loc>
-    
-    <lastmod>2019-10-27T13:36:05.697Z</lastmod>
     
   </url>
   

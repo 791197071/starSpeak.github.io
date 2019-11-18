@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[开发工具 | 即将jupyter的新一代notebook]]></title>
+    <url>%2F2019%2F11%2F18%2Fpolynote%2F</url>
+    <content type="text"><![CDATA[前言 我们在实验室、教学、数据分析及开发测试环境，经常需要一个用于测试代码片段的工具。其中用的较多的，尤其是对于Python开发者而言，包括两款开发工具， jupyter notebook jupyterlab 不得不说，这两款都是非常不错的工具，它们有着很多显而易见的优点， 轻量化 触手可及 支持丰富的插件 支持语言丰富 …… 对于我个人而言，我使用jupyter notebook的频率的确很多。在工作中有时候需要测试一段代码，如果在shell中打开Python交互界面，对于多行代码格式会非常混乱，而且调试不方便，而打开Pycharm这些编辑器/IDE又比较耗费时间、繁琐。而使用jupyter notebook或者jupyterlab这些基于浏览器的notebook，效率就高很多，随时随地能够打开、支持交互式调试、支持富文本等。 但是，这次jupyter遇到了劲敌，Netflix开源的PolyNote，没错，就是那个影音娱乐领域的奈飞，虽然看似和开发没什么太大关系，但是，它们开源的这款工具却着实的不错，开源不久在Github已经达到3k+star。 由于这款工具开源时间相对较短，目前比起成熟的jupyter还存在很多不足之处，但是它既然受到这么多的关注，自然就有它的独特之处，下面我就来介绍一下这款开发工具的特点及安装方法，如果对新鲜事物比较感兴趣，可以尝试一下。 PolyNote开门见山，直接介绍PolyNote的10大特性。 第一大特性：支持多语言 PolyNote是一款与众不同的开发工具，我个人认为，它是一款为数据而生的开发工具，默认支持如下3种语言， Python SQL Scala 这也是PolyNote的第一大特性：支持多语言。 另外，通过简单的配置即可支持Spark，从它原生支持的工具即可看出，它主要都是在围绕大数据在展开，其中包括大数据开发和数据可视化。 第二大特性：支持共享数据 目前PolyNote支持Python、Scala等语言，它可以实现不同语言之间的数据共享。例如，我在一个Python的cell中定义一个变量，然后添加一个Scala的cell，它可以访问Python中定义的变量。 第三大特性：自动补全 我觉得这是jupyter的一大弱点，虽然我们可以敲击tab键进行补全，但是这显然不够便捷，虽然可以通过配置插件的方式让jupyter具有自动补全的功能，但是，效果差强人意，只能勉强使用，效果不太理想。而PolyNote默认支持代码自动补全，而且效果丝毫不亚于常见的IDE。 第四大特性：高亮代码错误 这也是jupyter的一个不足之处，它不能高亮代码错误的地方，这在vs code、pycharm中可以实现这项功能，但是软件太过于臃肿，PolyNote把高亮代码错误这项功能也加入了进去，让PolyNote成为一个更加成熟、完善的IDE。 第五大特性：富文本编辑 虽然jupyter也支持富文本，但是，在PolyNote功能栏有丰富的文本编辑选项，让它更像一个完备的文本编辑器。此外，能够轻松地将LaTeX公式插入文本单元格。 第六大特性：实时状态显示 能够实时显示内核的工作状态和工作内容。此外，能够准确地查看当前正在执行的代码，因为Polynote实时地高亮显示正在运行的语句。 第七大特性：详细的可视化 Polynote实现实时跟踪定义的内容，以及当前单元格中可用的内容。能够在表格中显示，可以获得详细信息和丰富的可视化效果。 第八大特性：高度集成Spark 和大数据处理框架Spark高度集成，更加便于数据的分析及可视化。 第九大特性：可重复性 能够确保notebook重复执行，哪怕是某个cell被删除，也可以轻松恢复进行再次执行。 第十大特性：可视化效果好 PolyNote内置了绘图编辑器，可以轻松的进行数据可视化，另外，它也默认支持Vega可视化语言，同样非常方便与可视化。 PolyNote配置首先需要说明，目前PolyNote仅在Linux和MacOS上进行了测试，暂时不支持windows，自己有Linux或者MacOS开发环境，可以继续往下看一下配置过程。 PolyNote还没有jupyter notebook和jupyterlab那么成熟，因此，它不支持像jupyter那样能够直接通过pip install进行安装，但是它的配置过程也非常容易。 安装JDK PolyNote的运行需要Java环境的支持，目前PolyNote已经在Java 8和Java 11上进行成功测试，如果其他JDK版本不成功，可以切换一下Java版本。 安装Python依赖包 为了执行Python，需要配置Python3.X和pip3.x，然后执行下面命令安装一些依赖包， 1$ pip3 install jep jedi pyspark virtualenv 下载安装包 打开下面链接，下载PolyNote压缩包， https://github.com/polynote/polynote/releases 解压压缩包，进入目录， 12$ tar -zxvf polynote-dist-2.12.tar.gz$ cd polynote 配置 进入目录后会发现有一个config-template.yml文件，需要把它进行重命名， 1$ cp config-template.yml config.yml config.yml中可以配置打开的IP和端口，打开文件可以看到这段文字， 123#listen:# host: 127.0.0.1# port: 8192 默认打开的IP是127.0.0.1，端口为8192，我们可以把这个IP修改为服务器或者开发机的IP，那么可以在任何其他与该IP互通的机器上进行使用。 开启服务 执行下面命令开启PolyNote服务， 1$ python polynote.py 如果觉得这样会占用shell，可以执行下面命令，让PolyNote在后台运行， 1$ nohup python polynote.py &gt; /dev/null 2&gt;&amp;1 &amp;]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>实用</tag>
+        <tag>插件</tag>
+        <tag>开发工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[【动手学计算机视觉】第十八讲：卷积神经网络之GoogLeNet]]></title>
+    <url>%2F2019%2F11%2F17%2F18-GoogLeNet%2F</url>
+    <content type="text"><![CDATA[前言在前一篇文章介绍VGG时，我提到2014年对于计算机视觉领域是一个丰收的一年，在这一年的ImageNet图像识别挑战赛(ILSVRC,ImageNet Large Scale Visual Recognition Challenge)中出现了两个经典、影响至深的卷积神经网络模型，其中第一名是GoogLeNet、第二名是VGG。 没错，本文的主角就是2014年ILSVRC的第一名—GoogLeNet(Going Deeper with Convolutions)，要注意的是，这个网络模型的名称是”GoogLeNet”，而不是”GoogleNet”，虽然只有一个大小写字母的却别，含义却不同，GoogLeNet之所以叫做这个名字，主要是为了想LeNet致敬。 GoogLeNet与VGG出现在同一年，二者自然有一些相似之处，但是两个模型更多的是差异性。 首先说一下GoogLeNet与VGG的相同之处： 都提出了基础块的思想 均是为了克服网络逐渐变深带来的问题 首先，说一下第一点—都提出了基础块的思想。 前文已经介绍了，VGG使用块代替层的思想，这使得VGG在迁移性方面表现非常好，也因此得到了广泛的应用。而GoogLeNet也使用了基础块的思想，它引入了Inception块，想必说到这里应该接触过深度计算机视觉的同学应该恍然大悟，也许对GoogLeNet的概念已经变的模糊，但是Inception却如雷贯耳，目前在很多CNN模型中同样作为基础模块使用。 其次，说一下第二点—均是为了克服网络逐渐变深带来的问题。 随着卷积神经网络模型的更新换代，我们发现网络层数逐渐变多，模型变的越来越深，这是因为提升模型效果最为直接有效的方法就是增加网络深度和宽度，但是，随着网络层数的加深、加宽，它也会带来很多负面影响， 参数数量增加 梯度消失和梯度爆炸 计算复杂度增加 因此，从VGG、GoogLeNet开始，包括后面会讲到的ResNet，研究者逐渐把目光聚焦在”如何在增加网络深度和宽度的同时，避免上述这些弊端？” 不同的网络模型所采取的方式不同，这也就引出了VGG与GoogLe的不同之处， 输出层不同 克服网络加深弊端的方式不同 首先，说一下第一点—输出层不同， VGG是在LeNet、AlexNet的基础上引入了基础块的思想，但是在网络架构、输出等放并没有进行太多的改变，在输出层方面同样是采用连续三个全连接层，全连接层的输入是前面卷积层的输出经过reshape得到。 虽然GoogLeNet是向LeNet致敬，但是在GoogLeNet的身上却很难看到LeNet和AlexNet的影子，它的输出更是采用NiN的思想(Network in Network)，它把全连接层编程了1*1的卷积层。 其次，说一下第二点—克服网络加深弊端的方式不同， VGG在克服网络加深带来的问题方面采用的是引入基础块的思想，但是整体上还是偏向于”更深”，而GoogLeNet更加偏重于”更宽”，它引入了并行网络结构的思想，每一层有4个不同的线路对输入进行处理，然后再块的输出部分在沿着通道维进行连接。 GoogLeNet通过对模型的大幅度改进，使得它在参数数量、计算资源方面要明显优于VGG，但是GoogLeNet的模型复杂度相对于VGG也要高一些，因此，在迁移性方面VGG要优于GoogLeNet。 GoogLeNet模型Inception块是GoogLeNet模型中一个非常重要的组成部分，因此，在介绍完整的GoogLeNet模型之前，我先来讲解一下Inception块的结构。 Inception块 上图就是就是Inception的结构，Inception分为两个版本： 简化版 降维版 二者主要的区别就在于1*1的卷积层，降维版在第2、3、4条线路添加了1*1的卷积层来减少通道维度，以减小模型复杂度，本文就以降维版为例来讲解GoogLeNet。 现在来看一下Inception的结构，可以很清楚的看出，它包含4条并行线路，其中，第1、2、3条线路分别采用了1*1、3*3、5*5，不同的卷积核大小来对输入图像进行特征提取，使用不同大小卷积核能够充分提取图像特征。其中，第2、3两条线路都加入了1*1的卷积层，这里要明确一点，第2、3两条线路的1*1与第1条线路1*1的卷积层的功能不同，第1条线路是用于特征提取，而第2、3条线路的目的是降低模型复杂度。第4条线路采用的不是卷积层，而是3*3的池化层。最后，4条线路通过适当的填充，使得每一条线路输出的宽和高一致，然后经过Filter Concatenation把4条线路的输出在通道维进行连接。 上述就是Inception块的介绍，在GoogLeNet模型中，Inception块会被多次用到，下面就开始介绍GoogLeNet的完整模型结构。 GoogLeNet GoogLeNet在网络模型方面与AlexNet、VGG还是有一些相通之处的，它们的主要相通之处就体现在卷积部分， AlexNet采用5个卷积层 VGG把5个卷积层替换成5个卷积块 GoogLeNet采用5个不同的模块组成主体卷积部分 上述就是GoogLeNet的结构，可以看出，和AlexNet统一使用5个卷积层、VGG统一使用5个卷积块不同，GoogLeNet在主体卷积部分是卷积层与Inception块混合使用。另外，需要注意一下，在输出层GoogleNet采用全局平均池化，得到的是高和宽均为1的卷积层，而不是通过reshape得到的全连接层。 下面就来详细介绍一下GoogLeNet的模型结构。 模块1 第一个模块采用的是一个单纯的卷积层紧跟一个最大池化层。 卷积层：卷积核大小7*7，步长为2，输出通道数64。 池化层：窗口大小3*3，步长为2，输出通道数64。 模块2 第二个模块采用2个卷积层，后面跟一个最大池化层。 卷积层：卷积核大小3*3，步长为1，输出通道数192。 池化层：窗口大小3*3，步长为2，输出通道数192。 模块3 第三个模块采用的是2个串联的Inception块，后面跟一个最大池化层。 第一个Inception的4条线路输出的通道数分别是64、128、32、32，输出的总通道数是4条线路的加和，为256。 第二个Inception的4条线路输出的通道数分别是128、192、96、64，输出的总通道数为480。 池化层：窗口大小3*3，步长为2，输出通道数480。 模块4 第4个模块采用的是5个串联的Inception块，后面跟一个最大池化层。 第一个Inception的4条线路输出的通道数分别是192、208、48、64，输出的总通道数为512。 第二个Inception的4条线路输出的通道数分别是160、224、64、64，输出的总通道数为512。 第三个Inception的4条线路输出的通道数分别是128、256、64、64，输出的总通道数为512。 第四个Inception的4条线路输出的通道数分别是112、288、64、64，输出的总通道数为528。 第五个Inception的4条线路输出的通道数分别是256、320、128、128，输出的总通道数为832。 池化层：窗口大小3*3，步长为2，输出通道数832。 模块5 第五个模块采用的是2个串联的Inception块。 输出层 前面已经多次提到，在输出层GoogLeNet与AlexNet、VGG采用3个连续的全连接层不同，GoogLeNet采用的是全局平均池化层，得到的是高和宽均为1的卷积层，然后添加丢弃概率为40%的Dropout，输出层激活函数采用的是softmax。 激活函数 GoogLeNet每层使用的激活函数为ReLU激活函数。 编程实践当我们拿到一个需求的时候，应该先对它进行一下分析、分解，针对GoogLeNet，我们通过分析可以把它分解成如下几个模块， Inception块 卷积层 池化层 线性层 通过上述分解，我们逐个来实现上述每个模块。 Inception块 前面讲解过程中已经详细介绍Inception块的结构，它包括4条线路，而对于Inception块最重要的参数就是每个线路输出的通道数，由于其中步长、填充方式、卷积核大小都是固定的，因此不需要我们进行传参。我们把4条线路中每层的输出通道数作为Inception块的入参，具体实现过程如下， 123456789101112131415161718192021def inception_block(X, c1, c2, c3, c4, name): in_channels = int(X.get_shape()[-1]) # 线路1 with tf.variable_scope('conv1X1_&#123;&#125;'.format(name)) as scope: weight = tf.get_variable("weight", [1, 1, in_channels, c1]) bias = tf.get_variable("bias", [c1]) p1_1 = tf.nn.conv2d(X, weight, strides=[1, 1, 1, 1], padding="SAME") p1_1 = tf.nn.relu(tf.nn.bias_add(p1_1, bias)) # 线路2 with tf.variable_scope('conv2X1_&#123;&#125;'.format(name)) as scope: weight = tf.get_variable("weight", [1, 1, in_channels, c2[0]]) bias = tf.get_variable("bias", [c2[0]]) p2_1 = tf.nn.conv2d(X, weight, strides=[1, 1, 1, 1], padding="SAME") p2_1 = tf.nn.relu(tf.nn.bias_add(p2_1, bias)) p2_shape = int(p2_1.get_shape()[-1]) with tf.variable_scope('conv2X2_&#123;&#125;'.format(name)) as scope: weight = tf.get_variable("weight", [3, 3, p2_shape, c2[1]]) bias = tf.get_variable("bias", [c2[1]]) p2_2 = tf.nn.conv2d(p2_1, weight, strides=[1, 1, 1, 1], padding="SAME") p2_2 = tf.nn.relu(tf.nn.bias_add(p2_2, bias)) 卷积及池化 在GoogLeNet中多处用到了卷积层和最大池化层，这些结构在AlexNet中都已经实现过，我们直接拿过来使用即可， 1234567891011def conv_layer(self, X, ksize, out_filters, stride, name): in_filters = int(X.get_shape()[-1]) with tf.variable_scope(name) as scope: weight = tf.get_variable("weight", [ksize, ksize, in_filters, out_filters]) bias = tf.get_variable("bias", [out_filters]) conv = tf.nn.conv2d(X, weight, strides=[1, stride, stride, 1], padding="SAME") activation = tf.nn.relu(tf.nn.bias_add(conv, bias)) return activationdef pool_layer(self, X, ksize, stride): return tf.nn.max_pool(X, ksize=[1, ksize, ksize, 1], strides=[1, stride, stride, 1], padding="SAME") 线性层 GoogLeNet与AlexNet、VGG在输出层不同，AlexNet和VGG是通过连续的全连接层处理，然后输入到激活函数即可，而GoogLeNet需要进行全局平均池化后进行一次线性映射，对于这一点实现过程如下， 1234567def linear(self, X, out_filters, name): in_filters = X.get_shape()[-1] with tf.variable_scope(name) as scope: w_fc = tf.get_variable("weight", shape=[in_filters, out_filters]) b_fc = tf.get_variable("bias", shape=[out_filters], trainable=True) fc = tf.nn.xw_plus_b(X, w_fc, b_fc) return tf.nn.relu(fc) 搭建模型 上面几步已经把GoogLeNet主要使用的组件已经搭建完成，接下来要做的就是把它们组合到一起即可。这里需要注意一点，全局平均池化层的填充方式和前面卷积层、池化层使用的不同，这里需要使用VALID填充方式， 1234567891011121314151617181920212223242526272829303132def create(self, X): # 模块1 module1_1 = self.conv_layer(X, 7, 64, 2, "module1_1") pool_layer1 = self.pool_layer(module1_1, 3, 2) # 模块2 module2_1 = self.conv_layer(pool_layer1, 1, 64, 1, "modul2_1") module2_2 = self.conv_layer(module2_1, 3, 192, 1, "module2_2") pool_layer2 = self.pool_layer(module2_2, 3, 2) # 模块3 module3a = self.inception_block(pool_layer2, 64, (96, 128), (16, 32), 32, "3a") module3b = self.inception_block(module3a, 128, (128, 192), (32, 96), 64, "3b") pool_layer3 = self.pool_layer(module3b, 3, 2) # 模块4 module4a = self.inception_block(pool_layer3, 192, (96, 208), (16, 48), 64, "4a") module4b = self.inception_block(module4a, 160, (112, 224), (24, 64), 64, "4b") module4c = self.inception_block(module4b, 128, (128, 256), (24, 64), 64, "4c") module4d = self.inception_block(module4c, 112, (144, 288), (32, 64), 64, "4d") module4e = self.inception_block(module4d, 256, (160, 320), (32, 128), 128, "4e") pool_layer4 = self.pool_layer(module4e, 3, 2) # 模块5 module5a = self.inception_block(pool_layer4, 256, (160, 320), (32, 128), 128, "5a") module5b = self.inception_block(module5a, 384, (192, 384), (48, 128), 128, "5b") pool_layer5 = tf.nn.avg_pool(module5b, ksize=[1, 7, 7, 1], strides=[1, 1, 1, 1], padding="VALID") flatten = tf.reshape(pool_layer5, [-1, 1024]) dropout = tf.nn.dropout(flatten, keep_prob=self.keep_prob) linear = self.linear(dropout, self.num_classes, 'linear') return tf.nn.softmax(linear) 验证 为了验证每一个模块输出的形状和原文中给出的是否一致，我使用numpy，生成了样本数为5的随机样本，看一下每一层的输出结果， 1234567891011121314151617181920212223242526272829303132def main(): X = np.random.normal(size=(5, 224, 224, 3)) images = tf.placeholder("float", [5, 224, 224, 3]) googlenet = GoogLeNet(1000, 0.4) writer = tf.summary.FileWriter("logs") with tf.Session() as sess: model = googlenet.create(images) sess.run(tf.global_variables_initializer()) writer.add_graph(sess.graph) prob = sess.run(model, feed_dict=&#123;images: X&#125;) print(sess.run(tf.argmax(prob, 1))) # 输出module1_1: (5, 112, 112, 64)pool_layer1: (5, 56, 56, 64)module2_1: (5, 56, 56, 64)module2_2: (5, 56, 56, 192)pool_layer2: (5, 28, 28, 192)module3a: (5, 28, 28, 256)module3b: (5, 28, 28, 480)pool_layer3: (5, 14, 14, 480)module4a: (5, 14, 14, 512)module4b: (5, 14, 14, 512)module4c: (5, 14, 14, 512)module4d: (5, 14, 14, 528)module4e: (5, 14, 14, 832)pool_layer4: (5, 7, 7, 832)module5a: (5, 7, 7, 832)module5b: (5, 7, 7, 1024)pool_layer5: (5, 1, 1, 1024)flatten: (5, 1024)linear: (5, 1000) 可以从上述输出可以看出，每一层的输出形状和原文中给出的一致，至于在不同场景、不同数据集下的表现效果，这需要针对性的进行调优。 链接本文完整代码 https://github.com/Jackpopc/aiLearnNotes/blob/master/computer_vision/GoogLeNet.py Going Deeper with Convolutions http://www.arxiv.org/pdf/1409.4842.pdf Network In Network http://arxiv.org/pdf/1312.4400 我把本讲文档已经上传到github，如果需要可以搜索github项目aiLearnNotes查看。]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+      <tags>
+        <tag>CV</tag>
+        <tag>AI</tag>
+        <tag>图像处理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[效率工具 | 一款基于深度学习的代码自动补全神器]]></title>
     <url>%2F2019%2F11%2F16%2Ftabnine%2F</url>
     <content type="text"><![CDATA[前言代码补全对于大多数开发人员来说是至关重要的，它可以有效的提高开发效率、减少拼写错误和输入代码量。我们使用的大多数开发工具都自带补全功能，或者可以通过安装插件具备补全功能。但是，以往的代码补全功能主要基于语言本身的内置函数和上下文信息进行补全，而在候选项重要程度、代码块补全方面却不理想。与其说我们常用的自动补全工具的价值在补全方面，我更倾向于认为它的价值体现在提示。 近几年随着深度学习的抬头、火热，深度神经网络在学术领域有着很多最为先进的算法，并且在很多商业领域都得到应用。因此，有想法的研究者也尝试把深度学习引入开发工具中。 在之前的一篇文章中，我介绍了一款人工智能自动补全工具Kite，它在自动补全效率、文档阅读等方面的确要优于绝大多数自动补全工具，而且配置简单。本文将介绍另外一款基于深度学习的自动补全工具—TabNine，虽然同是基于人工智能的开发工具，但是它们却有各自的侧重点。下面我就先介绍一下Kite与TabNine的区别，然后详细介绍一下TabNine的特点，各位根据自己的偏好选择其中一款进行配置。 Kite与TabNineKite与TabNine都是优秀的、基于人工智能的代码自动补全工具，相对于大多数自动补全插件，它都能让人感到非常惊艳，但是二者都有各自的侧重点，下面就来说一下Kite与TabNine各自的优点和缺点。 Kite Kite更加倚重于预先存在的知识库，它是在预先存在的知识库上进行学习得到的补全经验，因此，不需要在开发过程中训练和学习，因此，它具备如下优点： 补全速度快 代码块补全功能强大 简洁强大的文档阅读功能 以代码块补全功能强大为例，来说一下Kite的特点，对于大多数补全工具，包括TabNine在内，主要是补全接下来要输入的字符串，而Kite不仅可以补全字符串，还可以补全代码库。举个例子，我们要导入numpy模块，对于大多数补全工具，我们输入numpy的几个字母后，它会联想出完整的numpy，但是对于Kite，当输入import num，它会根据知识库中大多数使用者的习惯直接补全import numpy as np。同样，当我们导入matplotlib中pyplot时，当我们输入from matplotlib，它会补全from matplotlib import pyplot as plt，这样显然更加高效，节省代码量。 没有哪个工具是完美无暇的，Kite也有缺点，我认为Kite是非常优秀的，甚至Python之父都对它赞不绝口，但是它也有3个缺点让我有点无法忍受， 方案偏“重” 支持语言单一 占用资源 首先说一下第一点，方案偏“重”。 对于大多数补全工具，它们只是一个插件，比较轻量化，而Kite相对较重，需要预先下载、安装一个200M+的软件，除了在电脑上安装Kite之外，还需要在对应的编辑器/IDE安全Kite的插件，另外，每次使用Kite自动补全之前需要把Kite打开。所以，这一系列的配置、使用过程相对较“重”。 其次说一下支持语言单一，Kite定位是一款Python自动补全工具，因此在很多特色方面都是针对Python进行优化，因此，支持语言相对单一。 最后说一下占用资源，虽然Kite内存占用情况远远比不上Pycharm、IDEA这些臃肿的开发工具，但是在win10下也要占用将近400M的内存资源，对于大多数工具相对较高，如果电脑配置偏低，打开Kite会使得系统较为卡顿。 TabNine 和Kite不同，首先，TabNine是基于开发者过去的使用习惯进行补全，而不是预先的知识库，因此，当项目较小或者正在向其中添加新库时，它的效果不如Kite。当然，这是二者思想上的差异，TabNine之所以成功，自然有它的优点， 轻量化 配置简单 支持语言丰富 能够给出补全项的概率和地址 以给出补全项的概率和地址为例来说明一下TabNine的优点，TabNine在自动补全时会给出每个候选项的概率，并且按照概率大小进行排序，此外，会给出候选项的来源及地址，这样更加方便查询和阅读。 另外，Kite在语言支持方面更加具有针对性，主要针对Python的自动补全，而TabNine支持的编程语言更加丰富，而不是针对某一特定语言。 TabNine的缺点也非常明显， 补全速度慢 依赖语言服务 首先说一下补全速度慢，TabNine在使用过程中需要大量的计算资源进行学习，因此它会带来高延迟。因此TabNine在专业版和企业版中提供了TabNine Cloud服务，提供GPU计算资源，当然，这都是需要付费的。 其次说一下依赖语言引擎，TabNine默认情况是关闭语义补全的，如果要开启语义补全需要安装不同编程语言对应的服务，例如Python需要安装python-language-server，每一种编程语言都需要配置对应的服务，可以选择繁琐的手动配置，针对这一点TabNine也提供了较好的解决方案，在编辑器中输入TabNine::sem，它会自动开启语义补全在开启过程中会按照对应语言的服务。 TabNine前面概括性的介绍了一下TabNine与Kite各自的优缺点，这里我就详细的介绍一下TabNine强大之处与原理。 优势 前面已经简单的介绍了TabNine的优点， 轻量化 配置简单 支持语言丰富 能够给出补全项的概率和地址 这些非量化的评价指标不够直观，从另外一个可量化的指标来说一下TabNine的强大之处， 支持22种编程语言 支持7类编辑器 支持的编程语言 TabNine支持Python, JavaScript, Java, C++, C, PHP, Go, C#, Ruby, Objective-C, Rust, Swift, TypeScript, Haskell, OCaml, Scala, Kotlin, Perl, SQL, HTML, CSS和Bash这22种编程语言。 支持的编辑器 首先要注意，我前面所说的是7类编辑器，而不是7款，它支持vs code、IntelliJ、Sublime、Vim、Emacs、Atom、Jupyter Notebook共7类编辑器。 其中IntelliJ是一个系列，其中包括IDEA、Pycharm、Android Studio等。 Vim包括Vim(Deopleto)、Vim(Coc)。 原理 TabNine是基于OpenAI的GPT-2模型，在GitHub上200万个文件上进行训练得出，它的训练目标是通过之前给出的标记预测接下来的标记(token)，为了实现这个目标，它学习了复杂的行为，例如动态类型语言的推断。 然后说一下GPT-2模型，它是一个在自然语言领域名气不亚于BERT的网络模型，它使用了Transformer网络作为基础，这个模型最初是用于解决自然语言处理问题(NLP)，尽管纯粹的自然语言和代码补全有很多不同之处，但是自然语言和代码补全在语义上还是有一些可借鉴的地方，例如对于英语的理解。TabNine就利用这一点用于代码补全中函数名、参数、返回类型等方面的推断。 TabNine配置TabNine配置相对于Kite较为简单，只需要在简单的几步即可以完成。需要再重复一遍的是，TabNine默认是不开启语言补全的，如果要开启语义补全需要安装配置对应语言的服务、引擎，当然，这对于TabNine也很简单，只需要在编辑器输入TabNine::sem即可，TabNine支持vs code、IntelliJ、Sublime、Vim、Emacs、Atom、Jupyter Notebook共7类编辑器，我在这里就挑选几个使用较多的编辑器/IDE讲解一下。 vs code 方式一：手动安装 打开vs code 点击插件管理 搜索tabnine 点击安装 这种方式比较简洁明了，首推这一种方法。 方式2：命令安装 打开vs code 快捷键Ctrl+P 输入ext install TabNine.tabnine-vscode 确认 IntelliJ Platform 打开设置 找到Plugins 在marketplace搜索TabNine安装 Sublime Text 快捷键Ctrl+Shift+P 输入Install Package 选择Package Control:Install Package 搜索TabNine确认 Vim 方式一：Vundle 首选需要配置插件管理器Vundle 在.vimrc中添加Plugin ‘zxqfl/tabnine-vim’ 随便打开一个vim，输入:PluginInstall 方式二：Git 克隆项目git clone —depth 1 https://github.com/zxqfl/tabnine-vim 把set rtp+=~/tabnine-vim添加到.vimrc（~/tabnine-vim是克隆到本地的路径，需要根据自己的路径修改） TabNine命令配置 就如同前面提到的，如果没有开启语义补全，需要在编辑器中输入命令开启语义补全，TabNine支持一些命令配置方式，主要有如下几个， TabNine::sem开启语义补全 TabNine::no_sem关闭语义补全 TabNine::config打开配置页面 TabNine::version查看版本信息 福利 我在公众号分享了Python、机器学习、计算机视觉、强化学习等领域相关的学习资源、电子文档。此外，还整理了一些高效的实用工具，如果需要可以关注公众号【平凡而诗意】，回复相应关键字获取~ 作品精选Jackpop：目录 | 精选CV、Python等系列教程 Jackpop：大数据处理 | Spark&amp;HDFS集群配置及基本使用 Jackpop：实用工具 | 推荐3款令人惊艳的截图工具 Jackpop：强烈推荐 | 这将会成为一个优质的github项目 Jackpop：计算机小白如何开始机器学习的学习，有入门课程推荐吗? Jackpop：C盘快满了，该如何清理？ Jackpop：2019 年双十一有哪些值得购买的东西？]]></content>
@@ -76,9 +103,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
+        <tag>清理</tag>
         <tag>工具</tag>
         <tag>实用</tag>
-        <tag>清理</tag>
       </tags>
   </entry>
   <entry>
@@ -193,9 +220,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
-        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
+        <tag>文件查找</tag>
       </tags>
   </entry>
   <entry>
@@ -346,9 +373,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
-        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
+        <tag>文件查找</tag>
         <tag>插件</tag>
       </tags>
   </entry>
@@ -387,9 +414,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
-        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
+        <tag>文件查找</tag>
         <tag>插件</tag>
       </tags>
   </entry>
@@ -450,9 +477,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
-        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
+        <tag>文件查找</tag>
       </tags>
   </entry>
   <entry>
