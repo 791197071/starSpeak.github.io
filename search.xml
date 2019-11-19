@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[开发工具 | 即将jupyter的新一代notebook]]></title>
+    <title><![CDATA[开发工具 | 即将取代jupyter的新一代notebook]]></title>
     <url>%2F2019%2F11%2F18%2Fpolynote%2F</url>
     <content type="text"><![CDATA[前言 我们在实验室、教学、数据分析及开发测试环境，经常需要一个用于测试代码片段的工具。其中用的较多的，尤其是对于Python开发者而言，包括两款开发工具， jupyter notebook jupyterlab 不得不说，这两款都是非常不错的工具，它们有着很多显而易见的优点， 轻量化 触手可及 支持丰富的插件 支持语言丰富 …… 对于我个人而言，我使用jupyter notebook的频率的确很多。在工作中有时候需要测试一段代码，如果在shell中打开Python交互界面，对于多行代码格式会非常混乱，而且调试不方便，而打开Pycharm这些编辑器/IDE又比较耗费时间、繁琐。而使用jupyter notebook或者jupyterlab这些基于浏览器的notebook，效率就高很多，随时随地能够打开、支持交互式调试、支持富文本等。 但是，这次jupyter遇到了劲敌，Netflix开源的PolyNote，没错，就是那个影音娱乐领域的奈飞，虽然看似和开发没什么太大关系，但是，它们开源的这款工具却着实的不错，开源不久在Github已经达到3k+star。 由于这款工具开源时间相对较短，目前比起成熟的jupyter还存在很多不足之处，但是它既然受到这么多的关注，自然就有它的独特之处，下面我就来介绍一下这款开发工具的特点及安装方法，如果对新鲜事物比较感兴趣，可以尝试一下。 PolyNote开门见山，直接介绍PolyNote的10大特性。 第一大特性：支持多语言 PolyNote是一款与众不同的开发工具，我个人认为，它是一款为数据而生的开发工具，默认支持如下3种语言， Python SQL Scala 这也是PolyNote的第一大特性：支持多语言。 另外，通过简单的配置即可支持Spark，从它原生支持的工具即可看出，它主要都是在围绕大数据在展开，其中包括大数据开发和数据可视化。 第二大特性：支持共享数据 目前PolyNote支持Python、Scala等语言，它可以实现不同语言之间的数据共享。例如，我在一个Python的cell中定义一个变量，然后添加一个Scala的cell，它可以访问Python中定义的变量。 第三大特性：自动补全 我觉得这是jupyter的一大弱点，虽然我们可以敲击tab键进行补全，但是这显然不够便捷，虽然可以通过配置插件的方式让jupyter具有自动补全的功能，但是，效果差强人意，只能勉强使用，效果不太理想。而PolyNote默认支持代码自动补全，而且效果丝毫不亚于常见的IDE。 第四大特性：高亮代码错误 这也是jupyter的一个不足之处，它不能高亮代码错误的地方，这在vs code、pycharm中可以实现这项功能，但是软件太过于臃肿，PolyNote把高亮代码错误这项功能也加入了进去，让PolyNote成为一个更加成熟、完善的IDE。 第五大特性：富文本编辑 虽然jupyter也支持富文本，但是，在PolyNote功能栏有丰富的文本编辑选项，让它更像一个完备的文本编辑器。此外，能够轻松地将LaTeX公式插入文本单元格。 第六大特性：实时状态显示 能够实时显示内核的工作状态和工作内容。此外，能够准确地查看当前正在执行的代码，因为Polynote实时地高亮显示正在运行的语句。 第七大特性：详细的可视化 Polynote实现实时跟踪定义的内容，以及当前单元格中可用的内容。能够在表格中显示，可以获得详细信息和丰富的可视化效果。 第八大特性：高度集成Spark 和大数据处理框架Spark高度集成，更加便于数据的分析及可视化。 第九大特性：可重复性 能够确保notebook重复执行，哪怕是某个cell被删除，也可以轻松恢复进行再次执行。 第十大特性：可视化效果好 PolyNote内置了绘图编辑器，可以轻松的进行数据可视化，另外，它也默认支持Vega可视化语言，同样非常方便与可视化。 PolyNote配置首先需要说明，目前PolyNote仅在Linux和MacOS上进行了测试，暂时不支持windows，自己有Linux或者MacOS开发环境，可以继续往下看一下配置过程。 PolyNote还没有jupyter notebook和jupyterlab那么成熟，因此，它不支持像jupyter那样能够直接通过pip install进行安装，但是它的配置过程也非常容易。 安装JDK PolyNote的运行需要Java环境的支持，目前PolyNote已经在Java 8和Java 11上进行成功测试，如果其他JDK版本不成功，可以切换一下Java版本。 安装Python依赖包 为了执行Python，需要配置Python3.X和pip3.x，然后执行下面命令安装一些依赖包， 1$ pip3 install jep jedi pyspark virtualenv 下载安装包 打开下面链接，下载PolyNote压缩包， https://github.com/polynote/polynote/releases 解压压缩包，进入目录， 12$ tar -zxvf polynote-dist-2.12.tar.gz$ cd polynote 配置 进入目录后会发现有一个config-template.yml文件，需要把它进行重命名， 1$ cp config-template.yml config.yml config.yml中可以配置打开的IP和端口，打开文件可以看到这段文字， 123#listen:# host: 127.0.0.1# port: 8192 默认打开的IP是127.0.0.1，端口为8192，我们可以把这个IP修改为服务器或者开发机的IP，那么可以在任何其他与该IP互通的机器上进行使用。 开启服务 执行下面命令开启PolyNote服务， 1$ python polynote.py 如果觉得这样会占用shell，可以执行下面命令，让PolyNote在后台运行， 1$ nohup python polynote.py &gt; /dev/null 2&gt;&amp;1 &amp;]]></content>
       <categories>
@@ -448,8 +448,8 @@
         <category>学习资源</category>
       </categories>
       <tags>
-        <tag>优化算法</tag>
         <tag>教程</tag>
+        <tag>优化算法</tag>
       </tags>
   </entry>
   <entry>
