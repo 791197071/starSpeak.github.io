@@ -56,7 +56,15 @@
   <entry>
     <title><![CDATA[实用工具 | 让动画从1080p秒变4k]]></title>
     <url>%2F2019%2F11%2F07%2Fanime4k%2F</url>
-    <content type="text"><![CDATA[前言 视频是我们日常生活中经常接触到的一种媒体形式，电影、电视剧、短视频、动画等。其中动画占据着我们娱乐生活中的一个很大比重，以我个人为例，偶尔会去电影院看一下电影，但是大多数都是通过下载到电脑的方式进行观看。我们接触的动画大多数为720p，再清晰一些的有1080p，而至于4k，这个概念似乎只存在于新闻里，却从未接触过，本文就来介绍一个强大的开源工具—Anime4k，能够实时、高质量的放大动画视频，能够轻松使得1080p变成4k。下面就来介绍一下这个优质开源的项目。 Anime4k图像放大在学术领域研究的也很多，尤其是最近几年人工智能在图像处理领域的广泛应用，很多研究者利用机器学习、深度学习进行视频图像放大，虽然深度学习方法在放大效果方面取得了一些成绩，但是在速度方面并不是很理想，我们都知道，实时视频流对速度要求也很高，如果每一帧放大速度太慢，那样会严重影响观感，即便是清晰度方面得到了提升，但是也无法使用。 本文介绍的Anime4k没有使用深度学习这些基于训练的方法，但是它却能够同时实现图像放大的实时及高质量。以往也有一些动画放大算法，例如， NGU：6ms Waifu2x：1s 而本文介绍的Anime4k把一副1080p的图像放大只2160p只需要3ms左右(Vega 64 GPU平台)。 Anime4k的实时和高质量使得它在保证图像清晰的情况下保证视频的连贯性，能够完全满足我们日常观看动漫的需求。 由于本文主要是介绍这款开源工具的配置及使用，因此不详细展开Anime4k的实现过程，如果感兴趣可以访问Anime4k的项目地址。 https://github.com/bloc97/Anime4K 目前Anime4k可以支持多款主流、强大的视频播放器，只需要配置一下就可以让播放器具备实时图像放大功能，能够高效的提升动漫的清晰度，Anime4k支持的播放器如下， PotPlayer MPC-BE MPC-HC MPV madVR 上述5款播放器都是开源，本文就拿我个人认为比较不错的两款播放器来介绍一下如何配置Anime4k这款工具。 PotPlayerPotPlayer是一款开源、简洁且倍受欢迎的离线视频播放器，它不仅功能强大，支持丰富的定制化功能，而且使用简单，没有广告，这相对于大多数国产视频播放器要良心很多，因此，我在这里也推荐大家尝试一下这款播放器。 话不多说，现在开始介绍PotPlayer+Anime4k的配置过程。 1. 下载安装PotPlayer 可以访问链接http://www.potplayer.org/下载PotPlayer安装包，然后双击安装即可。 2. 下载Anime4k HLSL文件 打开链接，https://github.com/bloc97/Anime4K/releases 选择Anime4K_HLSL.zip下载。 3. 解压并复制到指定文件夹 解压第2步下载的压缩包，把其中HLSL文件移动到PotPlayer安装目录下PxShader文件夹里，如果安装PotPlayer没有修改安装路径的话，默认位置在C:\Program Files (x86)\DAUM\PotPlayer\PxShader。 4. 配置PotPlayer 打开PotPlayer播放器，依次点选如下选项， 视频 像素着色 调整尺寸后的着色集 一定要注意，是调整后的着色期，不要选择调整尺寸前的着色集。 然后点击组合编辑，添加如下4个HLSL文件， 1234-Anime4K_ComputeLum -Anime4K_Push -Anime4K_ComputeGradient -Anime4K_PushGrad_Weak 如果原图像尺寸小于或等于1080p则选择Anime4K_PushGrad_Weak ，如果大于1080p，则选择Anime4K_PushGrad。 如果找不到这几个选择可以重启PotPlayer， 然后依次点击视频-&gt;像素着色-&gt;调整尺寸后的着色集-&gt;组合即可， MPC-BEMPC-BE是一款开源简洁的视频播放器，内容占用比PotPlayer还要小。MPC-BE+Anime4k的配置方式和PotPlayer非常相似，所以，有的过程就简略的介绍一下。下面就来看一下它的配置过程。 1. 下载安装MPC-BE https://sourceforge.net/projects/mpcbe/ 2. 下载Anime4k HLSL文件 打开链接，https://github.com/bloc97/Anime4K/releases 3. 解压复制到指定文件夹 把上一步下载HLSL压缩包解压，放到下面路径， C:\Users\YourUserName\AppData\Roaming\MPC-BE\Shaders 4. 配置MPC-BE 这一步和PotPlayer配置不同，MPC-BE配置需要依次选择如下选择， 播放 着色器 选择着色器 下面要做的和PotPlayer类似，添加HLSL文件，]]></content>
+    <content type="text"><![CDATA[前言 视频是我们日常生活中经常接触到的一种媒体形式，电影、电视剧、短视频、动画等。其中动画占据着我们娱乐生活中的一个很大比重，以我个人为例，偶尔会去电影院看一下电影，但是大多数都是通过下载到电脑的方式进行观看。我们接触的动画大多数为720p，再清晰一些的有1080p，而至于4k，这个概念似乎只存在于新闻里，却从未接触过，本文就来介绍一个强大的开源工具—Anime4k，能够实时、高质量的放大动画视频，能够轻松使得1080p变成4k。下面就来介绍一下这个优质开源的项目。 Anime4k图像放大在学术领域研究的也很多，尤其是最近几年人工智能在图像处理领域的广泛应用，很多研究者利用机器学习、深度学习进行视频图像放大，虽然深度学习方法在放大效果方面取得了一些成绩，但是在速度方面并不是很理想，我们都知道，实时视频流对速度要求也很高，如果每一帧放大速度太慢，那样会严重影响观感，即便是清晰度方面得到了提升，但是也无法使用。 本文介绍的Anime4k没有使用深度学习这些基于训练的方法，但是它却能够同时实现图像放大的实时及高质量。以往也有一些动画放大算法，例如， NGU：6ms Waifu2x：1s 而本文介绍的Anime4k把一副1080p的图像放大至2160p只需要3ms左右(Vega 64 GPU平台)。 Anime4k的实时和高质量使得它在保证图像清晰的情况下保证视频的连贯性，能够完全满足我们日常观看动漫的需求。 由于本文主要是介绍这款开源工具的配置及使用，因此不详细展开Anime4k的实现过程，如果感兴趣可以访问Anime4k的项目地址。 https://github.com/bloc97/Anime4Kgithub.com 目前Anime4k可以支持多款主流、强大的视频播放器，只需要配置一下就可以让播放器具备实时图像放大功能，能够高效的提升动漫的清晰度，Anime4k支持的播放器如下， PotPlayer MPC-BE MPC-HC MPV madVR 上述5款播放器都是开源，本文就拿我个人认为比较不错的两款播放器来介绍一下如何配置Anime4k这款工具。 PotPlayerpotplayer是一款开源、简洁且倍受欢迎的离线视频播放器，它不仅功能强大，支持丰富的定制化功能，而且使用简单，没有广告，这相对于大多数国产视频播放器要良心很多，因此，我在这里也推荐大家尝试一下这款播放器。话不多说，现在开始介绍PotPlayer+Anime4k的配置过程。 1. 下载安装PotPlayer可以访问链接http://www.potplayer.org/下载PotPlayer安装包，然后双击安装即可。 2. 下载Anime4k HLSL文件打开链接， https://github.com/bloc97/Anime4K/releasesgithub.com 选择Anime4K_HLSL.zip下载。3. 解压并复制到指定文件夹解压第2步下载的压缩包，把其中HLSL文件移动到PotPlayer安装目录下PxShader文件夹里，如果安装PotPlayer没有修改安装路径的话，默认位置在C:\Program Files (x86)\DAUM\PotPlayer\PxShader。4. 配置PotPlayer打开PotPlayer播放器，依次点选如下选项， 视频 像素着色 调整尺寸后的着色集 一定要注意，是调整后的着色期，不要选择调整尺寸前的着色集。然后点击组合编辑，添加如下4个HLSL文件， 1234-Anime4K_ComputeLum -Anime4K_Push -Anime4K_ComputeGradient -Anime4K_PushGrad_Weak 如果原图像尺寸小于或等于1080p则选择Anime4K_PushGrad_Weak ，如果大于1080p，则选择Anime4K_PushGrad。 如果找不到这几个选择可以重启PotPlayer， 然后依次点击视频-&gt;像素着色-&gt;调整尺寸后的着色集-&gt;组合即可， MPC-BEMPC-BE是一款开源简洁的视频播放器，内容占用比PotPlayer还要小。MPC-BE+Anime4k的配置方式和PotPlayer非常相似，所以，有的过程就简略的介绍一下。下面就来看一下它的配置过程。 1. 下载安装MPC-BE 2. 下载Anime4k HLSL文件 打开链接，https://github.com/bloc97/Anime4K/releases 3. 解压复制到指定文件夹 把上一步下载HLSL压缩包解压，放到下面路径， C:\Users\YourUserName\AppData\Roaming\MPC-BE\Shaders 4. 配置MPC-BE 这一步和PotPlayer配置不同，MPC-BE配置需要依次选择如下选择， 播放 着色器 选择着色器 下面要做的和PotPlayer类似，添加HLSL文件， 这里记得勾选启用后调整大小像素着色器。 经过以上步骤配置即可使用MPC-BE+Anime4k。 工具获取 为了方便大家获取，我把PotPlayer、MPC-BE、Anime4k_HLSL进行了整理共享，如果需要可以公众号后台回复关键字”4k“获取下载链接。]]></content>
+      <categories>
+        <category>实用工具</category>
+      </categories>
+      <tags>
+        <tag>影音娱乐</tag>
+        <tag>工具</tag>
+        <tag>实用</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[【进阶Python】第七讲：接口与抽象基类]]></title>
@@ -103,9 +111,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
-        <tag>清理</tag>
         <tag>工具</tag>
         <tag>实用</tag>
+        <tag>清理</tag>
       </tags>
   </entry>
   <entry>

@@ -963,6 +963,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/实用工具/" itemprop="url" rel="index">
+                    <span itemprop="name">实用工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -1001,81 +1023,18 @@
 
       
         
-          
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><img src="C:\Users\Li\Desktop\4b90f603738da977ffce8a29b851f8198718e3cb.jpg" alt="4b90f603738da977ffce8a29b851f8198718e3cb"></p>
-<p>视频是我们日常生活中经常接触到的一种媒体形式，电影、电视剧、短视频、动画等。其中动画占据着我们娱乐生活中的一个很大比重，以我个人为例，偶尔会去电影院看一下电影，但是大多数都是通过下载到电脑的方式进行观看。我们接触的动画大多数为720p，再清晰一些的有1080p，而至于4k，这个概念似乎只存在于新闻里，却从未接触过，本文就来介绍一个强大的开源工具—Anime4k，能够<b>实时</b>、<b>高质量</b>的放大动画视频，能够轻松使得1080p变成4k。下面就来介绍一下这个优质开源的项目。</p>
-<h1 id="Anime4k"><a href="#Anime4k" class="headerlink" title="Anime4k"></a>Anime4k</h1><p>图像放大在学术领域研究的也很多，尤其是最近几年人工智能在图像处理领域的广泛应用，很多研究者利用机器学习、深度学习进行视频图像放大，虽然深度学习方法在放大效果方面取得了一些成绩，但是在速度方面并不是很理想，我们都知道，实时视频流对速度要求也很高，如果每一帧放大速度太慢，那样会严重影响观感，即便是清晰度方面得到了提升，但是也无法使用。</p>
-<p>本文介绍的Anime4k没有使用深度学习这些基于训练的方法，但是它却能够同时实现图像放大的实时及高质量。以往也有一些动画放大算法，例如，</p>
-<ul>
-<li>NGU：6ms</li>
-<li>Waifu2x：1s</li>
-</ul>
-<p>而本文介绍的Anime4k把一副1080p的图像放大只2160p只需要3ms左右(Vega 64 GPU平台)。</p>
-<p>Anime4k的实时和高质量使得它在保证图像清晰的情况下保证视频的连贯性，能够完全满足我们日常观看动漫的需求。</p>
-<p>由于本文主要是介绍这款开源工具的配置及使用，因此不详细展开Anime4k的实现过程，如果感兴趣可以访问Anime4k的项目地址。</p>
-<p><a href="https://github.com/bloc97/Anime4K" target="_blank" rel="noopener">https://github.com/bloc97/Anime4K</a></p>
-<p>目前Anime4k可以支持多款主流、强大的视频播放器，只需要配置一下就可以让播放器具备实时图像放大功能，能够高效的提升动漫的清晰度，Anime4k支持的播放器如下，</p>
-<ul>
-<li>PotPlayer</li>
-<li>MPC-BE</li>
-<li>MPC-HC</li>
-<li>MPV</li>
-<li>madVR</li>
-</ul>
-<p>上述5款播放器都是开源，本文就拿我个人认为比较不错的两款播放器来介绍一下如何配置Anime4k这款工具。</p>
-<h1 id="PotPlayer"><a href="#PotPlayer" class="headerlink" title="PotPlayer"></a>PotPlayer</h1><p>PotPlayer是一款开源、简洁且倍受欢迎的离线视频播放器，它不仅功能强大，支持丰富的定制化功能，而且使用简单，没有广告，这相对于大多数国产视频播放器要良心很多，因此，我在这里也推荐大家尝试一下这款播放器。</p>
-<p>话不多说，现在开始介绍PotPlayer+Anime4k的配置过程。</p>
-<p><b>1. 下载安装PotPlayer</b></p>
-<p>可以访问链接<a href="http://www.potplayer.org/下载PotPlayer安装包，然后双击安装即可。" target="_blank" rel="noopener">http://www.potplayer.org/下载PotPlayer安装包，然后双击安装即可。</a></p>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573137178313.png" alt="1573137178313"></p>
-<p><b>2. 下载Anime4k HLSL文件</b></p>
-<p>打开链接，<a href="https://github.com/bloc97/Anime4K/releases" target="_blank" rel="noopener">https://github.com/bloc97/Anime4K/releases</a></p>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573137255696.png" alt="1573137255696"></p>
-<p>选择<b>Anime4K_HLSL.zip</b>下载。</p>
-<p><b>3. 解压并复制到指定文件夹</b></p>
-<p>解压第2步下载的压缩包，把其中HLSL文件移动到PotPlayer安装目录下<b>PxShader</b>文件夹里，如果安装PotPlayer没有修改安装路径的话，默认位置在<b>C:\Program Files (x86)\DAUM\PotPlayer\PxShader</b>。</p>
-<p><b>4. 配置PotPlayer</b></p>
-<p>打开PotPlayer播放器，依次点选如下选项，</p>
-<ul>
-<li>视频</li>
-<li>像素着色</li>
-<li>调整尺寸后的着色集</li>
-</ul>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573137692290.png" alt="1573137692290"></p>
-<p>一定要注意，是调整后的着色期，不要选择调整尺寸前的着色集。</p>
-<p>然后点击<b>组合编辑</b>，添加如下4个HLSL文件，</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-Anime4K_ComputeLum  </span><br><span class="line">-Anime4K_Push  </span><br><span class="line">-Anime4K_ComputeGradient  </span><br><span class="line">-Anime4K_PushGrad_Weak</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>如果原图像尺寸小于或等于1080p则选择Anime4K_PushGrad_Weak ，如果大于1080p，则选择Anime4K_PushGrad。</p>
-</blockquote>
-<p>如果找不到这几个选择可以重启PotPlayer，</p>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573137940374.png" alt="1573137940374"></p>
-<p>然后依次点击<b>视频-&gt;像素着色-&gt;调整尺寸后的着色集-&gt;组合</b>即可，</p>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573138012844.png" alt="1573138012844"></p>
-<h1 id="MPC-BE"><a href="#MPC-BE" class="headerlink" title="MPC-BE"></a>MPC-BE</h1><p>MPC-BE是一款开源简洁的视频播放器，内容占用比PotPlayer还要小。MPC-BE+Anime4k的配置方式和PotPlayer非常相似，所以，有的过程就简略的介绍一下。下面就来看一下它的配置过程。</p>
-<p><b>1. 下载安装MPC-BE</b></p>
-<p><a href="https://sourceforge.net/projects/mpcbe/" target="_blank" rel="noopener">https://sourceforge.net/projects/mpcbe/</a></p>
-<p><b>2. 下载Anime4k HLSL文件</b></p>
-<p>打开链接，<a href="https://github.com/bloc97/Anime4K/releases" target="_blank" rel="noopener">https://github.com/bloc97/Anime4K/releases</a></p>
-<p><b>3. 解压复制到指定文件夹</b></p>
-<p>把上一步下载HLSL压缩包解压，放到下面路径，</p>
-<p><b>C:\Users\YourUserName\AppData\Roaming\MPC-BE\Shaders</b></p>
-<p><b>4. 配置MPC-BE</b></p>
-<p>这一步和PotPlayer配置不同，MPC-BE配置需要依次选择如下选择，</p>
-<ul>
-<li>播放</li>
-<li>着色器</li>
-<li>选择着色器</li>
-</ul>
-<p>下面要做的和PotPlayer类似，添加HLSL文件，</p>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573139385705.png" alt="1573139385705"></p>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573139300581.png" alt="1573139300581"></p>
-<p><img src="C:\Users\Li\AppData\Roaming\Typora\typora-user-images\1573138921146.png" alt="1573138921146"></p>
-
-          
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><img src="https://pic2.zhimg.com/v2-2db411cc4e626b4a3aabf0122012ae6d_b.png" alt="img"></p>
+<p>视频是我们日常生活中经常接触到的一种媒体形式，电影、电视剧、短视频、动画等。其中动画占据着我们娱乐生活中的一个很大比重，以我个人为例，偶尔会去电影院看一下电影，但是大多数都是通过下载到电脑的方式进行观看。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/11/07/anime4k/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
-    </div>
+    </p></div>
     
     
     
@@ -1965,7 +1924,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
