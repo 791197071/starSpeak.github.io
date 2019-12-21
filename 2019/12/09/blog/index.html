@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/jsmile.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/jsmile_32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/jsmile_16x16.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/jsmile.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="博客,Github Pages,Hexo,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="平凡而诗意" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言和大多数搭建个人博客的博主一样，我之所以搭建个人博客的主要原因也是因为不希望受制于各大内容分享平台，生怕有朝一日被安上一个“莫须有”的罪名，所有辛苦创作的内容都付之一炬。 关于搭建个人博客，我在内心规划了很久，">
+<meta name="keywords" content="博客,Github Pages,Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="教程 | 一文搭建你的第一个免费专属博客">
+<meta property="og:url" content="https://jackpopc.github.io/2019/12/09/blog/index.html">
+<meta property="og:site_name" content="平凡而诗意">
+<meta property="og:description" content="前言和大多数搭建个人博客的博主一样，我之所以搭建个人博客的主要原因也是因为不希望受制于各大内容分享平台，生怕有朝一日被安上一个“莫须有”的罪名，所有辛苦创作的内容都付之一炬。 关于搭建个人博客，我在内心规划了很久，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-2f35c75d1b9b5c64b86d028901db0ba4_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-7a41e83c8657b4a5e2a5ea03d07a644b_b.png">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-09d5ee7178612d7cd014a9f3f694ed65_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-973785e0e55a4dbc7a63d829349e1485_b.png">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-85bd0d04de0daab4af26d5e71b65195e_b.png">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-a27c6f1dbdae4c4dbe1a4ac4065effee_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-27ed6252b329901bfa021758cd75f051_b.png">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-51da3fe005df809d5934f1bb233556b8_b.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-3f9b1b7173b9c297f9fe9d165b34a706_b.png">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-51aa7ecfa8e21a346566b1ffe4403828_b.png">
+<meta property="og:updated_time" content="2019-12-21T12:42:10.789Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="教程 | 一文搭建你的第一个免费专属博客">
+<meta name="twitter:description" content="前言和大多数搭建个人博客的博主一样，我之所以搭建个人博客的主要原因也是因为不希望受制于各大内容分享平台，生怕有朝一日被安上一个“莫须有”的罪名，所有辛苦创作的内容都付之一炬。 关于搭建个人博客，我在内心规划了很久，">
+<meta name="twitter:image" content="https://pic1.zhimg.com/v2-2f35c75d1b9b5c64b86d028901db0ba4_b.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jackpopc.github.io/2019/12/09/blog/">
+
+
+
+
+
+  <title>教程 | 一文搭建你的第一个免费专属博客 | 平凡而诗意</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平凡而诗意</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Jackpop</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jackpopc.github.io/2019/12/09/blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jackpop">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/zhihu.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平凡而诗意">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">教程 | 一文搭建你的第一个免费专属博客</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-09T22:29:48+08:00">
+                2019-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT技术/" itemprop="url" rel="index">
+                    <span itemprop="name">IT技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/09/blog/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/12/09/blog/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>和大多数搭建个人博客的博主一样，我之所以搭建个人博客的主要原因也是因为不希望受制于各大内容分享平台，生怕有朝一日被安上一个“莫须有”的罪名，所有辛苦创作的内容都付之一炬。</p>
+<p>关于搭建个人博客，我在内心规划了很久，<a id="more"></a>一直在徘徊于两个选项之间，</p>
+<ol>
+<li>自己从底层搭建、注册域名、备案全流程做起；</li>
+<li>使用一些免费的托管平台和成熟的博客管理系统；</li>
+</ol>
+<p>最终，我还是选择了后者，主要原因有如下几点：</p>
+<ul>
+<li>容易搭建</li>
+<li>操作和管理简单</li>
+<li>免费</li>
+<li>界面美观</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/v2-2f35c75d1b9b5c64b86d028901db0ba4_b.jpg" alt="img"></p>
+<p>目前有很多优秀的博客管理系统，例如WordPress、Halo、hexo，经过反复的对比，我选择了<strong>Github Page+hexo</strong>的方式进行搭建个人主页，虽然看上去只涉及两个工具或平台，但是要搭建一个完整的个人博客，要做的远不止这些，还要考虑有如下内容，</p>
+<ul>
+<li>菜单栏</li>
+<li>搜索框</li>
+<li>评论功能</li>
+<li>分享功能</li>
+<li>访问量</li>
+<li>RSS</li>
+<li>链接</li>
+<li>……</li>
+</ul>
+<p>本文就详细的介绍一下通过Github Page结合hexo搭建一个完整的个人博客。</p>
+<h2 id="域名-GithubPage"><a href="#域名-GithubPage" class="headerlink" title="域名-GithubPage"></a><strong>域名-GithubPage</strong></h2><p>要想让别人能够访问到我们的个人博客，首先就需要有一个域名，我们可以自己申请、备案域名然后购买并部署到对应服务器，但是对于入门级这显然是繁琐且需要耗费一定资金的，因此可以使用github pages来托管我们的静态网页，这样我们就可以获取一个名为<strong>*.github.io</strong>的域名。</p>
+<p>注册Github Page的过程如下：</p>
+<p><strong>第一步：注册Github账号</strong></p>
+<p>首先打开链接<a href="https://github.com/join?source=header-home，注册github账号，然后登录github。" target="_blank" rel="noopener">https://github.com/join?source=header-home，注册github账号，然后登录github。</a></p>
+<p><img src="https://pic4.zhimg.com/v2-7a41e83c8657b4a5e2a5ea03d07a644b_b.png" alt="img"></p>
+<p><strong>第二步：创建github仓库</strong></p>
+<p>点击右上角”+”，选择<strong>New repository</strong>，填写<strong>Repository name</strong>，这个就是可以直接访问的域名，然后点击<strong>create repository</strong>即可。</p>
+<p><img src="https://pic2.zhimg.com/v2-09d5ee7178612d7cd014a9f3f694ed65_b.jpg" alt="img"></p>
+<p>到此为止，我们就把创建好了github page。</p>
+<h2 id="博客管理工具-hexo"><a href="#博客管理工具-hexo" class="headerlink" title="博客管理工具-hexo"></a><strong>博客管理工具-hexo</strong></h2><p>hexo是一个轻量级的<strong>博客管理系统</strong>，这里要注意，hexo是一个管理系统，它负责新建、部署等博客管理工作。如果使用过git做版本控制的话应该很容易理解，它可以类比为git，可以通过一些命令生成静态网页、把静态网页推送到远程仓库。</p>
+<p><strong>hexo安装</strong></p>
+<p>由于hexo是基于node.js制作的一款博客管理工具，所以要按照hexo就需要事先安装node，<a href="http://nodejs.cn/download/" target="_blank" rel="noopener">http://nodejs.cn/download/</a></p>
+<p><img src="https://pic2.zhimg.com/v2-973785e0e55a4dbc7a63d829349e1485_b.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<p><strong>hexo初始化</strong></p>
+<p>安装hexo之后需要对hexo进行初始化，首先需要<strong>新建文件夹</strong>，进入到新建文件夹之后再进行初始化，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hexo</span><br><span class="line">$ cd hexo</span><br><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
+<p>然后安装一些依赖包，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+<p>最后可以得到如下目录，</p>
+<p><img src="https://pic3.zhimg.com/v2-85bd0d04de0daab4af26d5e71b65195e_b.png" alt="img"></p>
+<ul>
+<li>文章</li>
+<li>关于</li>
+<li>分类</li>
+<li>标签</li>
+</ul>
+<p>themes中包含的是博客的主题相关内容，其中默认的主题是landscape。</p>
+<p><strong>hexo使用</strong></p>
+<p>前面提到过，hexo其实类似于git，通过一些命令来实现静态网页生成、部署等工作，我们在维护博客过程中主要使用的有如下几个命令，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ hexo n blogname      # 新建文章，例如，hexo n ComputerScience</span><br><span class="line">$ hexo clean          # 清除缓存文件</span><br><span class="line">$ hexo g              # 生成静态文件</span><br><span class="line">$ hexo s              # 启动本地服务器，预览网页</span><br><span class="line">$ hexo d              # 部署文件到指定的仓库</span><br></pre></td></tr></table></figure>
+<p>记住上述命令就可以进行日常的个人博客维护工作。</p>
+<h2 id="主题-Next"><a href="#主题-Next" class="headerlink" title="主题-Next"></a><strong>主题-Next</strong></h2><p>经过前面的配置，就可以通过hexo s启动本地服务器<a href="http://localhost:4000/，在浏览器中打开，对网站进行预览，" target="_blank" rel="noopener">http://localhost:4000/，在浏览器中打开，对网站进行预览，</a></p>
+<p><img src="https://pic3.zhimg.com/v2-a27c6f1dbdae4c4dbe1a4ac4065effee_b.jpg" alt="img"></p>
+<p>hexo默认的主题是<strong>landscape</strong>，我们可以修改为我们自己喜欢的主题，目前hexo有很多适配的主题，其中比较常用，也是本文推荐的就是<strong>Next</strong>主题。</p>
+<p>一个hexo主题的好坏不仅仅取决于它的界面，还要考虑到后期扩展必备功能的需要，Next主题相对比较成熟，能够轻松的配置谷歌、百度检索，此外还可以很容易添加标题栏、阅读量等功能，下面就来看一下Next主题的配置。</p>
+<p><strong>克隆Next主题</strong></p>
+<p>首先需要把Next主题克隆到博客中themes路径下，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd hexo</span><br><span class="line">$ git clone https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<p>这样在~/hexo/themes路径下就会有一个next文件夹。</p>
+<p><strong>修改配置文件</strong></p>
+<p>克隆next主题之后需要修改博客<strong>根目录</strong>下<strong>_config.yml</strong>文件，找到theme字段修改成next即可，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+<p><strong>修改主题样式</strong></p>
+<p>next主题包含多个样式，我们可以根据自己的喜好进行修改，修改样式的文件在~/hexo/themes路径下，名字同为<strong>_config.yml</strong>，需要注意，这和前面提到的不是同一个文件，前面的配置文件是博客管理系统hexo的配置文件，这里的是主题的配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Schemes</span><br><span class="line"># scheme: Muse</span><br><span class="line">scheme: Mist</span><br><span class="line"># scheme: Pisces</span><br><span class="line"># scheme: Gemini</span><br></pre></td></tr></table></figure>
+<h2 id="必备功能"><a href="#必备功能" class="headerlink" title="必备功能"></a><strong>必备功能</strong></h2><p>通过前面的配置，我们已经完成个人主页“骨架”部分的搭建，打开预览页面如下，</p>
+<p><img src="https://pic2.zhimg.com/v2-27ed6252b329901bfa021758cd75f051_b.png" alt="img"></p>
+<p>可以看出，目前为止博客还比较“干净”，很多必要的功能都没有，例如菜单栏不完整，没有搜索框，此外，评论、阅读量、友情链接这些重要的功能都没有，下面就来一一介绍一下这些功能的配置过程。</p>
+<blockquote>
+<p>注意：通过上述配置之后，博客所在路径和主题所在路径下分别有一个_config.yml文件，后面所提到的<strong>站点配置文件</strong>指的是博客根目录下的_config.yml，<strong>主题配置文件</strong>是指themes/_config.yml。</p>
+</blockquote>
+<p><strong>菜单栏</strong></p>
+<p>打开主题目录下的配置文件themes/_config.yml，找到menu字段修改菜单栏，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || home</span><br><span class="line">  #about: /about/ || user</span><br><span class="line">  #tags: /tags/ || tags</span><br><span class="line">  #categories: /categories/ || th</span><br><span class="line">  archives: /archives/ || archive</span><br><span class="line">  #schedule: /schedule/ || calendar</span><br><span class="line">  #sitemap: /sitemap.xml || sitemap</span><br><span class="line">  #commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure>
+<p>其中about是关于，tags是标签，其他的站点之类的也可以根据自己的喜欢进行添加。</p>
+<p><strong>搜索框</strong></p>
+<p>搜索框是一个博客必不可少的部分，当更新的文章数量逐渐增加之后，为了方便访问者阅读或快速定位目标文章，我们需要给它添加上一个搜索功能，hexo添加搜索框的方式如下，</p>
+<p><strong>首先</strong>，安装hexo-generator-search，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-search --save</span><br></pre></td></tr></table></figure>
+<p><strong>然后</strong>，在站点配置文件<strong>添加</strong>下面内容，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: ./public/search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br></pre></td></tr></table></figure>
+<p><strong>最后</strong>，在把主题配置文件local_search下的enable修改为true，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">local_search:</span><br><span class="line">  enable: true</span><br><span class="line">  # If auto, trigger search by changing input.</span><br><span class="line">  # If manual, trigger search by pressing enter key or search button.</span><br><span class="line">  trigger: auto</span><br><span class="line">  # Show top n results per article, show all results by setting to -1</span><br><span class="line">  top_n_per_article: 1</span><br><span class="line">  # Unescape html strings to the readable one.</span><br><span class="line">  unescape: false</span><br><span class="line">  # Preload the search data when the page loads.</span><br><span class="line">  preload: false</span><br></pre></td></tr></table></figure>
+<p>修改后重新生成静态网页，预览一下即可，</p>
+<p><img src="https://pic1.zhimg.com/v2-51da3fe005df809d5934f1bb233556b8_b.jpg" alt="img"></p>
+<p>到目前为止，应该可以看到，博客的名称为hexo且没有作者和网站描述信息、此外，网页显示的语言都是英文，我们可以通过修改<strong>站点配置文件</strong>来把它转换成英文，同时修改博客标题、描述、作者信息，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">title: 平凡而诗意</span><br><span class="line">subtitle: Jackpop</span><br><span class="line">description: 原创技术分享网站</span><br><span class="line">keywords:</span><br><span class="line">author: Jackpop</span><br><span class="line">language: zh-Hans</span><br></pre></td></tr></table></figure>
+<p><strong>访问量、阅读量</strong></p>
+<p>访问量和文章阅读量是我们了解文章受欢迎程度最直接的方式，因此，访问量、阅读量也是一个完整博客不可或缺的部分，如果使用的是其他主体，需要通过一些脚本配置方式来为博客添加阅读量访问量，但是，如果使用Next主题，则不需要这些繁琐的步骤，这也应了前面所说的那句话—评价一个主题不仅仅要依赖它的美观程度，还要依赖它完善而强大的功能。Next主题自带不蒜子计数功能，我们只需要修改<strong>主题配置文件</strong>，把busuanzi_count下的enable由false改为true即可，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">busuanzi_count:</span><br><span class="line">  enable: true</span><br></pre></td></tr></table></figure>
+<p><strong>评论功能</strong></p>
+<p>评论是一个博客非常重要的一项功能，目前有很多知名的博客评论插件，例如比较知名的畅言、来必力、valine等，在这里我还是推荐valine，因为它界面比较简洁，而且不需要访问者注册、登录即可评论，这样对于访问者更加友好。</p>
+<p>由于评论内容需要耗费存储资源，因此需要首先注册LeanCloud获取存储引擎，然后复制appid、appkey，然后打开<strong>主题配置文件</strong>，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">valine:</span><br><span class="line">  enable: true</span><br><span class="line">  appid: Ikslsdjflsjdnclskdfjlskdklalla # your leancloud application appid</span><br><span class="line">  appkey: Kokkall09kkssmmcsslla # your leancloud application appkey</span><br><span class="line">  notify: false # mail notifier , https://github.com/xCss/Valine/wiki</span><br><span class="line">  verify: false # Verification code</span><br><span class="line">  placeholder: 请在此输入您的留言 # comment box placeholder</span><br><span class="line">  avatar: mm # gravatar style</span><br><span class="line">  guest_info: nick,mail,link # custom comment header</span><br><span class="line">  pageSize: 10 # pagination size</span><br></pre></td></tr></table></figure>
+<p>配制后，重新生成，预览一下可以看到如下效果，</p>
+<p><img src="https://pic3.zhimg.com/v2-3f9b1b7173b9c297f9fe9d165b34a706_b.png" alt="img"></p>
+<p><strong>分享功能</strong></p>
+<p>当我们看到不错的文章想分享给其他同学怎么办？这时候就需要有博客有一个分享功能，强大的Next主题已经集成了百度分享功能，但是百度分享不支持https，如果想正常使用还需要更多的配置。</p>
+<p><strong>首先</strong>，修改主题配置文件，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Baidu Share</span><br><span class="line"># Available value:</span><br><span class="line">#    button | slide</span><br><span class="line"># Warning: Baidu Share does not support https.</span><br><span class="line">baidushare:</span><br><span class="line">  type: button</span><br><span class="line">  baidushare: true</span><br></pre></td></tr></table></figure>
+<p>把baidushare改为true。</p>
+<p><strong>然后</strong>，为了解决百度分享不支持https的问题，需要进一步的修改，要先访问下方链接，</p>
+<p><a href="https://github.com/hrwhisper/baiduShare" target="_blank" rel="noopener">https://github.com/hrwhisper/baiduShare</a></p>
+<p>把static文件夹下载到themes\next\source目录下，</p>
+<p><strong>最后</strong>，修改themes\next\layout_partials\share\baidushare.swig文件，把末位的代码修改一下，</p>
+<p>修改前：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.src=&apos;http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=&apos;+~(-new Date()/36e5)];</span><br></pre></td></tr></table></figure>
+<p>修改后：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.src=&apos;/static/api/js/share.js?v=89860593.js?cdnversion=&apos;+~(-new Date()/36e5)];</span><br></pre></td></tr></table></figure>
+<p><strong>RSS</strong></p>
+<p>RSS(Really Simple Syndication)是一种简易的信息聚合方式，是一种常用的信息订阅方式，但是对于我个人而言这项功能很少使用，如果觉得有必要也可以配置一下，下面就来介绍一下RSS的配置方式。</p>
+<p><strong>首先</strong>，安装RSS订阅插件，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
+<p><strong>其次</strong>，修改站点配置文件，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">plugin:</span><br><span class="line">- hexo-generator-feed</span><br><span class="line"></span><br><span class="line"># Feed Atom</span><br><span class="line">feed:</span><br><span class="line">type: atom</span><br><span class="line">path: atom.xml</span><br><span class="line">limit: 20</span><br></pre></td></tr></table></figure>
+<p><strong>最后</strong>，修改主题配置文件，添加下面字段，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rss: /atom.xml</span><br></pre></td></tr></table></figure>
+<p><strong>社交、友情链接</strong></p>
+<p>在我们的博客中，有时需要添加直达github、知乎、E-mail等社交工具的链接，也需要一些链接到其他网站的友情链接，下面来介绍一下怎么添加社交、友情链接。</p>
+<p><strong>首先</strong>，打开主题配置文件，搜索social，配置社交链接，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">social:</span><br><span class="line">  GitHub: https://github.com/Jackpopc || github</span><br><span class="line">  E-Mail: mailto:498073774@qq.com || envelope</span><br><span class="line">  知乎: https://www.zhihu.com/people/sharetechlee || book</span><br><span class="line">  专栏: https://zhuanlan.zhihu.com/sharetechlee || edit</span><br></pre></td></tr></table></figure>
+<p><strong>然后</strong>，搜索Blog rolls配置友情链接，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Blog rolls</span><br><span class="line">links_icon: link</span><br><span class="line">links_title: Links</span><br><span class="line">links_layout: block</span><br><span class="line">#links_layout: inline</span><br><span class="line">links:</span><br><span class="line">  Title: http://example.com/</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>我建了一个QQ学习交流群，旨在“分享、讨论、学习、资源分享、就业机会、互联网内推、共同进步！”，感兴趣的可以加一下，也可以添加我的QQ~ <strong>QQ群</strong>：1002821945；<strong>QQ号</strong>：498073774；</p>
+</blockquote>
+<h2 id="福利"><a href="#福利" class="headerlink" title="福利"></a>福利</h2><p><img src="https://pic1.zhimg.com/v2-51aa7ecfa8e21a346566b1ffe4403828_b.png" alt="img"></p>
+<blockquote>
+<p>我在公众号分享了Python、机器学习、计算机视觉、强化学习等领域相关的学习资源、电子文档。此外，还整理了一些高效的实用工具，如果需要可以关注公众号【平凡而诗意】，回复相应关键字获取~</p>
+</blockquote>
+<h2 id="作品精选"><a href="#作品精选" class="headerlink" title="作品精选"></a>作品精选</h2><p><a href="https://zhuanlan.zhihu.com/p/79671074" target="_blank" rel="noopener">Jackpop：目录 | 精选CV、Python等系列教程</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/84590108" target="_blank" rel="noopener">Jackpop：大数据处理 | Spark&amp;HDFS集群配置及基本使用</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/86349140" target="_blank" rel="noopener">Jackpop：实用工具 | 推荐3款令人惊艳的截图工具</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/89172998" target="_blank" rel="noopener">Jackpop：强烈推荐 | 这将会成为一个优质的github项目</a></p>
+<p><a href="https://www.zhihu.com/question/339417870/answer/869171272" target="_blank" rel="noopener">Jackpop：计算机小白如何开始机器学习的学习，有入门课程推荐吗?</a></p>
+<p><a href="https://www.zhihu.com/question/27608145/answer/870130099" target="_blank" rel="noopener">Jackpop：C盘快满了，该如何清理？</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/博客/" rel="tag"># 博客</a>
+          
+            <a href="/tags/Github-Pages/" rel="tag"># Github Pages</a>
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/20/vscode/" rel="next" title="我最终还是选择了VS code！">
+                <i class="fa fa-chevron-left"></i> 我最终还是选择了VS code！
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/16/word/" rel="prev" title="办公效率 | 10个让你突飞猛进的Word技能">
+                办公效率 | 10个让你突飞猛进的Word技能 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/zhihu.jpg" alt="Jackpop">
+            
+              <p class="site-author-name" itemprop="name">Jackpop</p>
+              <p class="site-description motion-element" itemprop="description">原创技术分享网站</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Jackpopc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:498073774@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/sharetechlee" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-book"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://zhuanlan.zhihu.com/sharetechlee" target="_blank" title="专栏">
+                      
+                        <i class="fa fa-fw fa-edit"></i>专栏</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#域名-GithubPage"><span class="nav-number">2.</span> <span class="nav-text">域名-GithubPage</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客管理工具-hexo"><span class="nav-number">3.</span> <span class="nav-text">博客管理工具-hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主题-Next"><span class="nav-number">4.</span> <span class="nav-text">主题-Next</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#必备功能"><span class="nav-number">5.</span> <span class="nav-text">必备功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#福利"><span class="nav-number">6.</span> <span class="nav-text">福利</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作品精选"><span class="nav-number">7.</span> <span class="nav-text">作品精选</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jackpop</span>
+
+  
+</div>
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'U1oIMCJI4zYogWXqIKva7Fsa-gzGzoHsz',
+        appKey: 'qJvgYGbG712q47zzMmQ5z9XF',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
