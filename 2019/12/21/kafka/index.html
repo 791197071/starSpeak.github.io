@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://pic1.zhimg.com/v2-9105e43104eb32b1b8549dca65e85aa8_b.png">
 <meta property="og:image" content="https://pic2.zhimg.com/v2-8be2691312502bddd9801df0d83e9829_b.png">
-<meta property="og:updated_time" content="2019-12-21T12:41:49.366Z">
+<meta property="og:updated_time" content="2019-12-24T15:07:14.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="简易教程 | 分布式消息发布订阅系统Kafka从搭建到使用">
 <meta name="twitter:description" content="Kafka简介 Kafka是一款流行分布式消息分布订阅系统，除Kafka之外还有MQ、Redis等。我们可以把消息队列视为一个管道，管道的两端分别是消息生产者(producer)和消息消费者(consumer)，">
@@ -404,7 +404,7 @@
       
 
       
-        <h2 id="Kafka简介"><a href="#Kafka简介" class="headerlink" title="Kafka简介"></a>Kafka简介</h2><p><img src="https://pic1.zhimg.com/v2-9105e43104eb32b1b8549dca65e85aa8_b.png" alt="img"></p>
+        <h1 id="Kafka简介"><a href="#Kafka简介" class="headerlink" title="Kafka简介"></a>Kafka简介</h1><p><img src="https://pic1.zhimg.com/v2-9105e43104eb32b1b8549dca65e85aa8_b.png" alt="img"></p>
 <p>Kafka是一款流行分布式消息分布订阅系统，除Kafka之外还有MQ、Redis等。我们可以把消息队列视为一个管道，管道的两端分别是消息生产者(producer)和消息消费者(consumer)，<a id="more"></a>消息生产者产生日志等消息后可以发送到管道中，这时消息队列可以驻留在内存或者磁盘上，直到消费者来把它读走为止。</p>
 <p>上述就是Kafka的一个概括，我们只需要了解一下Kafka的架构和一些专业术语即可，下面就来介绍一下Kafka 中一些专业术语。</p>
 <p><strong>Producer</strong>：消息生产者，负责把产生的消息发送到Kafka服务器上。</p>
@@ -412,7 +412,7 @@
 <p><strong>Consumer Group</strong>：消费者群组，每个消息消费者可以划分为一个特定的群组。</p>
 <p><strong>Topic</strong>：这是Kafka使用中非常重要的一个术语，它相当于消息的”身份标识”，消息生产者产生消息时会给它贴上一个Topic标签，当消息消费者需要读取消息时，可以根据这个Topic读取特定的数据。</p>
 <p><strong>Broker</strong>：Kafka集群中包含的服务器。</p>
-<h2 id="Kafka配置"><a href="#Kafka配置" class="headerlink" title="Kafka配置"></a><strong>Kafka配置</strong></h2><p><strong>下载Kafka</strong></p>
+<h1 id="Kafka配置"><a href="#Kafka配置" class="headerlink" title="Kafka配置"></a>Kafka配置</h1><p><strong>下载Kafka</strong></p>
 <p>打开链接<a href="https://www.apache.org/dyn/closer.cgi?path=/kafka/2.4.0/kafka_2.12-2.4.0.tgz下载kafka的**tgz**安装包，" target="_blank" rel="noopener">https://www.apache.org/dyn/closer.cgi?path=/kafka/2.4.0/kafka_2.12-2.4.0.tgz下载kafka的**tgz**安装包，</a></p>
 <p><img src="https://pic2.zhimg.com/v2-8be2691312502bddd9801df0d83e9829_b.png" alt="img"></p>
 <p>然后解压并进入kafka路径下，</p>
@@ -428,7 +428,7 @@
 <p>默认的ZooKeeper连接服务为localhost:2181，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Zookeeper connection string (see zookeeper docs for details).</span><br><span class="line"># This is a comma separated host:port pairs, each corresponding to a zk</span><br><span class="line"># server. e.g. &quot;127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002&quot;.</span><br><span class="line"># You can also append an optional chroot string to the urls to specify the</span><br><span class="line"># root directory for all kafka znodes.</span><br><span class="line">zookeeper.connect=localhost:2181</span><br></pre></td></tr></table></figure>
 <p>另外，producer和consumer的监听端口为9092，如果需要更改server的host和port端口可以通过修改config/server.properties进行配置。</p>
-<h2 id="Kafka使用"><a href="#Kafka使用" class="headerlink" title="Kafka使用"></a><strong>Kafka使用</strong></h2><p>这里主要介绍2种使用方式，</p>
+<h1 id="Kafka使用"><a href="#Kafka使用" class="headerlink" title="Kafka使用"></a>Kafka使用</h1><p>这里主要介绍2种使用方式，</p>
 <ul>
 <li>命令行</li>
 <li>Python</li>
@@ -467,7 +467,7 @@
 <blockquote>
 <p>我建了一个QQ学习交流群，旨在“分享、讨论、学习、资源分享、就业机会、互联网内推、共同进步！”，感兴趣的可以加一下，也可以添加我的QQ~<br><strong>QQ群</strong>：1002821945；<strong>QQ号</strong>：498073774；</p>
 </blockquote>
-<h2 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h2><p>Kafka定位为分布式消息发布-订阅系统，提及分布式就可以想象，只有当在多节点环境下才能最大的发挥它的价值，前面所介绍的Kafka配置方式都是基于单节点的配置，由于本文主要是为了系统的梳理一下Kafka的配置及使用，因此对于配置这一块不再花费大的篇幅去详细介绍，如果需要到多节点配置Kafka可以自行查阅其他资料。</p>
+<h1 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h1><p>Kafka定位为分布式消息发布-订阅系统，提及分布式就可以想象，只有当在多节点环境下才能最大的发挥它的价值，前面所介绍的Kafka配置方式都是基于单节点的配置，由于本文主要是为了系统的梳理一下Kafka的配置及使用，因此对于配置这一块不再花费大的篇幅去详细介绍，如果需要到多节点配置Kafka可以自行查阅其他资料。</p>
 <hr>
 <blockquote>
 <p>更多精彩内容，请关注公众号【平凡而诗意】~</p>
@@ -636,7 +636,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -726,7 +726,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka简介"><span class="nav-number">1.</span> <span class="nav-text">Kafka简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka配置"><span class="nav-number">2.</span> <span class="nav-text">Kafka配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka使用"><span class="nav-number">3.</span> <span class="nav-text">Kafka使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#备注"><span class="nav-number">4.</span> <span class="nav-text">备注</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka简介"><span class="nav-number">1.</span> <span class="nav-text">Kafka简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka配置"><span class="nav-number">2.</span> <span class="nav-text">Kafka配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka使用"><span class="nav-number">3.</span> <span class="nav-text">Kafka使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#备注"><span class="nav-number">4.</span> <span class="nav-text">备注</span></a></li></ol></div>
             
 
           </div>

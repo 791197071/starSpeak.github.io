@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[大数据 | Spark机器学习工作流开发指南]]></title>
+    <url>%2F2019%2F12%2F24%2Fsparkml%2F</url>
+    <content type="text"><![CDATA[前言之前我曾写过一篇介绍Spark集群搭建和基本使用的文章，在文中详细的介绍了Spark的来历、优势及搭建过程，Spark以其低时延、速度快、通用性强等优势在大数据处理领域备受欢迎，但是它的强大之处绝不仅仅是因为强大的分布式计算能力。如果你仅仅想借助Spark的并行计算能力，那样我觉得大可不必费尽周折去搭建Spark和HDFS，可以直接借助多线程实现数据的并行处理和读取。 Spark之所以如此强大还得益于它完善的生态系统，它在仓储工具、机器学习等领域也非常完备，这让它能够进一步在大数据上进行一些查找、训练等工作，而不仅仅是作为一个数据读取工具使用。 在Spark 1.2之前它携带的机器学习库是MLlib，它包含了聚类、逻辑回归、SVM等常用的机器学习算法，因此，它也得到了广泛的应用。但是，在机器学习工作流、数据格式、性能方面有所限制，因此，在Spark 1.2之后加入了Spark.ml机器学习库，这是在MLlib之上更高阶的API，它不仅面向DataFrame，在RDD基础上进一步封装，提供更强大更方便的API。另外，比较重要的一点是，它引入了工作流(Pipeline)的概念，将多个单独的算法组合成一个统一的流水线形式，便于实现复杂的机器学习模型，本文就来详细介绍一下Spark.ml机器学习工作流的一些专业术语和基本使用方法。 简介Spark.ml是在Spark 1.2开始引入的一个包，它旨在提供一套统一的高级API，帮助用户创建和优化实用的机器学习工作流(machine learning pipelines)。 一个完整的机器学习工作流包括多个阶段， 数据预处理 特征抽取 模型训练 交叉验证 …… spark.ml对机器学习算法的API进行了标准化，使得更加容易的将多个算法组合成单个工作流。 在spark.ml中引入了一些关键的专业术语，它们分别是， ML Dataset：spark.ml不像MLlib那样使用RDD作为数据输入，而是使用更加高阶的DataFrame，它相对于RDD包含了schema信息，它可以支持多种不同的数据类型，例如，文本、特征向量、真实标签、预测标签。 Transformer：它可以被翻译为转换器，是一个工作流阶段(PipelineStage)，它的作用是将一个DataFrame转换成另一个DataFrame，从技术上讲Transformer实现了transform()方法。转换器是一种抽象，它包括特征转换器和机器学习模型。 Estimator：它可以被译为评估器，作用是将输入的DataFrame转化成Transformer，在技术上它实现了fit()方法。例如，一个机器学习算法就是Estimator，它的输入为数据集，输出是机器学习模型，这个机器学习模型就是一个Transformer，它能够将一个数据转换成另一个数据。 Pipeline：可以翻译为工作流或者管道，个人认为反义词工作流更加贴切、容易理解。它把多个工作流阶段连接起来，组成一个完整的工作流。例如，简单的文本文档处理工作流可能包括如下几个阶段， 将每个文档的文本拆分为单词。 将每个文档的单词转换成数字特征向量。 使用特征向量和标签学习预测模型。 spark.ml将这样的工作流表示为Pipeline，它按特定的顺序运行一系列Pipeline(Transformer和Estimator)组成。 Param：Param被用来设置 Transformer 或者 Estimator 的参数。 如何运行？工作流(Pipeline)是只由多个工作阶段组成的序列，每个阶段可以是一个Transformer或者Estimator，这些阶段按照顺序运行，并且输入的数据集在每个阶段时都会被修改。 在Transformer阶段，在数据集上调用transform()方法，在Estimator阶段，调用fit()方法以生成一个Transformer(它将成为PipelineModel或者拟合Pipeline的一部分), 并且在数据集上调用该Transformer的transform()方法。 下图是工作流训练时的使用情况，用来说明简单的文本文档处理工作流程， 在上图中，第一行代表了三个阶段的工作流，前两个(Tokenizer和HashingTF)是转换器(蓝色框)，第三个阶段(Logistic Regression)是评估器(红色框)。 第二行代表了流经工作流的数据情况，其中圆柱体代表DataFrame。Tokenizer.transform()方法将原始文本文档（Raw text）拆分为单词，在数据集中添加带有单词的新列。 HashingTF.transform()方法将words列转换为特征向量，并将带有这些向量的新列添加到数据集。 然后，由于LogisticRegression是Estimator，因此管道首先调用LogisticRegression.fit()来生成LogisticRegressionModel。 如果管道有更多阶段，则在将数据集传递到下一阶段之前，将在数据集中调用LogisticRegressionModel的transform()方法。 经过上述工作流，将产生一个PipelineModel，它是一个Transformer，这个模型在测试数据上使用的工作流如下， 在上图中，PipelineModel和原始Pipeline阶段数相同，但是原始Pipeline中的所有Estimator都已变为Transformer。 在测试数据集上调用PipelineModel的transform()方法时，数据将按顺序传递给管道。 每个阶段的transform()方法都会更新数据集，并将其传递到下一个阶段。 Spark.ML实战下面就以一个简单的实例来构造一个逻辑回归(LogisticRegression)工作流，来加深一下对上述流程的理解和印象。 在spark.ml实战中假设这样一个场景，一个句子(sentence)中，如果包含单词”flower”，那么它的标签为1，否则为0。 导入模块 从前面讲解中我们可以清楚的知道，在构造这个工作流中，我们会用到Tokenizer、HashingTF、DataFrame、LogisticRegression、Pipeline，我们在程序开头先导入这些模块， 123456from pyspark.sql import SparkSessionfrom pyspark.ml.feature import Tokenizerfrom pyspark.ml.feature import HashingTFfrom pyspark.ml import Pipelinefrom pyspark.ml.classification import LogisticRegression 构造数据集 了解了示例背景，下面我们分别来构造训练集DataFrame和测试集DataFrame， 1234567891011121314151617# 训练集TRAINING = spark.createDataFrame([ (0, "one two three", 0.0), (1, "flower Kafka Hadoop Flink", 1.0), (2, "a b c d e", 0.0), (3, "hello flower", 1.0), (4, "this is flower", 1.0)], ["id", "sentence", "label"])# 测试集TEST = spark.createDataFrame([ (5, "flower hadoop"), (6, "a b m n k"), (7, "one two"), (8, "flower is good"), (9, "1 2 3 flower")], ["id", "sentence"]) 构建Pipeline 我们首先要来构造上面第一个图中的Pipeline(Estimator)，在构建这个工作流时我们需要用到Tokenizer、HashingTF进行分词和抽取特征，然后调用逻辑回归算法，生成PipelineModel， 123tokenizer = Tokenizer(inputCol="sentence", outputCol="words")hashingTF = HashingTF(inputCol=tokenizer.getOutputCol(), outputCol="features")lr = LogisticRegression(maxIter=20, regParam=0.001) 然后通过Pipeline把上述三个阶段连接起来，构成工作流， 123456pipeline = Pipeline(stages=[tokenizer, hashingTF, lr])model = pipeline.fit(TRAINING)print(model)# 输出PipelineModel_kl091lz1a 可以看出，上面输出一个PipelineModel。 构建PipelineModel 下面要完成的就是上面第二幅图中的工作流，在测试集上面首先调用PipelineModel，然后通过多个阶段的数据传递，最终输出预测结果， 123456789101112prediction = model.transform(TEST)selected = prediction.select("id", "sentence", "probability", "prediction")for row in selected.collect(): rid, text, prob, prediction = row print("(&#123;&#125;, &#123;&#125;) --&gt; prob=&#123;&#125;, prediction=&#123;&#125;".format(rid, text, str(prob), prediction)) # 输出(5, flower hadoop) --&gt; prob=[0.00764555307059,0.992354446929], prediction=1.0(6, a b m n k) --&gt; prob=[0.899006169016,0.100993830984], prediction=0.0(7, one two) --&gt; prob=[0.978454225878,0.021545774122], prediction=0.0(8, flower is good) --&gt; prob=[0.00534341313327,0.994656586867], prediction=1.0(9, 1 2 3 flower) --&gt; prob=[0.0210414429823,0.978958557018], prediction=1.0 上述就是基本的Spark.ml应用实例。 我建了一个QQ学习交流群，旨在“分享、讨论、学习、资源分享、就业机会、互联网内推、共同进步！”，感兴趣的可以加一下，也可以添加我的QQ~ QQ群：1002821945；QQ号：498073774； 福利** 我在公众号分享了Python、机器学习、计算机视觉、强化学习等领域相关的学习资源、电子文档。此外，还整理了一些高效的实用工具，如果需要可以关注公众号【平凡而诗意】，回复相应关键字获取~ 作品精选Jackpop：2019年你读了哪些觉得比较好的计算机书籍？ Jackpop：大数据处理 | Spark&amp;HDFS集群配置及基本使用 Jackpop：实用工具 | 推荐3款令人惊艳的截图工具 Jackpop：强烈推荐 | 这将会成为一个优质的github项目 Jackpop：计算机小白如何开始机器学习的学习，有入门课程推荐吗? Jackpop：C盘快满了，该如何清理？]]></content>
+      <categories>
+        <category>IT技术</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>大数据</tag>
+        <tag>Spark</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[实用工具 | 你距离PS大神只差这6款免费在线工具！]]></title>
     <url>%2F2019%2F12%2F22%2Fps%2F</url>
     <content type="text"><![CDATA[前言我喜欢摄影，还曾花费过很长时间去潜心观看摄影教学视频。但是，无论如何，总觉得和专业之间存在着很大差距。我很清楚，这不仅是视角和设备的原因，还有很大一部分原因来自于后期处理。 我一直以来是排斥对图片进行后期处理，因为，在我观点里我希望保留最真实、最原始的面貌和回忆。 多年之后我思索发现，并非是不喜欢后期处理，只是自己在后期处理技术上面捉襟见肘，索性给自己找了一个台阶而已。而自己又懒得再去花费那么多时间学习PS等后期处理技术，因为这里面包含太多经验和技术，而且安装臃肿的工具要耗费一些功夫，利用碎片化的时间很难得其精髓。 但是，随着技术的逐渐成熟和丰富，先进的技术越来越多的被应用在图片的处理之中，本文就来介绍6款强大的在线图片处理工具，让图片处理对你来说不再是遥不可及的距离。 remove.bghttps://www.remove.bg/ 抠图是图像后期处理中使用频率较高且难度较大的技能，虽然Photoshop、美图秀秀等工具都包含了抠图这项功能，但是这依然具有一定的门槛，非专业人士使用起来不仅速度慢，而且效果较差。 但是，remove.bg的出现将会让抠图问题迎刃而解。它是一款国外的在线抠图神器，只需打开上方链接，把图片上传能够5秒左右把图像完美从背景中抠出。 抠图在技术方面属于图像语义分割领域，目前这方面的工具有很多，例如，爱分割、Face++、Versa等，但是，综合速度、使用便捷度、效果方面还是remove.bg效果较好，前面提到的抠图平台要么需要注册登录、要么付费、要么效果不理想，所以，我个人还是推荐使用remove.bg。 下面来看一下效果图， TinyPNGhttps://tinypng.com/ 当我们报名、注册需要上传照片时，往往很多网站对图片的尺寸有所限制，其中最简单粗暴的方式就是使用windows自带的画图工具进行像素调节，但是这样会图像质量造成很大的影响。 这里要介绍的TinyPNG使用智能有损压缩技术将您的PNG文件的文件大小降低。 通过选择性的减少图片中的颜色，只需要很少的字节数就能保存数据。 对视觉的影响几乎不可见，但是在文件大小上有非常大的差别。 另外，虽然这款工具名称是TinyPNG，但是它不仅仅支持PNG格式图像，还支持JPG格式。此外，它使用非常方便，支持拖拽、上传。 下面来看一下效果， Squooshhttps://squoosh.app/ 如果觉得TinyPNG还不能满足你的需求，那可以尝试一下这款Squoosh，它可是大有来头，出自于Google之手，实力自然不可小觑。Squoosh目前支持下列格式图像， OptiPNG MozJPEG WebP Browser PNG Browser JPEG Browser WebP 既然已经推荐了TinyPNG为什么还要推荐一款相同的工具？因为Squoosh有它的独特优势， 支持手动调节图像质量 可视化图像对比 可以安装成桌面应用 我们可以根据自己的需求拖动进度条来调整图像的质量，而且能够清晰可见的看到压缩后图像与原图的对比，另外，Squoosh支持安装到桌面，这样使用起来更加方面。 下面来看一下效果， bigjpghttps://bigjpg.com/ 前面提到了图像压缩工具，那么这里就介绍一款图像放大工具。bigjpg是一款基于人工智能的无损图像放大工具，目前支持最大16倍无损放大。 目前PS等工具也支持图片放大，但是，放大的图片后依然有明显的模糊感，边缘的重影以及噪点。bigjpg通过神经网络，针对放大图片的线条、颜色、网点等特点，做特殊的算法调整，所以放大效果非常出色, 色彩保留较好, 图片边缘也不会有毛刺和重影,。更重要的是，影响画质的噪点基本在放大的图片上看不出来。 另外，bigjpg不仅可以在网页端使用，还支持windows、mac、Android桌面应用。 iLoveIMGhttps://www.iloveimg.com/zh-cn/photo-editor 修图一定要按照臃肿的Photoshop吗？ 那些搞笑图片怎么生成的？ JPG怎么与PNG、GIF、TIFF互相转换？ …… 一个iLoveIMG就够了！ 这是一个综合图像处理网站，它目前支持如下功能， 压缩图片 调整图片大小 裁剪图片 转至JPG JPG转至其他格式 照片编辑器 图片加水印 搞笑创意图片生成 HTML转图片 旋转图片 下面来看一下效果， 稿定设计稿定包含两款强大的工具， 稿定PS 稿定抠图 下面分别来介绍一下。 稿定PShttps://ps.gaoding.com/?hmsr=zhongcao-ps_zh_47-ps---sy47-bdqd&amp;utm_medium=&amp;utm_source=zhongcao#/ 想用PS但是又不想下载安装臃肿的Photoshop怎么办？ 天无绝人之路，稿定PS就成了这个最大的救星。它是一款即开即用的网页端应用，同时，它也是改变我对网页端应用固有印象的一款应用。在我印象中，网页端应用在使用体验方面一直都很差，卡顿、重影等问题让我对它一直无法产生好感。但是，这并不代表我不看好网页端应用，相反，我认为它是一个趋势，它有着便捷、触手可及的优势。当我试用这款稿定PS之后我惊奇的发现，网页端应用尽然这么强大了？它不仅包括了桌面版的全部功能，而且速度非常流畅，使用体验对比于桌面版有过之而无不及。 下面来看一下稿定PS的效果， 稿定抠图https://www.gaoding.com/koutu 和前面提到的remove.bg“傻瓜式”抠图不同，稿定抠图是一款更加完善的抠图工具，它不仅支持自动抠图，而且支持通用的标记抠图。 在通用抠图中，我们只需要用画笔标记需要保留的部分、需要去除的部分，这样就可以实现背景的抠除。 在自动抠图中，更加智能一些，它不仅支持人像抠图，还可以自动识别图像中的物体类别，根据图像主题是人像或者商品而自动实现抠图，另外，如果觉得对自动抠图效果不满意，稿定抠图还支持手动修复，这样更加灵活一些。 下面来看一下效果， 我建了一个QQ学习交流群，旨在“分享、讨论、学习、资源分享、就业机会、互联网内推、共同进步！”，感兴趣的可以加一下，也可以添加我的QQ~QQ群：1002821945；QQ号：498073774； 更多精彩内容，请关注公众号【平凡而诗意】~]]></content>
@@ -126,9 +139,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
-        <tag>影音娱乐</tag>
         <tag>工具</tag>
         <tag>实用</tag>
+        <tag>影音娱乐</tag>
       </tags>
   </entry>
   <entry>
@@ -293,9 +306,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
+        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
-        <tag>文件查找</tag>
       </tags>
   </entry>
   <entry>
@@ -446,9 +459,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
+        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
-        <tag>文件查找</tag>
         <tag>插件</tag>
       </tags>
   </entry>
@@ -487,9 +500,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
+        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
-        <tag>文件查找</tag>
         <tag>插件</tag>
       </tags>
   </entry>
@@ -550,9 +563,9 @@
         <category>实用工具</category>
       </categories>
       <tags>
+        <tag>文件查找</tag>
         <tag>工具</tag>
         <tag>实用</tag>
-        <tag>文件查找</tag>
       </tags>
   </entry>
   <entry>
